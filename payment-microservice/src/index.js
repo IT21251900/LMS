@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
+import PaymentRoutes from "./routes/payment.route.js"; // Import payment routes
 
 config();
 
@@ -25,6 +26,9 @@ connectDB()
   .catch((error) => {
     console.log(error.message);
   });
+
+// payment routes
+paymentService.use("/payments", PaymentRoutes);
 
 paymentService.get("/", (req, res) => {
   console.log(`Received request to payment server from gateway`);
