@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
+import { createCourse, getAllCourses,getCourseById ,updateCourse,deleteCourse} from './controllers/courseController.js';
 
 config();
 
@@ -12,6 +13,12 @@ courseService.use(cookieParser());
 courseService.use(cors());
 
 courseService.use(express.json());
+
+courseService.post('/', createCourse);
+courseService.get('/', getAllCourses);
+courseService.get('/:id', getCourseById);
+courseService.put('/:id', updateCourse);
+courseService.delete('/:id', deleteCourse);
 
 const port = process.env.COURSE_PORT;
 
