@@ -58,3 +58,7 @@ apiGateway.use('/api/learner', (req, res) => {
     proxy.web(req, res, { target: process.env.LEARNER_API });
 }); 
 
+apiGateway.use('/learner/auth', (req, res) => {
+    consoleLog(`Request sent to learner server from gateway`, colors.magenta);
+    proxy.web(req, res, { target: process.env.LEARNER_API });
+}); 
