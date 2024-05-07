@@ -32,15 +32,15 @@ export const getCourseById = async (req, res) => {
     }
 }
 
-// export const getCoursesByInstructorId = async (req,res) =>{
-//     try{
-//         const {instructorId} = req.params;
-//         const courses = await Course.find({instructorId})
-//         res.status(200).json({success:true,data:courses})
-//     } catch(error){
-//         res.status(500).json({success:false,error:error.message})
-//     }
-// }
+export const getCoursesByInstructorId = async (req,res) =>{
+    try{
+        const {id} = req.params;
+        const courses = await Course.find({instructorId:id })
+        res.status(200).json({success:true,data:courses})
+    } catch(error){
+        res.status(500).json({success:false,error:error.message})
+    }
+}
 
 export const updateCourse = async (req, res) => {
   try {
