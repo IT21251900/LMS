@@ -12,7 +12,7 @@ import {
   getCoursesByInstructorId
 } from "./controllers/courseController.js";
 import {
-addLessonForCourse,getLessonsForCourse
+addLessonForCourse,getLessonsForCourse,updateLesson
 } from "./controllers/lessonController.js";
 
 config();
@@ -25,13 +25,15 @@ courseService.use(cors());
 courseService.use(express.json());
 
 courseService.post("/", createCourse);
-courseService.post("/lessons/:courseId", addLessonForCourse);
 courseService.get("/", getAllCourses);
 courseService.get("/:id", getCourseById);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
-courseService.get("/lessons/:courseId", getLessonsForCourse);
 courseService.put("/:id", updateCourse);
 courseService.delete("/:id", deleteCourse);
+
+courseService.post("/lessons/:courseId", addLessonForCourse);
+courseService.get("/lessons/:courseId", getLessonsForCourse);
+courseService.put("/lessons/:id", updateLesson);
 
 const port = process.env.COURSE_PORT;
 
