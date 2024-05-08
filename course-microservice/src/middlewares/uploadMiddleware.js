@@ -1,16 +1,14 @@
 import multer from "multer";
 
-// Define storage for the images
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./uploads/"); // Folder where images will be stored
+    cb(null, "./src/uploads/"); 
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Unique filename
+    cb(null, Date.now() + "-" + file.originalname); 
   },
 });
 
-// Filter for image files
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
@@ -19,7 +17,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Initialize multer middleware
 const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 export default upload;
