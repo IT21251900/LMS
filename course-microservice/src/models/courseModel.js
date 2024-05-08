@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema({
+  category: {
+    type: String,
+    required: true,
+  },
   name: {
+    type: String,
+    required: true,
+  },
+  image:{
     type: String,
     required: true,
   },
@@ -13,11 +21,6 @@ const courseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  lessons: [
-    {
-      type: String,
-    },
-  ],
   description: {
     type: String,
     required: true,

@@ -2,7 +2,19 @@ import Course from "../models/courseModel.js";
 
 export const createCourse = async (req, res) => {
   try {
-    const course = await Course.create(req.body);
+    const { category, name, instructorId, price, description, credits } = req.body;
+    const image = req.file.filename;
+
+    const course = await Course.create({
+      category,
+      name,
+      image,
+      instructorId,
+      price,
+      description,
+      credits,
+    });
+
     res.status(201).json({ success: true, data: course });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });

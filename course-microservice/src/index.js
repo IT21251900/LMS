@@ -11,6 +11,7 @@ import {
   deleteCourse,
   getCoursesByInstructorId
 } from "./controllers/courseController.js";
+import upload from "./middlewares/uploadMiddleware.js";
 import {
 addLessonForCourse,getLessonsForCourse,updateLesson
 } from "./controllers/lessonController.js";
@@ -24,7 +25,7 @@ courseService.use(cors());
 
 courseService.use(express.json());
 
-courseService.post("/", createCourse);
+courseService.post("/", upload.single("image"), createCourse);
 courseService.get("/", getAllCourses);
 courseService.get("/:id", getCourseById);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
