@@ -32,9 +32,9 @@ apiGateway.use('/api/auth', (req, res) => {
     proxy.web(req, res, { target: process.env.AUTH_API });
 });
 
-apiGateway.use('/api/*', (req, res, next) => {
-    authenticate(req, res, next);
-});
+// apiGateway.use('/api/*', (req, res, next) => {
+//     authenticate(req, res, next);
+// });
 
 proxy.on('error', (error, req, res) => {
     console.error('Proxy Error:', error);
