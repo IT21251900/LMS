@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import GetUsers from "./service/UserService";
 
 function User() {
+  const [usersData, setUsersData] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await GetUsers();
+      console.log("res ", res);
+    } catch (error) {
+      console.log("u", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="ps-10 pe-5 py-5">
       <div className="mb-3 font-bold flex flex-row justify-between">
