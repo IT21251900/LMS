@@ -10,10 +10,11 @@ const paymentSchema = new Schema({
     type: Number,
     required: [true, "Amount field is required."],
   },
-  enrollment_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Enrollment",
-    required: true,
+  enrollment: {
+    enrollment_id: String,
+    learner_id: String,
+    course_id: String,
+    prograss_data: String,
   },
   createdAt: {
     type: Date,

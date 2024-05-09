@@ -28,7 +28,7 @@ connectDB()
   });
 
 // payment routes
-paymentService.use("/payments", PaymentRoutes);
+paymentService.use("/payment", PaymentRoutes);
 
 paymentService.get("/", (req, res) => {
   console.log(`Received request to payment server from gateway`);
