@@ -42,6 +42,14 @@ const CustomerArray = [
   },
 ];
 
+const CourseArray = [
+  {
+    title: "Course",
+    link: "course",
+    icon: UserIcon,
+  },
+];
+
 
 
 
@@ -63,5 +71,11 @@ export const newNavigationItems = [
     link: "#",
     icon: QuotationIcon,
     children: 0,
+  },
+  {
+    title: "Course",
+    link: "#",
+    icon: QuotationIcon,
+    children: CourseArray,
   },
 ];
