@@ -5,6 +5,7 @@
 .container {
   @apply mx-auto;
   @apply w-full;
+  @apply p-4;
 }
 
 :root{
@@ -20,3 +21,10 @@
   .card:hover {
     transform: scale3d(1.03, 1.03, 1.08);
   }
+
+  .navbar{
+    .active{
+        font-weight: 400;
+    }
+  }
+

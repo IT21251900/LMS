@@ -70,14 +70,14 @@ const Courses = () => {
         >
           <div className="container flex flex-row items-center h-full">
             <div className="flex gap-3 flex-col">
-              <h1 className="text-white text-4xl font-bold">Courses</h1>
-              <h2 className="text-white">Subtitle</h2>
+              <h1 className="text-white text-4xl font-bold">All Courses</h1>
+              <h2 className="text-white">Expolore Our Collection</h2>
             </div>
           </div>
         </div>
       </div>
       <div className="container py-16">
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
           {coursesData.map((course, index) => (
           <div key={index} className="card-container">
           <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up">
