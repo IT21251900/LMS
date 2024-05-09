@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const paymentSchema = new Schema({
-  payment_id: {
+  paymentId: {
     type: String,
     required: [true, "Payment ID field is required."],
     unique: [true, "Amount already exists."],

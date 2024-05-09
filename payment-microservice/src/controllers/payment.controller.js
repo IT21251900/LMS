@@ -31,7 +31,7 @@ export async function processPayment(req, res) {
     // If the transaction is successful, save payment details to the database
     if (result.success) {
       const payment = new Payment({
-        payment_id: result.transaction.id,
+        paymentId: result.transaction.id,
         amount: result.transaction.amount,
         enrollment: enrollment, // Assuming enrollmentId is passed in the request body
       });
