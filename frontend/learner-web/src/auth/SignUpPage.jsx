@@ -137,8 +137,8 @@ const SignUpPage = () => {
   return (
     <div className="h-screen py-16">
       <div className="container mx-auto rounded-lg h-full">
-        <div className="md:grid md:grid-cols-2 gap-8 h-full">
-          <div className="hidden md:flex bg-gray-200 rounded-3xl h-full">
+        <div className="grid xl:grid-cols-2 gap-8 h-full">
+          <div className="hidden xl:flex bg-gray-200 rounded-3xl h-full">
             {/* Image */}
             {/* Replace 'image.jpg' with your image */}
             <img
