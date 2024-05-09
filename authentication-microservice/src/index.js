@@ -1,8 +1,7 @@
 import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
-import { login, register } from "./controllers/auth.controller.js";
-
+import UserRoute from "./routes/userRoute.js";
 
 config();
 
@@ -22,10 +21,9 @@ connectDB()
     console.log(error.message);
   });
 
-authService.post("/test", (req, res) => {
+authService.use("/user", UserRoute);
+
+authService.post("/", (req, res) => {
   console.log(`Received request to auth server from gateway`);
   res.status(200).send("Response from auth server");
 });
-
-authService.post("/login", login)
-authService.post("/register", register)
