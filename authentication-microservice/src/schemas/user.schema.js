@@ -21,6 +21,18 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Password field is required."],
   },
+  timeTable: [
+    {
+      day: String,
+      slot: String,
+    },
+  ],
+  course: [
+    {
+      id: String,
+      name: String,
+    },
+  ],
   role: {
     type: String,
     enum: {
@@ -28,6 +40,10 @@ const userSchema = new Schema({
       message: "Invalid role type.",
     },
     default: "learner",
+  },
+  createdAt: {
+    type: Date,
+    default: new Date(),
   },
 });
 
