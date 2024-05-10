@@ -27,7 +27,7 @@ const CourseSingle = () => {
   return (
     <div>
       <div className="container py-16">
-        <div className="flex flex-row justify-between my-4 items-center">
+        <div className="flex flex-col md:flex-row justify-between my-4 md:items-center">
           <h2 className="text-[3rem] font-[500]">{course.courseName}</h2>
           <div className="flex flex-row justify-between my-4 items-center">
             <Button type="primary" size="large">
@@ -35,8 +35,8 @@ const CourseSingle = () => {
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-5">
-          <div className="col-span-3">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+          <div className="md:col-span-3">
             <img
               src={course.imageUrl}
               className="w-full h-auto object-cover rounded-3xl "

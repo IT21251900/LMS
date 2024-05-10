@@ -15,7 +15,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="container w-full mx-auto">
+    <div className="container w-full mx-auto overflow-scroll">
       <h1>Home Page</h1>
       <p>Token: {token}</p>
       {/* <p>User : {user}</p> */}
