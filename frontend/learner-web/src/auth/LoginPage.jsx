@@ -4,6 +4,14 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const LoginPage = () => {
+
+  const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+  };
+
   const onFinish =  async (values) => {
     console.log("Received values:", values);
     try {
@@ -14,6 +22,9 @@ const LoginPage = () => {
       console.log("Form values:", values);
       console.log("Server response:", response.data);
       message.success("Form submitted successfully!");
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      setCookie("jwt", response.data.token, 7);
       window.location.href = "/";
     } catch (error) {
       console.error("Error login user:", error);
