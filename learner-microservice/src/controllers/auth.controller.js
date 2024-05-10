@@ -56,7 +56,7 @@ async function register(req, res) {
       phone,
       password,
       userImage,
-      TimeTableSessions: timetable
+      TimeTableSessions: timetable,
     });
 
     await user.save();
@@ -67,8 +67,5 @@ async function register(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
-
-
-
 
 export { login, register };
