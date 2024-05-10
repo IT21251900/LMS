@@ -47,8 +47,8 @@ async function login(req, res) {
 async function register(req, res) {
   console.log("Registering Leraner");
   try {
-    const { name, email, password, NIC, role } = req.body;
-    const user = new User({ name, email, password, NIC, role });
+    const { firstname, lastname ,email, phone ,password, userImage} = req.body;
+    const user = new User({ firstname, lastname ,email, phone , password, userImage });
     await user.save();
     res.status(201).json({ message: "User created" });
   } catch (error) {

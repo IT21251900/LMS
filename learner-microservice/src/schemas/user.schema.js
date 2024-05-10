@@ -3,31 +3,30 @@ import bcrypt from 'bcryptjs'
 import { hashPassword } from '../utils/hash.util.js'
 
 const userSchema = new Schema({
-  name: {
+  firstname: {
     type: String,
-    required: [true, 'Name field is required.']
+    required: [true, 'Fisrtname field is required.']
+  },
+  lastname: {
+    type: String,
+    required: [true, 'Lastname field is required.']
   },
   email: {
     type: String,
     required: [true, 'Email field is required.'],
     unique: [true, 'Email already exists.']
   },
-  NIC: {
+  phone:{
     type: String,
-    required: [true, 'NIC field is required.'],
-    unique: [true, 'NIC already exists.']
+    required: [true, 'Phone number field is required.']
   },
   password: {
     type: String,
     required: [true, 'Password field is required.']
   },
-  role: {
-    type: String,
-    enum: {
-      values: ['learner', 'instructor', 'admin'],
-      message: 'Invalid role type.'
-    },
-    default: 'learner'
+  userImage: {
+    type: String, 
+    default: 'default-user-image.jpg'
   }
 })
 
