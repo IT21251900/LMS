@@ -5,6 +5,7 @@ import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
 import { login, register } from "./controllers/auth.controller.js";
 import { getUsers, getUserById, updateUser, enrollUserInCourses, unenrollUserFromCourses } from './controllers/learner.controller.js';
+import {updateLessonProgress} from './controllers/progress.controller.js';
 
 config();
 
@@ -40,3 +41,4 @@ learnerService.get('/:id', getUserById);
 learnerService.post('/:id', updateUser);
 learnerService.post('/:id/enroll', enrollUserInCourses);
 learnerService.post('/:id/unenroll', unenrollUserFromCourses);
+learnerService.put('/', updateLessonProgress);
