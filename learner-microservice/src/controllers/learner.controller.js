@@ -1,6 +1,15 @@
 import User from "../schemas/user.schema.js";
 import axios from "axios";
-import timetable from "../utils/timetable.js";
+
+import { Vonage } from '@vonage/server-sdk';
+
+const vonage = new Vonage({
+  apiKey: "916262b0",
+  apiSecret: "Ip7NjWquRoa5gezA"
+})
+
+const from = "CourseraX"
+const text = `You have successfully enrolled to the course`;
 
 async function getUsers(req, res) {
   console.log("Fetching all users");
@@ -59,6 +68,116 @@ async function getCourseById(courseId) {
     throw error;
   }
 }
+
+async function sendSMS(to) {
+  await vonage.sms.send({ to, from, text })
+      .then(resp => { console.log('Message sent successfully'); console.log(resp); })
+      .catch(err => { console.log('There was an error sending the messages.'); console.error(err); });
+}
+
+
+// async function enrollUserInCourses(req, res) {
+//   console.log("Enrolling user in courses");
+//   try {
+//     const userId = req.params.id;
+//     const { courseIds, selectedDate, selectedTimeSlots } = req.body;
+//     console.log(selectedDate);
+//     console.log(selectedTimeSlots);
+
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     if (!Array.isArray(selectedTimeSlots) || selectedTimeSlots.length === 0) {
+//       return res.status(400).json({ message: "Invalid selected time slots" });
+//     }
+
+//     // Validate course IDs
+//     try {
+//       const courses = await Promise.all(courseIds.map(getCourseById));
+//       if (courses.some(course => !course)) {
+//         return res.status(404).json({ message: "One or more provided course IDs are invalid" });
+//       }
+//     } catch (error) {
+//       console.error("Error fetching course:", error);
+//       throw error;
+//     }
+
+//     const timetableEntry = user.TimeTableSessions.find(
+//       (entry) => entry.day === selectedDate
+//     );
+//     if (!timetableEntry) {
+//       return res.status(400).json({ message: "Invalid selected date" });
+//     }
+//     console.log("Timetable Entry:", timetableEntry);
+
+//     let allSlotsAvailable = true;
+
+//     // Validate and update time slots
+//     for (const selectedSlot of selectedTimeSlots) {
+//       const { startTime, endTime, courseId } = selectedSlot;
+
+//       const existingSlot = timetableEntry.timeSlots.find(
+//         (slot) =>
+//           slot.startTime === startTime &&
+//           slot.endTime === endTime &&
+//           slot.isAvailable
+//       );
+
+//       if (!existingSlot) {
+//         allSlotsAvailable = false;
+//         break;
+//       }
+
+//       // Check if the time slot already has a courseId assigned
+//       if (existingSlot.courseId) {
+//         return res
+//           .status(400)
+//           .json({
+//             message: `Time slot ${startTime}-${endTime} is already booked for a course`,
+//           });
+//       }
+
+//       existingSlot.isAvailable = false;
+//       existingSlot.courseId = courseId; // Add course ID to the time slot
+//     }
+
+//     if (!allSlotsAvailable) {
+//       return res
+//         .status(400)
+//         .json({ message: "One or more selected time slots are not available" });
+//     }
+
+//     // Enroll the user in courses
+//     for (const courseId of courseIds) {
+//       if (user.courses.includes(courseId)) {
+//         return res
+//           .status(400)
+//           .json({
+//             message: `User is already enrolled in course with ID ${courseId}`,
+//           });
+//       }
+//       user.courses.push(courseId);
+//     }
+
+//     await user.save();
+
+//     const course = await getCourseById(courseId);
+//     const courseName = course.name;
+
+//     await sendSMS(learnerPhoneNumber, courseName);
+
+//     res.status(200).json({ message: "User enrolled in courses successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     if (error.name === "CastError") {
+//       return res.status(400).json({ message: "Invalid ID format" });
+//     }
+//     res.status(500).json({ message: error.message });
+//   }
+// }
+
 
 async function enrollUserInCourses(req, res) {
   console.log("Enrolling user in courses");
@@ -143,9 +262,13 @@ async function enrollUserInCourses(req, res) {
           });
       }
       user.courses.push(courseId);
+
+
     }
 
     await user.save();
+    sendSMS(user.phone); 
+
     res.status(200).json({ message: "User enrolled in courses successfully" });
   } catch (error) {
     console.error(error);
@@ -155,6 +278,7 @@ async function enrollUserInCourses(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+
 
 async function unenrollUserFromCourses(req, res) {
   console.log("Unenrolling user from courses");
