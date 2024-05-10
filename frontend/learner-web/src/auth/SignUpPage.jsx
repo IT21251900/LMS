@@ -1,6 +1,5 @@
-// pages/SignUpPage.jsx
 import React, { useState } from "react";
-import { Steps, Button, Form, Upload, Input, Space } from "antd";
+import { Steps, Button, Form, Upload, Input, Space, message } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -14,6 +13,7 @@ const { Step } = Steps;
 const SignUpPage = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
+  const [formData, setFormData] = useState({});
 
   const next = () => {
     setCurrent(current + 1);
@@ -21,6 +21,13 @@ const SignUpPage = () => {
 
   const prev = () => {
     setCurrent(current - 1);
+  };
+
+  const handleChange = (changedValues) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ...changedValues,
+    }));
   };
 
   const steps = [
@@ -38,6 +45,7 @@ const SignUpPage = () => {
               prefix={<UserOutlined />}
               placeholder="First Name"
               size="large"
+              onChange={(e) => handleChange({ firstName: e.target.value })}
             />
           </Form.Item>
           <Form.Item
@@ -50,6 +58,7 @@ const SignUpPage = () => {
               prefix={<UserOutlined />}
               placeholder="Last Name"
               size="large"
+              onChange={(e) => handleChange({ lastName: e.target.value })}
             />
           </Form.Item>
         </Space>
@@ -68,6 +77,7 @@ const SignUpPage = () => {
               type="email"
               placeholder="Email"
               size="large"
+              onChange={(e) => handleChange({ email: e.target.value })}
             />
           </Form.Item>
           <Form.Item
@@ -81,6 +91,7 @@ const SignUpPage = () => {
               type="tel"
               placeholder="Contact Number"
               size="large"
+              onChange={(e) => handleChange({ contactNumber: e.target.value })}
             />
           </Form.Item>
         </Space>
@@ -98,18 +109,29 @@ const SignUpPage = () => {
               prefix={<LockOutlined />}
               placeholder="Password"
               size="large"
+              onChange={(e) => handleChange({ password: e.target.value })}
             />
           </Form.Item>
           <Form.Item
             name="confirmPassword"
+            dependencies={['password']}
             rules={[
               { required: true, message: "Please confirm your password!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The two passwords do not match!'));
+                },
+              }),
             ]}
           >
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="Confirm Password"
               size="large"
+              onChange={(e) => handleChange({ confirmPassword: e.target.value })}
             />
           </Form.Item>
         </Space>
@@ -129,9 +151,10 @@ const SignUpPage = () => {
     },
   ];
 
-  const handleSubmit = (values) => {
-    console.log("Form values:", values);
+  const handleSubmit = () => {
+    console.log("Form values:", formData);
     // Handle form submission here
+    message.success('Form submitted successfully!');
   };
 
   return (
@@ -160,7 +183,14 @@ const SignUpPage = () => {
               </div>
               <div className="w-full h-[2px] bg-slate-100 mt-5"></div>
               <div className="steps-content mt-8 md:min-h-[200px]">
-                {steps[current].content}
+                <Form
+                  form={form}
+                  onFinish={handleSubmit}
+                  layout="vertical"
+                  initialValues={{ remember: true }}
+                >
+                  {steps[current].content}
+                </Form>
               </div>
               <div className="steps-action">
                 {current > 0 && (
