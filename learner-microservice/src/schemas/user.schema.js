@@ -49,8 +49,7 @@ const userSchema = new Schema({
             required: true,
           },
           isAvailable: {
-            type: Boolean,
-            default: true,
+            type: Boolean
           },
         },
       ],
