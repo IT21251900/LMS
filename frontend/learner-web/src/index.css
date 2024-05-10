@@ -2,3 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.container {
+  @apply mx-auto;
+  @apply w-full;
+  @apply p-4;
+}
+
+:root{
+    body{
+        font-family: 'Circular Std', sans-serif;
+        font-size: 16px;
+    }
+}
+.card-container {
+    transition: transform 0.5s cubic-bezier(0, 0, 0.5, 1); /* Adjust timing and timing function as needed */
+  }
+  
+  .card:hover {
+    transform: scale3d(1.03, 1.03, 1.08);
+  }
+
+  .navbar{
+    .active{
+        font-weight: 400;
+    }
+  }
+

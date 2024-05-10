@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../schemas/user.schema.js";
+import { timetable } from "../utils/timetable.js";
 
 const generateToken = (res, userId, role) => {
   const jwtSecret = process.env.JWT_SECRET;
@@ -45,16 +46,29 @@ async function login(req, res) {
 }
 
 async function register(req, res) {
-  console.log("Registering Leraner");
+  console.log("Registering Learner");
   try {
-    const { name, email, password, NIC, role } = req.body;
-    const user = new User({ name, email, password, NIC, role });
+    const { firstname, lastname, email, phone, password, userImage } = req.body;
+    const user = new User({
+      firstname,
+      lastname,
+      email,
+      phone,
+      password,
+      userImage,
+      TimeTableSessions: timetable
+    });
+
     await user.save();
+
     res.status(201).json({ message: "User created" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });
   }
 }
+
+
+
 
 export { login, register };
