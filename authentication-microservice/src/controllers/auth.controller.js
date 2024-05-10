@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../schemas/user.schema.js";
 
 const generateToken = (res, userId, role) => {
+  console.log("<============ generateToken ============>");
   const jwtSecret = process.env.JWT_SECRET;
   const token = jwt.sign({ userId, role }, jwtSecret, {
     expiresIn: "24h",
@@ -25,6 +26,7 @@ const clearToken = (res) => {
 };
 
 export const login = async (req, res) => {
+  console.log("<============ login ============>");
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -44,6 +46,8 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
+  console.log("<============ login ============>");
+
   try {
     const { name, email, password, NIC, role, timeTable, course } = req.body;
     const user = new User({
@@ -64,6 +68,8 @@ export const register = async (req, res) => {
 };
 
 export const getUserById = async (req, res) => {
+  console.log("<============ getUserById ============>");
+
   try {
     const id = req.params.id;
     const user = await User.findById(id);
@@ -75,11 +81,12 @@ export const getUserById = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
+  console.log("<============ getAllUsers ============>");
+
   try {
     const role = req.params.role;
-    if (role === "admin" && role === "instructor") {
+    if (role === "admin" || role === "instructor") {
       const users = await User.find();
-
       res
         .status(201)
         .json({ message: "Get All User", data: users, success: true });
@@ -93,11 +100,13 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getUpdateUser = async (req, res) => {
+  console.log("<============ getUpdateUser ============>");
+
   try {
     const id = req.params.id;
     const role = req.params.role;
     let user = {};
-    if (role === "admin" && role === "instructor") {
+    if (role === "admin" || role === "instructor") {
       user = await User.findByIdAndUpdate(id, req.body, { new: true });
     } else {
       res.status(401).json({ message: "Unauthorized user", success: false });
@@ -118,11 +127,13 @@ export const getUpdateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
+  console.log("<============ deleteUser ============>");
+
   try {
     const { id } = req.params;
     const role = req.params.role;
     let user = {};
-    if (role === "admin" && role === "instructor") {
+    if (role === "admin" || role === "instructor") {
       user = await User.findByIdAndDelete(id);
     } else {
       res.status(401).json({ message: "Unauthorized user", success: false });
