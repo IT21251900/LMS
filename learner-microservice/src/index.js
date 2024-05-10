@@ -3,6 +3,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
+import { login, register } from "./controllers/auth.controller.js";
 
 config();
 
@@ -30,3 +31,6 @@ learnerService.get("/", (req, res) => {
   console.log(`Received request to learner server from gateway`);
   res.status(200).send("Response from learner server");
 });
+
+learnerService.post("/login", login)
+learnerService.post("/register", register)

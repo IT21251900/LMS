@@ -18,6 +18,8 @@ const colors = {
   yellow: "\x1b[33m",
   magenta: "\x1b[35m",
   green: "\x1b[32m",
+  blue: "\x1b[34m",
+  red: "\x1b[31m",
 };
 
 // Function to log requests with color
@@ -30,9 +32,9 @@ apiGateway.use("/api/auth", (req, res) => {
   proxy.web(req, res, { target: process.env.AUTH_API });
 });
 
-apiGateway.use("/api/*", (req, res, next) => {
-  authenticate(req, res, next);
-});
+// apiGateway.use('/api/*', (req, res, next) => {
+//     authenticate(req, res, next);
+// });
 
 proxy.on("error", (error, req, res) => {
   console.error("Proxy Error:", error);
@@ -60,7 +62,12 @@ apiGateway.use("/api/course", (req, res) => {
   proxy.web(req, res, { target: process.env.COURSE_API });
 });
 
-apiGateway.use("/api/learner", (req, res) => {
-  consoleLog(`Request sent to learner server from gateway`, colors.magenta);
+apiGateway.use("/api/notification", (req, res) => {
+  consoleLog(`Request sent to notification server from gateway`, colors.blue);
+  proxy.web(req, res, { target: process.env.NOTIFICATION_API });
+});
+
+apiGateway.use("/learner/auth", (req, res) => {
+  consoleLog(`Request sent to auth of learner server from gateway`, colors.red);
   proxy.web(req, res, { target: process.env.LEARNER_API });
 });
