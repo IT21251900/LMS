@@ -1,6 +1,8 @@
 import mongoose, { Schema } from 'mongoose'
 import bcrypt from 'bcryptjs'
 import { hashPassword } from '../utils/hash.util.js'
+import { timetable } from '../utils/timetable.js';
+
 
 const userSchema = new Schema({
   firstname: {
@@ -27,7 +29,28 @@ const userSchema = new Schema({
   userImage: {
     type: String, 
     default: 'default-user-image.jpg'
-  }
+  },
+  TimeTableSessions: [{
+    day: {
+      type: String,
+      required: true
+    },
+    timeSlots: [{
+      startTime: {
+        type: String,
+        required: true
+      },
+      endTime: {
+        type: String,
+        required: true
+      },
+      isAvailable: {
+        type: Boolean,
+        default: true
+      }
+    }]
+  }]
+
 })
 
 userSchema.pre('save', async function (next) {
