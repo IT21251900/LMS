@@ -1,5 +1,4 @@
 import User from "../schemas/user.schema.js";
-import Course from "../../../course-microservice/src/models/courseModel.js";
 import axios from "axios";
 
 async function getUsers(req, res) {
@@ -95,4 +94,41 @@ async function enrollUserInCourses(req, res) {
   }
 }
 
-export { getUsers, getUserById, updateUser, enrollUserInCourses };
+
+async function unenrollUserFromCourses(req, res) {
+  console.log("Unenrolling user from courses");
+  try {
+    const userId = req.params.id;
+    const courseIds = req.body.courseIds;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    for (const courseId of courseIds) {
+      if (!user.courses.includes(courseId)) {
+        return res
+          .status(400)
+          .json({
+            message: `User is not enrolled in course with ID ${courseId}`,
+          });
+      }
+      const index = user.courses.indexOf(courseId);
+      if (index !== -1) {
+        user.courses.splice(index, 1);
+      }
+    }
+
+    await user.save();
+    res.status(200).json({ message: "User unenrolled from courses successfully" });
+  } catch (error) {
+    console.error(error);
+    if (error.name === "CastError") {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
+export { getUsers, getUserById, updateUser, enrollUserInCourses, unenrollUserFromCourses };
