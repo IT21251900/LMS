@@ -22,7 +22,6 @@ const colors = {
     red: "\x1b[31m"
 };
 
-// Function to log requests with color
 const consoleLog = (message, color) => {
     console.log(`${color}${message}${colors.reset}`);
 };
@@ -51,6 +50,11 @@ apiGateway.use('/api/payment', (req, res) => {
 });
 
 apiGateway.use('/api/course', (req, res) => {
+    consoleLog(`Request sent to course server from gateway`, colors.yellow);
+    proxy.web(req, res, { target: process.env.COURSE_API });
+});
+
+apiGateway.use('/course', (req, res) => {
     consoleLog(`Request sent to course server from gateway`, colors.yellow);
     proxy.web(req, res, { target: process.env.COURSE_API });
 });
