@@ -1,8 +1,9 @@
 import multer from "multer";
+// import {df} from "../../src/../../frontend/admin-dashboard/public/uploads"
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./src/uploads/"); 
+    cb(null, "./src/../../frontend/admin-dashboard/public/uploads"); 
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname); 

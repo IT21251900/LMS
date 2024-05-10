@@ -1,4 +1,5 @@
 import Course from "../models/courseModel.js";
+import Lesson from "../models/lessonModel.js";
 
 export const createCourse = async (req, res) => {
   try {
@@ -31,17 +32,22 @@ export const getAllCourses = async (req, res) => {
 };
 
 export const getCourseById = async (req, res) => {
-    try{
-        const {id} =req.params;
+  try {
+      const { id } = req.params;
 
-        const course = await Course.findById(id);
-        if(!course){
-            return res.status(404).json({success:false,message:"Course not found"})
-        }
-        res.status(200).json({success:true,data:course})
-    } catch (error){
-        res.status(500).json({success:false,error:error.message})
-    }
+      const course = await Course.findById(id);
+      if (!course) {
+          return res.status(404).json({ success: false, message: "Course not found" });
+      }
+
+      const lessons = await Lesson.find({ courseId: id });
+
+      const lessonsCount = await Lesson.countDocuments({ courseId: id });
+
+      res.status(200).json({ success: true, data: { course, lessonCount: lessonsCount,lessons: lessons } });
+  } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
+  }
 }
 
 export const getCoursesByInstructorId = async (req,res) =>{

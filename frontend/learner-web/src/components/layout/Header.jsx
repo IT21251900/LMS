@@ -1,23 +1,55 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Button } from "antd";
 const Header = () => {
+  const location = useLocation();
+
   return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto">
-        <h1 className="text-2xl font-bold">Learning Management System</h1>
-        <nav className="mt-4">
-          <ul className="flex">
+    <header className="">
+      <div className="container mx-auto flex justify-between items-center my-1">
+        <Link to="/" className="flex items-center">
+          <img
+            src="/img/logo/logo.png"
+            alt="Logo"
+            className="w-auto h-8 mr-2"
+          />
+        </Link>
+        <div className="flex gap-5">
+          <Link to="/login">
+            <Button type="outline" size="large">
+              Login
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button type="primary" size="large" className="mr-2">
+              Sign Up
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <div className="bg-gray-800">
+        <nav className="container mx-auto py-1 text-gray-50 min-h-[44px]">
+          <ul className="flex navbar">
             <li className="mr-4">
-              <Link to="/">Home</Link>
+              <Link
+                to="/"
+                className={`font-[100] hover:font-[400] ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
+              >
+                Home
+              </Link>
             </li>
             <li className="mr-4">
-              <Link to="/about">About</Link>
+              <Link
+                to="/courses"
+                className={`font-[100] hover:font-[400] ${
+                  location.pathname === "/courses" ? "active" : ""
+                }`}
+              >
+                Courses
+              </Link>
             </li>
-            <li className="mr-4">
-              <Link to="/contact">Contact</Link>
-            </li>
-            {/* Add more links as needed */}
           </ul>
         </nav>
       </div>
