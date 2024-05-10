@@ -12,9 +12,11 @@ import {
   getCoursesByInstructorId
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
+import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
 import {
 addLessonForCourse,getLessonsForCourse,updateLesson
 } from "./controllers/lessonController.js";
+import { createNote, getAllNotes } from "./controllers/noteController.js";
 
 config();
 
@@ -36,6 +38,15 @@ courseService.post("/lessons/:courseId", addLessonForCourse);
 courseService.get("/lessons/:courseId", getLessonsForCourse);
 courseService.put("/lessons/:id", updateLesson);
 
+courseService.post(
+  "/lessons/notes/:lessonId",
+  lesson_notes.single("note_file"),
+  createNote
+);
+courseService.get("/lessons/notes/:lessonId", getAllNotes);
+
+courseService.use('/uploads', express.static('src/uploads'));
+courseService.use('/lesson_note_files', express.static('src/lesson_note_files'));
 const port = process.env.COURSE_PORT;
 
 // Start the server after connecting to the database
