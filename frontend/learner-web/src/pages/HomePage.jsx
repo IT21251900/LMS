@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 
 const HomePage = () => {
   const token = localStorage.getItem("token");
-  const user = localStorage.getItem("user.firstname");
   const [data, setData] = useState(null);
 
   useEffect(() => {

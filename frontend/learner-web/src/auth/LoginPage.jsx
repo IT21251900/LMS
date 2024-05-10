@@ -23,7 +23,10 @@ const LoginPage = () => {
       console.log("Server response:", response.data);
       message.success("Form submitted successfully!");
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('id', response.data.id);
+      localStorage.setItem('firstname', response.data.firstname);
+      localStorage.setItem('lastname', response.data.lastname);
+      localStorage.setItem('userImage', response.data.userImage);
       setCookie("jwt", response.data.token, 7);
       window.location.href = "/";
     } catch (error) {
