@@ -290,32 +290,72 @@ async function enrollUserInCourses(req, res) {
 
 
 
+// async function unenrollUserFromCourses(req, res) {
+//   console.log("Unenrolling user from courses");
+//   try {
+//     const userId = req.params.id;
+//     const courseIds = req.body.courseIds;
+//     const user = await User.findById(userId);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     for (const courseId of courseIds) {
+//       if (!user.courses.includes(courseId)) {
+//         return res
+//           .status(400)
+//           .json({
+//             message: `User is not enrolled in course with ID ${courseId}`,
+//           });
+//       }
+//       const index = user.courses.indexOf(courseId);
+//       if (index !== -1) {
+//         user.courses.splice(index, 1);
+//       }
+//     }
+
+//     await user.save();
+//     res.status(200).json({ message: "User unenrolled from courses successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     if (error.name === "CastError") {
+//       return res.status(400).json({ message: "Invalid ID format" });
+//     }
+//     res.status(500).json({ message: error.message });
+//   }
+// }
+
 async function unenrollUserFromCourses(req, res) {
   console.log("Unenrolling user from courses");
   try {
     const userId = req.params.id;
-    const courseIds = req.body.courseIds;
+    const courseId = req.body.courseId; // Change to courseId since we're unenrolling only one course at a time
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    for (const courseId of courseIds) {
-      if (!user.courses.includes(courseId)) {
-        return res
-          .status(400)
-          .json({
-            message: `User is not enrolled in course with ID ${courseId}`,
-          });
-      }
-      const index = user.courses.indexOf(courseId);
-      if (index !== -1) {
-        user.courses.splice(index, 1);
-      }
+    if (!user.courses.includes(courseId)) {
+      return res.status(400).json({ message: `User is not enrolled in course with ID ${courseId}` });
+    }
+
+    // Find the user's time slots associated with the course to be unenrolled
+    user.TimeTableSessions.forEach(session => {
+      session.timeSlots.forEach(slot => {
+        if (slot.courseId && slot.courseId.toString() === courseId) {
+          slot.courseId = undefined; // Remove the course ID from the time slot
+          slot.isAvailable = true; // Set availability to true
+        }
+      });
+    });
+
+    const index = user.courses.indexOf(courseId);
+    if (index !== -1) {
+      user.courses.splice(index, 1); // Remove the course ID from the user's enrolled courses
     }
 
     await user.save();
-    res.status(200).json({ message: "User unenrolled from courses successfully" });
+    res.status(200).json({ message: "User unenrolled from course successfully" });
   } catch (error) {
     console.error(error);
     if (error.name === "CastError") {
@@ -324,6 +364,7 @@ async function unenrollUserFromCourses(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+
 
 
 export { getUsers, getUserById, updateUser, enrollUserInCourses, unenrollUserFromCourses };
