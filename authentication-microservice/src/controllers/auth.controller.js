@@ -76,7 +76,7 @@ export const getUserById = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const role = req.role;
+    const role = req.params.role;
     if (role === "admin" && role === "instructor") {
       const users = await User.find();
 
@@ -95,7 +95,7 @@ export const getAllUsers = async (req, res) => {
 export const getUpdateUser = async (req, res) => {
   try {
     const id = req.params.id;
-    const role = req.role;
+    const role = req.params.role;
     let user = {};
     if (role === "admin" && role === "instructor") {
       user = await User.findByIdAndUpdate(id, req.body, { new: true });
@@ -120,7 +120,7 @@ export const getUpdateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const role = req.role;
+    const role = req.params.role;
     let user = {};
     if (role === "admin" && role === "instructor") {
       user = await User.findByIdAndDelete(id);
