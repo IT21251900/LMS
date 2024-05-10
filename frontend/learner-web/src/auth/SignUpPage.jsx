@@ -5,15 +5,17 @@ import {
   LockOutlined,
   MailOutlined,
   PhoneOutlined,
-  UploadOutlined,
 } from "@ant-design/icons";
+import { CloudinaryContext, Image } from "cloudinary-react";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Step } = Steps;
 
 const SignUpPage = () => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
-  const [formData, setFormData] = useState({});
+  const [formData1, setFormData1] = useState({});
+  const [image, setImage] = useState(null);
 
   const next = () => {
     setCurrent(current + 1);
@@ -24,10 +26,42 @@ const SignUpPage = () => {
   };
 
   const handleChange = (changedValues) => {
-    setFormData((prevData) => ({
+    setFormData1((prevData) => ({
       ...prevData,
       ...changedValues,
     }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
+  const handleSubmit = async () => {
+    if (image) {
+      try {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "hqur7gkf"); 
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dwdu9bel1/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        const data = await response.json();
+        const imageUrl = data.secure_url;
+        formData1.userImage = imageUrl;
+        console.log("Image URL:", imageUrl);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+
+    console.log("Form values:", formData1);
+    message.success("Form submitted successfully!");
+
   };
 
   const steps = [
@@ -36,7 +70,7 @@ const SignUpPage = () => {
       content: (
         <Space direction="vertical" style={{ width: "100%" }}>
           <Form.Item
-            name="firstName"
+            name="firstname"
             rules={[
               { required: true, message: "Please input your first name!" },
             ]}
@@ -45,11 +79,11 @@ const SignUpPage = () => {
               prefix={<UserOutlined />}
               placeholder="First Name"
               size="large"
-              onChange={(e) => handleChange({ firstName: e.target.value })}
+              onChange={(e) => handleChange({ firstname: e.target.value })}
             />
           </Form.Item>
           <Form.Item
-            name="lastName"
+            name="lastname"
             rules={[
               { required: true, message: "Please input your last name!" },
             ]}
@@ -58,7 +92,7 @@ const SignUpPage = () => {
               prefix={<UserOutlined />}
               placeholder="Last Name"
               size="large"
-              onChange={(e) => handleChange({ lastName: e.target.value })}
+              onChange={(e) => handleChange({ lastname: e.target.value })}
             />
           </Form.Item>
         </Space>
@@ -81,7 +115,7 @@ const SignUpPage = () => {
             />
           </Form.Item>
           <Form.Item
-            name="contactNumber"
+            name="phone"
             rules={[
               { required: true, message: "Please input your contact number!" },
             ]}
@@ -91,7 +125,7 @@ const SignUpPage = () => {
               type="tel"
               placeholder="Contact Number"
               size="large"
-              onChange={(e) => handleChange({ contactNumber: e.target.value })}
+              onChange={(e) => handleChange({ phone: e.target.value })}
             />
           </Form.Item>
         </Space>
@@ -114,15 +148,17 @@ const SignUpPage = () => {
           </Form.Item>
           <Form.Item
             name="confirmPassword"
-            dependencies={['password']}
+            dependencies={["password"]}
             rules={[
               { required: true, message: "Please confirm your password!" },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('The two passwords do not match!'));
+                  return Promise.reject(
+                    new Error("The two passwords do not match!")
+                  );
                 },
               }),
             ]}
@@ -131,7 +167,9 @@ const SignUpPage = () => {
               prefix={<LockOutlined />}
               placeholder="Confirm Password"
               size="large"
-              onChange={(e) => handleChange({ confirmPassword: e.target.value })}
+              onChange={(e) =>
+                handleChange({ confirmPassword: e.target.value })
+              }
             />
           </Form.Item>
         </Space>
@@ -140,30 +178,36 @@ const SignUpPage = () => {
     {
       title: "Profile Photo",
       content: (
-        <Form.Item name="file" valuePropName="file">
-          <Upload>
-            <Button icon={<UploadOutlined />} size="large">
-              Upload File
-            </Button>
-          </Upload>
-        </Form.Item>
+        <div className="">
+          <Form.Item name="file">
+            <Input type="file" onChange={handleFileChange} />
+          </Form.Item>
+          {image && (
+                  <div>
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt="Uploaded"
+                      className="rounded-full h-20 w-20 object-contain mt-[10px] border border-gray-100"
+                    />
+                  </div>
+                )}
+        </div>
+        // <Form.Item name="file" valuePropName="file">
+        //   <Upload>
+        //     <Button icon={<UploadOutlined />} size="large">
+        //       Upload File
+        //     </Button>
+        //   </Upload>
+        // </Form.Item>
       ),
     },
   ];
-
-  const handleSubmit = () => {
-    console.log("Form values:", formData);
-    // Handle form submission here
-    message.success('Form submitted successfully!');
-  };
 
   return (
     <div className="h-screen py-16">
       <div className="container mx-auto rounded-lg h-full">
         <div className="grid xl:grid-cols-2 gap-8 h-full">
           <div className="hidden xl:flex bg-gray-200 rounded-3xl h-full">
-            {/* Image */}
-            {/* Replace 'image.jpg' with your image */}
             <img
               src="https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Cover"
@@ -172,6 +216,7 @@ const SignUpPage = () => {
           </div>
           <div className="container mx-auto rounded-lg h-full flex items-center md:justify-center min-w-[300px] p-8">
             <div className="">
+
               <div className="text-4xl mb-3 md:mb-5 font-[800]">Sign Up</div>
               <div className="mb-8 md:mb-16">Enter Your Details Below</div>
               <div className="hidden md:flex">
