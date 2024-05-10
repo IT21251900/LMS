@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import { UploadOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const { Step } = Steps;
 
@@ -42,7 +43,7 @@ const SignUpPage = () => {
       try {
         const formData = new FormData();
         formData.append("file", image);
-        formData.append("upload_preset", "hqur7gkf"); 
+        formData.append("upload_preset", "hqur7gkf");
         const response = await fetch(
           "https://api.cloudinary.com/v1_1/dwdu9bel1/image/upload",
           {
@@ -59,9 +60,17 @@ const SignUpPage = () => {
       }
     }
 
-    console.log("Form values:", formData1);
-    message.success("Form submitted successfully!");
-
+    try {
+      const response = await axios.post(
+        "http://localhost:4200/learner/auth/register",
+        formData1
+      );
+      console.log("Form values:", formData1);
+      console.log("Server response:", response.data);
+      message.success("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
   };
 
   const steps = [
@@ -183,14 +192,14 @@ const SignUpPage = () => {
             <Input type="file" onChange={handleFileChange} />
           </Form.Item>
           {image && (
-                  <div>
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt="Uploaded"
-                      className="rounded-full h-20 w-20 object-contain mt-[10px] border border-gray-100"
-                    />
-                  </div>
-                )}
+            <div>
+              <img
+                src={URL.createObjectURL(image)}
+                alt="Uploaded"
+                className="rounded-full h-20 w-20 object-contain mt-[10px] border border-gray-100"
+              />
+            </div>
+          )}
         </div>
         // <Form.Item name="file" valuePropName="file">
         //   <Upload>
@@ -216,7 +225,6 @@ const SignUpPage = () => {
           </div>
           <div className="container mx-auto rounded-lg h-full flex items-center md:justify-center min-w-[300px] p-8">
             <div className="">
-
               <div className="text-4xl mb-3 md:mb-5 font-[800]">Sign Up</div>
               <div className="mb-8 md:mb-16">Enter Your Details Below</div>
               <div className="hidden md:flex">
