@@ -57,7 +57,7 @@ async function updateUser(req, res) {
 async function getCourseById(courseId) {
   try {
     const response = await axios.get(
-      `http://localhost:4200/api/course/${courseId}`
+      `http://localhost:4200/course/${courseId}`
     );
     return response.data;
   } catch (error) {
