@@ -52,7 +52,7 @@ export const CourseCard = ({data}) => {
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-row gap-2 items-center">
                     <BookOpen size={16} color="gray" />
-                    <p className="text-[0.875rem] text-accent">d</p>
+                    <p className="text-[0.875rem] text-accent">{data.lessonCount}</p>
                   </div>
                   <div className="flex flex-row gap-2 items-center">
                     <CircleUser size={16} color="gray" />
