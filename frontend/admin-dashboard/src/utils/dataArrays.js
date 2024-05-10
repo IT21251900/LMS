@@ -50,6 +50,17 @@ const CourseArray = [
   },
 ];
 
+export const course_category = [
+  {
+    id: "1",
+    key: "Programming",
+  },
+  {
+    id: "2",
+    key: "Project Management",
+  },
+];
+
 export const newNavigationItems = [
   {
     title: "Dashboard",

@@ -119,7 +119,7 @@ const SignUpPage = () => {
       title: "Profile Photo",
       content: (
         <Form.Item name="file" valuePropName="file">
-          <Upload >
+          <Upload>
             <Button icon={<UploadOutlined />} size="large">
               Upload File
             </Button>
@@ -154,10 +154,7 @@ const SignUpPage = () => {
               <div className="hidden md:flex">
                 <Steps current={current}>
                   {steps.map((item) => (
-                    <Step
-                      key={item.title}
-                      title={item.title}
-                    />
+                    <Step key={item.title} title={item.title} />
                   ))}
                 </Steps>
               </div>
@@ -167,7 +164,11 @@ const SignUpPage = () => {
               </div>
               <div className="steps-action">
                 {current > 0 && (
-                  <Button  size="large" style={{ margin: "0 8px 0 0" }} onClick={() => prev()}>
+                  <Button
+                    size="large"
+                    style={{ margin: "0 8px 0 0" }}
+                    onClick={() => prev()}
+                  >
                     Previous
                   </Button>
                 )}
@@ -177,10 +178,17 @@ const SignUpPage = () => {
                   </Button>
                 )}
                 {current === steps.length - 1 && (
-                  <Button type="primary"  size="large" onClick={() => form.submit()}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    onClick={() => form.submit()}
+                  >
                     Submit
                   </Button>
                 )}
+              </div>
+              <div className="mt-4 font-[100]">
+                Already have an account? <a href="/login">Login</a>
               </div>
             </div>
           </div>
