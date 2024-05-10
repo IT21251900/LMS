@@ -4,7 +4,7 @@ import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
 import { login, register } from "./controllers/auth.controller.js";
-import { getUsers, getUserById, updateUser } from './controllers/learner.controller.js';
+import { getUsers, getUserById, updateUser, enrollUserInCourses } from './controllers/learner.controller.js';
 
 config();
 
@@ -38,3 +38,4 @@ learnerService.post("/register", register);
 learnerService.get('/get-all', getUsers);
 learnerService.get('/:id', getUserById);
 learnerService.post('/:id', updateUser);
+learnerService.post('/:id/enroll', enrollUserInCourses);
