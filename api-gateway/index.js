@@ -49,6 +49,11 @@ apiGateway.use('/api/payment', (req, res) => {
     proxy.web(req, res, { target: process.env.PAYMENT_API });
 });
 
+apiGateway.use('/payment', (req, res) => {
+    consoleLog(`Request sent to payment server from gateway`, colors.cyan);
+    proxy.web(req, res, { target: process.env.PAYMENT_API });
+});
+
 apiGateway.use('/api/course', (req, res) => {
     consoleLog(`Request sent to course server from gateway`, colors.yellow);
     proxy.web(req, res, { target: process.env.COURSE_API });
@@ -63,6 +68,11 @@ apiGateway.use('/api/notification', (req, res) => {
     consoleLog(`Request sent to notification server from gateway`, colors.blue);
     proxy.web(req, res, { target: process.env.NOTIFICATION_API });
 }); 
+
+apiGateway.use('/notification', (req, res) => {
+    consoleLog(`Request sent to notification server from gateway`, colors.blue);
+    proxy.web(req, res, { target: process.env.NOTIFICATION_API });
+});
 
 apiGateway.use('/api/learner', (req, res) => {
     consoleLog(`Request sent to learner server from gateway`, colors.magenta);
