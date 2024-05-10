@@ -14,6 +14,7 @@ const lessonSchema = new mongoose.Schema({
     enum: [0, 1],
     default: 0,
   },
+  notes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Note' }]
 });
 
 const Lesson = mongoose.model("Lesson", lessonSchema);

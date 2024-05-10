@@ -5,6 +5,7 @@ import {
   CardBody,
 } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
+import { LessonContent } from "./LessonContent";
 
 export const CourseDetails = () => {
   const { id } = useParams();
@@ -16,8 +17,8 @@ export const CourseDetails = () => {
   useEffect(() => {
     const fetchHandler = async () => {
       try {
-        const response = await axios.get(`http://localhost:4200/api/course/${id}`);
-        setCourseDetails(response.data.data.course);
+        const response = await axios.get(`http://localhost:4200/course/${id}`);
+        setCourseDetails(response.data.data);
         setShowUpdateButton(response.data.data.course.instructorId === instructorId);
       } catch (error) {
         console.error("Error fetching course details:", error);
@@ -26,23 +27,23 @@ export const CourseDetails = () => {
     fetchHandler();
   }, [id, instructorId]);
 
+  console.log(courseDetails);
+
   return (
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
       <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
-        <p>Name: {courseDetails.name}</p>
-        <p>Description: {courseDetails.description}</p>
+        <p>Name: {courseDetails.course?.name}</p>
+        <p>Description: {courseDetails.course?.description}</p>
         <p>
           <img
-            src={`/uploads/${courseDetails.image}`}
+            src={`/uploads/${courseDetails.course?.image}`}
             alt="ss"
-            style={{ width: "380px", height: "360px" }}
             className="img"
           />
         </p>
-
         {showUpdateButton && (
           <a
-            href={`/edit-courses/${courseDetails._id}`}
+            href={`/edit-courses/${courseDetails.course._id}`}
             className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
           >
             <span>
@@ -58,6 +59,19 @@ export const CourseDetails = () => {
             <span>Update Course</span>
           </a>
         )}
+
+        <div>
+          <h3>Lessons:</h3>
+          <ul>
+            {courseDetails.lessons &&
+              courseDetails.lessons.map((lesson) => (
+                <div>
+                  <li key={lesson._id} className="font-bold">{lesson.title}</li>
+                  <LessonContent id={lesson._id}/>
+                </div>
+              ))}
+          </ul>
+        </div>
       </CardBody>
     </Card>
   );

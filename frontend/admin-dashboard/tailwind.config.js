@@ -11,21 +11,10 @@ export default withMT({
   ],
   theme: {
     extend: {
-      fontFamily: {
-        larsseit: ["Larsseit", "sans-serif"],
-        larsseitBold: ["LarsseitBold", "sans-serif"],
-        outfit: ["Outfit", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-        colfaxWeb: ["ColfaxWeb, sans-serif"],
-      },
       colors: {
-        "bottom-border": "#FFFFFF03",
-        "theme-color": "#461058",
-        "theme-title": "#C38ED1",
-      },
-      screens: {
-        "3xl": "1400px",
-        ...defaultTheme.screens,
+        primary: "#4096ff",
+        secondary: "#00FF00",
+        accent: "#6B6A6A",
       },
     },
   },

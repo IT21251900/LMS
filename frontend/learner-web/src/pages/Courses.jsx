@@ -1,65 +1,86 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BookOpen, CircleUser, Star } from "lucide-react";
-
+import axios from "axios";
 const Courses = () => {
+
+  const [courses, setCourse] = useState([]);
+
   // Sample array of data for the cards
-  const coursesData = [
-    {
-      instructor: "John Doe",
-      credits: 5,
-      courseName: "Introduction to React",
-      books: 10,
-      users: 150,
-      price: 49.99,
-      imageUrl: "https://www.classcentral.com/report/wp-content/uploads/2020/06/top-100-course-pandemic.png",
-    },
-    {
-      instructor: "Jane Smith",
-      credits: 3,
-      courseName: "Intermediate JavaScript",
-      books: 8,
-      users: 100,
-      price: 29.99,
-      imageUrl: "https://www.aeccglobal.lk/images/2023/09/08/automobile%20courses%20in%20uk.webp",
-    },
-    {
-      instructor: "Alex Johnson",
-      credits: 4,
-      courseName: "Python Basics",
-      books: 12,
-      users: 200,
-      price: 39.99,
-      imageUrl: "https://www.aeccglobal.in/images/easyblog_articles/1380/automobile-courses-in-canada.webp",
-    },
-    {
-      instructor: "Emily Brown",
-      credits: 3,
-      courseName: "Data Science Fundamentals",
-      books: 7,
-      users: 120,
-      price: 44.99,
-      imageUrl: "https://cdn.prod.website-files.com/6009ec8cda7f305645c9d91b/65c28fda8a071e64c4ae94ff_374_DesignBlogHeader_2400x1260.jpg",
-    },
-    {
-      instructor: "Michael Lee",
-      credits: 5,
-      courseName: "Web Development Bootcamp",
-      books: 15,
-      users: 250,
-      price: 59.99,
-      imageUrl: "https://www.elegantthemes.com/blog/wp-content/uploads/2023/12/best-ai-courses-featured-img.jpg",
-    },
-    {
-      instructor: "Sophia Garcia",
-      credits: 4,
-      courseName: "Machine Learning 101",
-      books: 9,
-      users: 180,
-      price: 54.99,
-      imageUrl: "https://www.pickl.ai/blog/wp-content/uploads/2023/06/Top-6-Artificial-Intelligence-Courses-for-Beginners.jpg",
-    },
-    // Add more objects for additional courses as needed
-  ];
+  // const coursesData = [
+  //   {
+  //     instructor: "John Doe",
+  //     credits: 5,
+  //     courseName: "Introduction to React",
+  //     books: 10,
+  //     users: 150,
+  //     price: 49.99,
+  //     imageUrl: "https://www.classcentral.com/report/wp-content/uploads/2020/06/top-100-course-pandemic.png",
+  //   },
+  //   {
+  //     instructor: "Jane Smith",
+  //     credits: 3,
+  //     courseName: "Intermediate JavaScript",
+  //     books: 8,
+  //     users: 100,
+  //     price: 29.99,
+  //     imageUrl: "https://www.aeccglobal.lk/images/2023/09/08/automobile%20courses%20in%20uk.webp",
+  //   },
+  //   {
+  //     instructor: "Alex Johnson",
+  //     credits: 4,
+  //     courseName: "Python Basics",
+  //     books: 12,
+  //     users: 200,
+  //     price: 39.99,
+  //     imageUrl: "https://www.aeccglobal.in/images/easyblog_articles/1380/automobile-courses-in-canada.webp",
+  //   },
+  //   {
+  //     instructor: "Emily Brown",
+  //     credits: 3,
+  //     courseName: "Data Science Fundamentals",
+  //     books: 7,
+  //     users: 120,
+  //     price: 44.99,
+  //     imageUrl: "https://cdn.prod.website-files.com/6009ec8cda7f305645c9d91b/65c28fda8a071e64c4ae94ff_374_DesignBlogHeader_2400x1260.jpg",
+  //   },
+  //   {
+  //     instructor: "Michael Lee",
+  //     credits: 5,
+  //     courseName: "Web Development Bootcamp",
+  //     books: 15,
+  //     users: 250,
+  //     price: 59.99,
+  //     imageUrl: "https://www.elegantthemes.com/blog/wp-content/uploads/2023/12/best-ai-courses-featured-img.jpg",
+  //   },
+  //   {
+  //     instructor: "Sophia Garcia",
+  //     credits: 4,
+  //     courseName: "Machine Learning 101",
+  //     books: 9,
+  //     users: 180,
+  //     price: 54.99,
+  //     imageUrl: "https://www.pickl.ai/blog/wp-content/uploads/2023/06/Top-6-Artificial-Intelligence-Courses-for-Beginners.jpg",
+  //   },
+  //   // Add more objects for additional courses as needed
+  // ];
+
+  useEffect(() => {
+    const fetchCourses = () => {
+      axios
+        .get(`http://localhost:4200/course/`) 
+        .then((res) => {
+          setCourse(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    fetchCourses(); 
+
+  }, []);
+
+  console.log(courses);
 
   return (
     <div>
@@ -78,8 +99,8 @@ const Courses = () => {
       </div>
       <div className="container py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
-          {coursesData.map((course, index) => (
-          <div key={index} className="card-container">
+        {courses.data?.map((course) => (
+          <div key={course.id} className="card-container">
           <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up">
             <img
               src={course.imageUrl}
@@ -94,12 +115,12 @@ const Courses = () => {
                   <p className="text-[0.875rem] text-accent">{course.credits}</p>
                 </div>
               </div>
-              <h2 className="font-[500] mt-2 text-[1.2rem]">{course.courseName}</h2>
+              <h2 className="font-[500] mt-2 text-[1.2rem]">{course.name}</h2>
               <div className="flex justify-between items-end w-full flex-row">
                 <div className="flex flex-row gap-2">
                   <div className="flex flex-row gap-2 items-center">
                     <BookOpen size={16} color="gray" />
-                    <p className="text-[0.875rem] text-accent">{course.books}</p>
+                    <p className="text-[0.875rem] text-accent">{course.lessonCount}</p>
                   </div>
                   <div className="flex flex-row gap-2 items-center">
                     <CircleUser size={16} color="gray" />

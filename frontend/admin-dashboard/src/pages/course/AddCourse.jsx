@@ -6,20 +6,30 @@ import {
   CardBody,
   Input,
   Button,
+  Option
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { course_category } from "../../utils/dataArrays";
+import Select from "react-select"; // Import react-select
 
 export const AddCourse = () => {
   const [courseDetails, setCourseDetails] = useState({
     category: "",
     name: "",
     description: "",
-    price:"",
+    price: "",
     credits: "",
     image: null,
   });
 
-  const handleChange = (e) => {
+  const handleCategoryChange = (selectedOption) => {
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      category: selectedOption.value,
+    }));
+  };
+
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCourseDetails((prevDetails) => ({
       ...prevDetails,
@@ -46,7 +56,7 @@ export const AddCourse = () => {
     formData.append("instructorId", "1"); // Set instructorId as 1
 
     try {
-      const response = await axios.post("http://localhost:4200/api/course/", formData, {
+      const response = await axios.post("http://localhost:4200/course/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -57,6 +67,11 @@ export const AddCourse = () => {
       console.error("Error adding course:", error.response.data.error);
     }
   };
+
+  const options = course_category.map((category) => ({
+    value: category.key,
+    label: category.key,
+  }));
 
   return (
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
@@ -79,11 +94,10 @@ export const AddCourse = () => {
               >
                 Select Category
               </Typography>
-              <Input
-                type="text"
-                name="category"
-                value={courseDetails.category}
-                onChange={handleChange}
+              <Select
+                options={options}
+                value={options.find((option) => option.value === courseDetails.category)}
+                onChange={handleCategoryChange}
               />
             </div>
             <div className="w-1/2">
@@ -98,7 +112,7 @@ export const AddCourse = () => {
                 type="text"
                 name="name"
                 value={courseDetails.name}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -116,7 +130,7 @@ export const AddCourse = () => {
                 type="text"
                 name="description"
                 value={courseDetails.description}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </div>
             <div className="w-1/2">
@@ -131,7 +145,7 @@ export const AddCourse = () => {
                 type="text"
                 name="credits"
                 value={courseDetails.credits}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -159,7 +173,7 @@ export const AddCourse = () => {
                 type="text"
                 name="price"
                 value={courseDetails.price}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </div>
           </div>
