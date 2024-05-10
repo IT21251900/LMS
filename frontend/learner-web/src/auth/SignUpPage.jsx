@@ -68,6 +68,7 @@ const SignUpPage = () => {
       console.log("Form values:", formData1);
       console.log("Server response:", response.data);
       message.success("Form submitted successfully!");
+      window.location.href = "/login";
     } catch (error) {
       console.error("Error registering user:", error);
     }
