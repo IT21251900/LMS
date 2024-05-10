@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import GetUsers from "./service/UserService";
+import NewUserModal from "./componet/NewUserModal";
+import UserDeleteModal from "./componet/UserDeleteModal";
+import UpdateUserModal from "./componet/UpdateUserModal";
 
 function User() {
   const [usersData, setUsersData] = useState([]);
@@ -7,7 +10,8 @@ function User() {
   const fetchData = async () => {
     try {
       const res = await GetUsers();
-      console.log("res ", res);
+
+      setUsersData(res.data.data);
     } catch (error) {
       console.log("u", error);
     }
@@ -18,15 +22,12 @@ function User() {
   }, []);
 
   return (
-    <div className="ps-10 pe-5 py-5">
-      <div className="mb-3 font-bold flex flex-row justify-between">
+    <div className="ps-10 pe-5 pb-5">
+      <div className="font-bold flex flex-row justify-between mb-2">
         <h2>Users</h2>
-        <button
-          type="button"
-          class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2"
-        >
-          New
-        </button>
+        <div>
+          <NewUserModal />
+        </div>
       </div>
 
       <div>
@@ -91,31 +92,28 @@ function User() {
               </tr>
             </thead>
             <tbody>
-              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">White</td>
-                <td class="px-6 py-4">Laptop PC</td>
-                <td class="px-6 py-4">$1999</td>
-                <td class="px-6 py-4 text-right">
-                  <button
-                    type="button"
-                    class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2"
-                  >
-                    Update
-                  </button>
-                  <button
-                    type="button"
-                    class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+              {usersData && usersData.length > 0
+                ? usersData.map((user, key) => (
+                    <tr
+                      key={key}
+                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    >
+                      <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {user.name}
+                      </th>
+                      <td class="px-6 py-4">{user.email}</td>
+                      <td class="px-6 py-4">{user.NIC}</td>
+                      <td class="px-6 py-4">{user.role}</td>
+                      <td class="py-4 text-right flex flex-row">
+                        <UpdateUserModal user={user} />
+                        <UserDeleteModal user={user} />
+                      </td>
+                    </tr>
+                  ))
+                : null}
             </tbody>
           </table>
         </div>

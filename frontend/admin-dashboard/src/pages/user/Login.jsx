@@ -23,10 +23,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Here you can perform any necessary validation or send the email and password to your backend for authentication
-    console.log("Email:", email);
-    console.log("Password:", password);
-
     const authData = {
       email,
       password,

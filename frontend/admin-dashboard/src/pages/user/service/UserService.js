@@ -1,29 +1,15 @@
 import axios from "axios";
-import API from "../../../utils/APIUrl";
+import BE_URL_WITH_API from "../../../utils/APIUrl";
 
-axios.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    config.headers.Cookie = `jwt=${token}`; // Add the cookie to headers
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-const getUsers = async () => {
+const GetUsers = async () => {
   try {
-    const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    console.log(token, role);
-    if (!token) {
-      throw new Error("Token not found");
+    if (!role) {
+      throw new Error("Role not found");
     }
 
-    // Set the token in a cookie named 'jwt'
-    document.cookie = `jwt=${token}; path=/;`;
-
-    return await axios.get(`${API}/user/user/`, { data: role });
+    return await axios.get(`${BE_URL_WITH_API}/auth/user/role/${role}`);
   } catch (error) {
     // Handle error
     console.error("Error fetching users:", error);
@@ -33,11 +19,56 @@ const getUsers = async () => {
 
 export const UserLogin = async (authData) => {
   try {
-    const res = await axios.post(`${API}/auth/user/login`, authData);
+    const res = await axios.post(
+      `${BE_URL_WITH_API}/auth/user/login`,
+      authData
+    );
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("role", res.data.role);
     return true;
   } catch (error) {}
 };
 
-export default getUsers;
+export const CreateUser = async (user) => {
+  try {
+    return await axios.post(`${BE_URL_WITH_API}/auth/user/register`, user);
+  } catch (error) {
+    // Handle error
+    console.error("Error create users:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const UpdateUser = async (id, user) => {
+  try {
+    const role = localStorage.getItem("role");
+
+    if (!role) {
+      throw new Error("Role not found");
+    }
+
+    return await axios.put(`${BE_URL_WITH_API}/auth/user/${id}/${role}`, user);
+  } catch (error) {
+    // Handle error
+    console.error("Error update users:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const DeleteUser = async (id) => {
+  try {
+    const role = localStorage.getItem("role");
+
+    if (!role) {
+      throw new Error("Role not found");
+    }
+
+    return await axios.delete(`${BE_URL_WITH_API}/auth/user/${id}/${role}`);
+  } catch (error) {
+    // Handle error
+    console.error("Error delete users:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export default GetUsers;
