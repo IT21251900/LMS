@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import BackgroundImage from "../../assets/images/login-bg.png"; // Import your background image
 import { useNavigate } from "react-router-dom";
+import { UserLogin } from "./service/UserService";
 
 function Login() {
   // Define state variables for email and password
@@ -19,17 +20,22 @@ function Login() {
     setPassword(e.target.value);
   };
 
-  // Event handler for form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     // Here you can perform any necessary validation or send the email and password to your backend for authentication
     console.log("Email:", email);
     console.log("Password:", password);
-    // Reset the form after submission
-    setEmail("");
-    setPassword("");
 
-    navigate("/");
+    const authData = {
+      email,
+      password,
+    };
+
+    const res = await UserLogin(authData);
+    if (res) {
+      navigate("/");
+    }
   };
 
   return (
@@ -43,10 +49,7 @@ function Login() {
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-3xl font-bold mb-4">Login Here!</h1>
         <div className="p-5 bg-blue-500 bg-opacity-75 rounded-2xl">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white bg-opacity-75 shadow-md rounded-2xl p-8"
-          >
+          <form className="bg-white bg-opacity-75 shadow-md rounded-2xl p-8">
             <div className="mb-6">
               <label
                 className="block text-gray-700 text-lg font-bold mb-2"
@@ -82,7 +85,7 @@ function Login() {
             <div className="flex items-center justify-center">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-2xl focus:outline-none focus:shadow-outline"
-                type="submit" // Change button type to submit
+                onClick={handleSubmit}
               >
                 Sign In
               </button>
