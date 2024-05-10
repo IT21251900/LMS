@@ -51,6 +51,7 @@ const userSchema = new Schema({
           isAvailable: {
             type: Boolean
           },
+          courseId: { type: Schema.Types.ObjectId, ref: "Course" },
         },
       ],
     },
