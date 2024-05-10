@@ -46,7 +46,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  console.log("<============ login ============>");
+  console.log("<============ register ============>");
 
   try {
     const { name, email, password, NIC, role, timeTable, course } = req.body;
@@ -99,7 +99,7 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-export const getUpdateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   console.log("<============ getUpdateUser ============>");
 
   try {

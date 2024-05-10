@@ -21,10 +21,12 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Password field is required."],
   },
-  timeTable: {
-    day: String,
-    slot: String,
-  },
+  timeTable: [
+    {
+      day: String,
+      slot: String,
+    },
+  ],
   course: [
     {
       id: String,

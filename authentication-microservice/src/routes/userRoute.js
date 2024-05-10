@@ -2,7 +2,7 @@ import express from "express";
 import {
   register,
   getAllUsers,
-  getUpdateUser,
+  updateUser,
   deleteUser,
   login,
   getUserById,
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.put("/:id/:role", getUpdateUser);
+router.put("/:id/:role", updateUser);
 router.delete("/:id/:role", deleteUser);
 router.get("/role/:role", getAllUsers);
 router.get("/:id", getUserById);
