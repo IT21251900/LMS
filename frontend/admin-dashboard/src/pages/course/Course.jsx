@@ -22,7 +22,7 @@ export const Course = () => {
   useEffect(() => {
     const fetchCourses = () => {
       axios
-        .get(`http://localhost:4200/api/course/`) 
+        .get(`http://localhost:4200/course/`) 
         .then((res) => {
           setCourse(res.data);
         })
@@ -35,7 +35,7 @@ export const Course = () => {
 
   }, []);
 
-//   console.log(course.data)
+  console.log(course)
 
   return (
     <>

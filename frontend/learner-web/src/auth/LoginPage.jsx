@@ -1,20 +1,45 @@
 import React from "react";
-import { Form, Input, Button , Space} from "antd";
+import { Form, Input, Button , Space,  message} from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const LoginPage = () => {
-  const onFinish = (values) => {
-    console.log("Received values:", values);
-    // Handle login logic here
+
+  const setCookie = (name, value, days) => {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
   };
+
+  const onFinish =  async (values) => {
+    console.log("Received values:", values);
+    try {
+      const response = await axios.post(
+        "http://localhost:4200/learner/auth/login",
+        values
+      );
+      console.log("Form values:", values);
+      console.log("Server response:", response.data);
+      message.success("Form submitted successfully!");
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('id', response.data.id);
+      localStorage.setItem('firstname', response.data.firstname);
+      localStorage.setItem('lastname', response.data.lastname);
+      localStorage.setItem('userImage', response.data.userImage);
+      setCookie("jwt", response.data.token, 7);
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error login user:", error);
+    }
+  };
+
 
   return (
     <div className="h-screen py-16">
       <div className="container mx-auto rounded-lg h-full">
         <div className="grid xl:grid-cols-2 gap-8 h-full">
           <div className="hidden xl:flex bg-gray-200 rounded-3xl h-full">
-            {/* Image */}
-            {/* Replace 'image.jpg' with your image */}
             <img
               src="https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Cover"
@@ -34,17 +59,17 @@ const LoginPage = () => {
                   onFinish={onFinish}
                 >
                   <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                       {
                         required: true,
-                        message: "Please input your Username!",
+                        message: "Please input your Email!",
                       },
                     ]}
                   >
                     <Input
                       prefix={<UserOutlined />}
-                      placeholder="Username"
+                      placeholder="Email"
                       size="large"
                     />
                   </Form.Item>

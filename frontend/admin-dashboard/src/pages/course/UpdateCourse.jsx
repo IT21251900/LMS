@@ -18,7 +18,7 @@ export const UpdateCourse = () => {
   useEffect(() => {
     const fetchHandler = async () => {
       try {
-        const response = await axios.get(`http://localhost:4200/api/course/${id}`);
+        const response = await axios.get(`http://localhost:4200/course/${id}`);
         setCourseDetails(response.data.data.course);
       } catch (error) {
         console.error("Error fetching course details:", error);
