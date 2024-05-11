@@ -38,34 +38,47 @@ export async function processPayment(req, res) {
       await payment.save();
 
       // Respond with success message
-      res.status(200).send("Payment successful");
+      res.status(200).send({ message: "Payment successful", success: true });
     } else {
       // If the transaction fails, respond with an error message
       console.error("Payment failed:", result.message);
-      res.status(400).send("Payment failed");
+      res.status(400).send({ message: "Payment failed", success: false });
     }
   } catch (error) {
     console.error("Error processing payment:", error);
-    res.status(500).send("Error processing payment");
+    res
+      .status(500)
+      .send({ message: "Error processing payment", success: false });
   }
 }
 
 // Get All
 export async function getAllPayments(req, res, next) {
   console.log(`<=== Get All Payments ====>`);
-  const payments = await Payment.find().exec();
 
-  if (payments && payments.length > 0) {
-    res
-      .status(200)
-      .json({ status: "success", message: "Found Payments", result: payments });
-  } else {
-    res.status(401).json({
-      status: "fail",
-      message: "Payments are not available",
-      result: payments,
-    });
+  const role = req.params.role;
+
+  if (role === "admin") {
+    const payments = await Payment.find().exec();
+
+    if (payments && payments.length > 0) {
+      res.status(200).json({
+        success: true,
+        message: "Found Payments",
+        result: payments,
+      });
+    } else {
+      res.status(401).json({
+        success: false,
+        message: "Payments are not available",
+        result: payments,
+      });
+    }
   }
+  res.status(404).json({
+    success: false,
+    message: "Unauthorized User",
+  });
 }
 
 // Get By Id
@@ -77,9 +90,9 @@ export async function getPaymentById(req, res, next) {
   if (!payment) {
     res
       .status(404)
-      .json({ status: "fail", message: "Payment not found", result: payment });
+      .json({ success: false, message: "Payment not found", result: payment });
   }
   res
     .status(200)
-    .json({ status: "success", message: "Found Payment", result: payment });
+    .json({ success: true, message: "Found Payment", result: payment });
 }
