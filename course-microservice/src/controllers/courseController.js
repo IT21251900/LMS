@@ -4,7 +4,8 @@ import Note from "../models/noteModel.js";
 
 export const createCourse = async (req, res) => {
   try {
-    const { category, name, instructorId, price, description, credits } = req.body;
+    const { category, name, instructorId, price, description, credits } =
+      req.body;
     const image = req.file.filename;
 
     const course = await Course.create({
@@ -29,10 +30,12 @@ export const getAllCourses = async (req, res) => {
 
     const coursesWithLessonCount = await Promise.all(
       courses.map(async (course) => {
-        const lessonsCount = await Lesson.countDocuments({ courseId: course._id });
+        const lessonsCount = await Lesson.countDocuments({
+          courseId: course._id,
+        });
         return {
           ...course._doc,
-          lessonCount: lessonsCount
+          lessonCount: lessonsCount,
         };
       })
     );
@@ -43,25 +46,24 @@ export const getAllCourses = async (req, res) => {
   }
 };
 
-
 export const getCourseById = async (req, res) => {
   try {
     const { id } = req.params;
 
     const course = await Course.findById(id);
     if (!course) {
-      return res.status(404).json({ success: false, message: "Course not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Course not found" });
     }
 
-
     const lessons = await Lesson.find({ courseId: id });
-    const lessonIds = lessons.map(lesson => lesson._id);
-
+    const lessonIds = lessons.map((lesson) => lesson._id);
 
     const notes = await Note.find({ lessonId: { $in: lessonIds } });
 
     const notesByLesson = {};
-    notes.forEach(note => {
+    notes.forEach((note) => {
       if (!notesByLesson[note.lessonId]) {
         notesByLesson[note.lessonId] = [note];
       } else {
@@ -84,12 +86,12 @@ export const getCourseById = async (req, res) => {
       status: course.status,
       lessonCount: lessonCount,
       isApproved: course.isApproved,
-      lessons: lessons.map(lesson => ({
+      lessons: lessons.map((lesson) => ({
         _id: lesson._id,
         title: lesson.title,
         status: lesson.status,
-        notes: notesByLesson[lesson._id] || []
-      }))
+        notes: notesByLesson[lesson._id] || [],
+      })),
     };
 
     res.status(200).json({ success: true, data: courseDetails });
@@ -98,26 +100,28 @@ export const getCourseById = async (req, res) => {
   }
 };
 
-export const getCoursesByInstructorId = async (req,res) =>{
-    try{
-        const {id} = req.params;
-        const courses = await Course.find({instructorId:id })
-        res.status(200).json({success:true,data:courses})
-    } catch(error){
-        res.status(500).json({success:false,error:error.message})
-    }
-}
+export const getCoursesByInstructorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const courses = await Course.find({ instructorId: id });
+    res.status(200).json({ success: true, data: courses });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 
 export const getPendingCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ status: 0 });
+    const courses = await Course.find({ isApproved: 0 });
 
     const coursesWithLessonCount = await Promise.all(
       courses.map(async (course) => {
-        const lessonsCount = await Lesson.countDocuments({ courseId: course._id });
+        const lessonsCount = await Lesson.countDocuments({
+          courseId: course._id,
+        });
         return {
           ...course._doc,
-          lessonCount: lessonsCount
+          lessonCount: lessonsCount,
         };
       })
     );
@@ -130,14 +134,16 @@ export const getPendingCourses = async (req, res) => {
 
 export const getApprovedCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ status: 1 });
+    const courses = await Course.find({ isApproved: 1 });
 
     const coursesWithLessonCount = await Promise.all(
       courses.map(async (course) => {
-        const lessonsCount = await Lesson.countDocuments({ courseId: course._id });
+        const lessonsCount = await Lesson.countDocuments({
+          courseId: course._id,
+        });
         return {
           ...course._doc,
-          lessonCount: lessonsCount
+          lessonCount: lessonsCount,
         };
       })
     );
@@ -179,3 +185,5 @@ export const deleteCourse = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
