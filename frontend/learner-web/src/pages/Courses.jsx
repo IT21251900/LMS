@@ -64,6 +64,14 @@ const Courses = () => {
   //   // Add more objects for additional courses as needed
   // ];
 
+  const handleSingleCourse = (courseId) => {
+    const StudentId = localStorage.getItem("id");
+    if (StudentId) {
+      window.location.href = `/view-courses/${courseId}`;
+    } else {
+      window.location.href = `/courses/${courseId}`;
+    }
+  }
   useEffect(() => {
     const fetchCourses = () => {
       axios
@@ -101,7 +109,7 @@ const Courses = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
         {courses.data?.map((course) => (
           <div key={course.id} className="card-container">
-          <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up">
+          <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up" onClick={() => handleSingleCourse(course._id)}>
             <img
               src={course.imageUrl}
               className="h-[200px] w-full object-cover rounded-md"

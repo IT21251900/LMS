@@ -41,7 +41,7 @@ export const Course = () => {
     <>
       <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
         <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
-          <div className="flex justify-between w-full border-b-2 pb-3">
+          <div className="flex justify-between w-full pb-8">
             <div>
             <Typography
               variant="h4"
