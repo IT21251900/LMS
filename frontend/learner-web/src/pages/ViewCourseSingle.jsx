@@ -62,11 +62,11 @@ const ViewCourseSingle = () => {
   const name = courseData ? courseData.name : "";
   const image = courseData ? courseData.image : "";
   const description = courseData ? courseData.description : "";
-  const instructor = courseData ? courseData.instructorId  : "";
+  const instructor = courseData ? courseData.instructorId : "";
   const credits = courseData ? courseData.credits : "";
-  const users = courseData ? courseData.enrollUserCount  : "";
-  const noOfLessons = courseData ? courseData.lessonCount  : "";
-  const lessons = courseData ? courseData.lessons  : [];
+  const users = courseData ? courseData.enrollUserCount : "";
+  const noOfLessons = courseData ? courseData.lessonCount : "";
+  const lessons = courseData ? courseData.lessons : [];
 
   console.log(lessons);
 
@@ -122,9 +122,29 @@ const ViewCourseSingle = () => {
                     }
                   >
                     <div className="p-4 rounded-md">
-                    {lesson.notes.map((note, noteindex) => (
-                      <p key={noteindex} className="text-accent">{note}</p>
-                    ))}
+                      {lesson.notes.map((note, noteindex) => (
+                        <div className="">
+                          {note.note_url && (
+                            <a
+                              target="_blank"
+                              href={note.note_url}
+                              className="font-[500]"
+                            >
+                              {note.title}
+                            </a>
+                          )}
+                           {!note.note_url && (
+                            <h3 className=" text-[.87rem] font-[500]">
+                              {note.title}
+                            </h3>
+                          )}
+                          <p className="text-accent">
+                                {note.description}
+                          </p>
+                         
+                          <div className="w-full h-[2px] bg-slate-200 my-2"></div>
+                        </div>
+                      ))}
                     </div>
                   </Collapse.Panel>
                 ))}

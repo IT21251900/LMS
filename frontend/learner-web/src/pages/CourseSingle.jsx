@@ -6,34 +6,35 @@ import axios from "axios";
 
 const CourseSingle = () => {
   const { id } = useParams();
-const [courseData, setCourseData] = useState(null);
+  const [courseData, setCourseData] = useState(null);
 
-if (!id) {
-  window.location.href = "/login";
-} else {
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4200/course/${id}`)
-      .then((response) => {
-        setCourseData(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-}
+  if (!id) {
+    window.location.href = "/login";
+  } else {
+    useEffect(() => {
+      axios
+        .get(`http://localhost:4200/course/${id}`)
+        .then((response) => {
+          setCourseData(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, []);
+  }
 
-console.log(courseData);
+  console.log(courseData);
 
-const name = courseData ? courseData.name : "";
-const image = courseData ? courseData.image : "";
-const description = courseData ? courseData.description : "";
-const instructor = courseData ? courseData.instructorId  : "";
-const credits = courseData ? courseData.credits : "";
-const users = courseData ? courseData.enrollUserCount  : "";
-const noOfLessons = courseData ? courseData.lessonCount  : "";
-const lessons = courseData ? courseData.lessons  : [];
-const price = courseData ? courseData.price : 0;
+  const courseId = courseData ? courseData._id : "";
+  const name = courseData ? courseData.name : "";
+  const image = courseData ? courseData.image : "";
+  const description = courseData ? courseData.description : "";
+  const instructor = courseData ? courseData.instructorId : "";
+  const credits = courseData ? courseData.credits : "";
+  const users = courseData ? courseData.enrollUserCount : "";
+  const noOfLessons = courseData ? courseData.lessonCount : "";
+  const lessons = courseData ? courseData.lessons : [];
+  const price = courseData ? courseData.price : 0;
   // const course = {
   //   instructor: "John Doe",
   //   credits: 5,
@@ -53,13 +54,17 @@ const price = courseData ? courseData.price : 0;
   //   ],
   // };
 
+  const handleEnroll = (courseId) => {
+    window.location.href = `/enroll/${courseId}`;
+  };
+
   return (
     <div>
       <div className="container py-16">
         <div className="flex flex-col md:flex-row justify-between my-4 md:items-center">
           <h2 className="text-[3rem] font-[500]">{name}</h2>
           <div className="flex flex-row justify-between my-4 items-center">
-            <Button type="primary" size="large">
+            <Button type="primary" size="large" onClick={() => handleEnroll(courseId)}>
               Enroll Now
             </Button>
           </div>
@@ -72,7 +77,9 @@ const price = courseData ? courseData.price : 0;
               alt="Course"
             />
             <div className="my-8">
-              <p className="text-accent text-[1.2rem] font-[100]">{description}</p>
+              <p className="text-accent text-[1.2rem] font-[100]">
+                {description}
+              </p>
             </div>
             <div className="my-8">
               <h3 className="text-[1.5rem] font-[500] mb-4">Course Lessons</h3>
