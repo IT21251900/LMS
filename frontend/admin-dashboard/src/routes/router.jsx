@@ -9,6 +9,7 @@ import { MyCourses } from "../pages/course/MyCourses";
 import { UpdateCourse } from "../pages/course/UpdateCourse";
 import Login from "../pages/user/Login";
 import User from "../pages/user/User";
+import PendingCourse from "../pages/course/PendingCourse";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-courses/:id",
         element: <UpdateCourse />,
+      },
+      {
+        path: "/pending-course",
+        element: <PendingCourse />,
       },
     ],
   },

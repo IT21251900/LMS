@@ -9,25 +9,28 @@ import {
   getCourseById,
   updateCourse,
   deleteCourse,
-  getCoursesByInstructorId
+  getCoursesByInstructorId,
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
 import {
-addLessonForCourse,getLessonsForCourse,updateLesson
+  addLessonForCourse,
+  getLessonsForCourse,
+  updateLesson,
 } from "./controllers/lessonController.js";
 import { createNote, getAllNotes } from "./controllers/noteController.js";
 
 config();
 
-
 export const courseService = express();
 
 courseService.use(cookieParser());
-courseService.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
-}));
+courseService.use(
+  cors({
+    origin: "http://127.0.0.1:3000",
+    credentials: true,
+  })
+);
 
 courseService.use(express.json());
 
@@ -49,8 +52,11 @@ courseService.post(
 );
 courseService.get("/lessons/notes/:lessonId", getAllNotes);
 
-courseService.use('/uploads', express.static('src/uploads'));
-courseService.use('/lesson_note_files', express.static('src/lesson_note_files'));
+courseService.use("/uploads", express.static("src/uploads"));
+courseService.use(
+  "/lesson_note_files",
+  express.static("src/lesson_note_files")
+);
 const port = process.env.COURSE_PORT;
 
 // Start the server after connecting to the database
