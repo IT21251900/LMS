@@ -37,7 +37,7 @@ courseService.use(cors({
 
 courseService.use(express.json());
 
-courseService.post("/", upload.single("image"), createCourse);
+courseService.post("/", createCourse);
 courseService.get("/", getAllCourses);
 courseService.get("/pending", getPendingCourses);
 courseService.get("/approved", getApprovedCourses);
