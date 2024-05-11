@@ -50,7 +50,6 @@ const CourseArray = [
   },
 ];
 
-
 export const course_category = [
   {
     id: "1",
@@ -62,9 +61,6 @@ export const course_category = [
   },
 ];
 
-
-
-
 export const newNavigationItems = [
   {
     title: "Dashboard",
@@ -73,10 +69,10 @@ export const newNavigationItems = [
     children: 0,
   },
   {
-    title: "Customers",
-    link: "#",
+    title: "Users",
+    link: "user",
     icon: UserIcon,
-    children: CustomerArray,
+    children: 0,
   },
   {
     title: "Quotation",

@@ -20,10 +20,14 @@ import { createNote, getAllNotes } from "./controllers/noteController.js";
 
 config();
 
+
 export const courseService = express();
 
 courseService.use(cookieParser());
-courseService.use(cors());
+courseService.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 
 courseService.use(express.json());
 

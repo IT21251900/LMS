@@ -46,6 +46,11 @@ apiGateway.listen(process.env.API_GATEWAY_PORT, () => {
   );
 });
 
+apiGateway.use("/api/user", (req, res) => {
+  consoleLog(`Request sent to auth server from gateway`, colors.green);
+  proxy.web(req, res, { target: process.env.AUTH_API });
+});
+
 apiGateway.use("/api/payment", (req, res) => {
   consoleLog(`Request sent to payment server from gateway`, colors.cyan);
   proxy.web(req, res, { target: process.env.PAYMENT_API });

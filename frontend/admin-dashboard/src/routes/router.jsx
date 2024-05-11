@@ -5,9 +5,10 @@ import { GuestLayout } from "../components/layouts/GuestLayout";
 import { Course } from "../pages/course/Course";
 import { AddCourse } from "../pages/course/AddCourse";
 import { CourseDetails } from "../pages/course/CourseDetails";
-import {MyCourses} from "../pages/course/MyCourses";
+import { MyCourses } from "../pages/course/MyCourses";
 import { UpdateCourse } from "../pages/course/UpdateCourse";
-
+import Login from "../pages/user/Login";
+import User from "../pages/user/User";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/course",
         element: <Course />,
+      },
+      {
+        path: "/user",
+        element: <User />,
       },
       {
         path: "/add-new-course",
@@ -46,7 +51,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/login",
-        // element: <Login />,
+        element: <Login />,
       },
     ],
   },
