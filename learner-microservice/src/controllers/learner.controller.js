@@ -201,7 +201,7 @@ async function enrollUserInCourses(req, res) {
     }
 
     await user.save();
-    await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
+    // await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
 
     // sendSMS(user.phone);
 
@@ -259,10 +259,65 @@ async function unenrollUserFromCourses(req, res) {
   }
 }
 
+const getUserTimeSlots = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const { TimeTableSessions } = user;
+
+    const availableTimeSlots = TimeTableSessions.map(session => {
+      const { day, timeSlots } = session;
+      const availableSlots = timeSlots.filter(slot => slot.isAvailable);
+      return { day, availableSlots };
+    });
+
+    res.json(availableTimeSlots);
+  } catch (error) {
+    console.error('Error fetching user time slots:', error.message);
+    next(error); 
+  }
+};
+
+const getUserDayTimeSlots = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { day } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const { TimeTableSessions } = user;
+
+    const dayTimeSlots = TimeTableSessions.find(session => session.day === day);
+
+    if (!dayTimeSlots) {
+      return res.status(404).json({ error: `No time slots available for ${day}` });
+    }
+
+    const { timeSlots } = dayTimeSlots;
+    const availableTimeSlots = timeSlots.filter(slot => slot.isAvailable);
+
+    res.json({ day, availableTimeSlots });
+  } catch (error) {
+    console.error('Error fetching user day time slots:', error.message);
+    next(error);
+  }
+};
+
 export {
   getUsers,
   getUserById,
   updateUser,
   enrollUserInCourses,
   unenrollUserFromCourses,
+  getUserTimeSlots,
+  getUserDayTimeSlots
 };
