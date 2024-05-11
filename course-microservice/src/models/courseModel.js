@@ -43,6 +43,7 @@ const courseSchema = new mongoose.Schema({
     enum: [0, 1],
     default: 0,
   },
+  enroll_users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] 
 });
 
 const Course = mongoose.model("Course", courseSchema);

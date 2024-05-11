@@ -3,9 +3,9 @@ import Lesson from "../models/lessonModel.js";
 export const addLessonForCourse = async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { title, status } = req.body;
+    const { title } = req.body;
 
-    const lesson = await Lesson.create({ courseId, title, status });
+    const lesson = await Lesson.create({ courseId, title });
     await lesson.save();
 
     res.status(201).json({ success: true, data: lesson });

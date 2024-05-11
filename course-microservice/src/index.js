@@ -10,6 +10,8 @@ import {
   updateCourse,
   deleteCourse,
   getCoursesByInstructorId,
+  getPendingCourses,
+  getApprovedCourses,
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -36,6 +38,8 @@ courseService.use(express.json());
 
 courseService.post("/", upload.single("image"), createCourse);
 courseService.get("/", getAllCourses);
+courseService.get("/pending", getPendingCourses);
+courseService.get("/approved", getApprovedCourses);
 courseService.get("/:id", getCourseById);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
 courseService.put("/:id", updateCourse);

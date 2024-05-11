@@ -33,12 +33,12 @@ export const LessonContent = ({ id }) => {
         <div key={note._id} className="note">
 
 <>
-ddvsvsvsdv
+
       
       
       
     </>
-          {/* <h3>{note.title}</h3>
+          <h3>{note.title}</h3>
           <p>Description: {note.description}</p>
           {note.note_file ? (
             <a href={note.note_file_path} target="_blank" rel="noopener noreferrer">
@@ -48,7 +48,7 @@ ddvsvsvsdv
             <a href={note.note_url} target="_blank" rel="noopener noreferrer">
               View Note
             </a>
-          )} */}
+          )}
         </div>
       ))}
     </div>
