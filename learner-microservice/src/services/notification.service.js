@@ -30,7 +30,7 @@ const sendEmailNotification = async (userId, message) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
-      subject: 'CourseraX Courses',
+      subject: 'CouseraX Courses',
       text: message
     };
 
