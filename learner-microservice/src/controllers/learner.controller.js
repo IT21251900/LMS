@@ -1,6 +1,7 @@
 import User from "../schemas/user.schema.js";
 import axios from "axios";
 import CourseProgress from "../schemas/lessons.schema.js";
+import sendEmailNotification from '../services/notification.service.js';
 
 import { Vonage } from "@vonage/server-sdk";
 
@@ -200,6 +201,8 @@ async function enrollUserInCourses(req, res) {
     }
 
     await user.save();
+    // await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
+
     // sendSMS(user.phone);
 
     res.status(200).json({ message: "User enrolled in courses successfully" });
@@ -256,10 +259,65 @@ async function unenrollUserFromCourses(req, res) {
   }
 }
 
+const getUserTimeSlots = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const { TimeTableSessions } = user;
+
+    const availableTimeSlots = TimeTableSessions.map(session => {
+      const { day, timeSlots } = session;
+      const availableSlots = timeSlots.filter(slot => slot.isAvailable);
+      return { day, availableSlots };
+    });
+
+    res.json(availableTimeSlots);
+  } catch (error) {
+    console.error('Error fetching user time slots:', error.message);
+    next(error); 
+  }
+};
+
+const getUserDayTimeSlots = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const { day } = req.params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const { TimeTableSessions } = user;
+
+    const dayTimeSlots = TimeTableSessions.find(session => session.day === day);
+
+    if (!dayTimeSlots) {
+      return res.status(404).json({ error: `No time slots available for ${day}` });
+    }
+
+    const { timeSlots } = dayTimeSlots;
+    const availableTimeSlots = timeSlots.filter(slot => slot.isAvailable);
+
+    res.json({ day, availableTimeSlots });
+  } catch (error) {
+    console.error('Error fetching user day time slots:', error.message);
+    next(error);
+  }
+};
+
 export {
   getUsers,
   getUserById,
   updateUser,
   enrollUserInCourses,
   unenrollUserFromCourses,
+  getUserTimeSlots,
+  getUserDayTimeSlots
 };

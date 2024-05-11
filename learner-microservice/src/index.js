@@ -4,8 +4,16 @@ import { config } from "dotenv";
 import express from "express";
 import { connectDB } from "../configs/DBConnect.js";
 import { login, register } from "./controllers/auth.controller.js";
-import { getUsers, getUserById, updateUser, enrollUserInCourses, unenrollUserFromCourses } from './controllers/learner.controller.js';
-import {updateLessonProgress} from './controllers/progress.controller.js';
+import {
+  getUsers,
+  getUserById,
+  updateUser,
+  enrollUserInCourses,
+  unenrollUserFromCourses,
+  getUserTimeSlots,
+  getUserDayTimeSlots,
+} from "./controllers/learner.controller.js";
+import { updateLessonProgress } from "./controllers/progress.controller.js";
 
 config();
 
@@ -36,9 +44,11 @@ learnerService.get("/", (req, res) => {
 
 learnerService.post("/login", login);
 learnerService.post("/register", register);
-learnerService.get('/get-all', getUsers);
-learnerService.get('/:id', getUserById);
-learnerService.post('/:id', updateUser);
-learnerService.post('/:id/enroll', enrollUserInCourses);
-learnerService.post('/:id/unenroll', unenrollUserFromCourses);
-learnerService.put('/', updateLessonProgress);
+learnerService.get("/get-all", getUsers);
+learnerService.get("/:id", getUserById);
+learnerService.post("/:id", updateUser);
+learnerService.post("/:id/enroll", enrollUserInCourses);
+learnerService.post("/:id/unenroll", unenrollUserFromCourses);
+learnerService.put("/", updateLessonProgress);
+learnerService.get("/:id/time-slots", getUserTimeSlots);
+learnerService.get('/:id/time-slots/:day', getUserDayTimeSlots);
