@@ -17,10 +17,7 @@ const PaymentPage = () => {
   const fetchClientToken = async () => {
     try {
       const response = await GetClientToken();
-
       const data = response.data;
-
-      console.log("data", data);
       setClientToken(data);
     } catch (error) {
       console.error("Error fetching client token:", error);
