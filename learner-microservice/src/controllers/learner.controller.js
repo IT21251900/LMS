@@ -201,7 +201,7 @@ async function enrollUserInCourses(req, res) {
     }
 
     await user.save();
-    // await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
+    await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
 
     // sendSMS(user.phone);
 

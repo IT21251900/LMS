@@ -2,13 +2,13 @@ import nodemailer from 'nodemailer';
 import User from '../schemas/user.schema.js';
 import log from '../utils/logger.js';
 import dotenv from 'dotenv';
+import EmailNotification from '../schemas/notification.schema.js';
+
 dotenv.config();
 
-
-// Define the function to send notifications to users via email
 const sendEmailNotification = async (userId, message) => {
   try {
-    // Fetch user details from the database
+
     const user = await User.findById(userId);
     if (!user) {
       throw new Error('User not found');
@@ -26,7 +26,6 @@ const sendEmailNotification = async (userId, message) => {
       }
     });
 
-    // Compose email options
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: user.email,
@@ -34,8 +33,15 @@ const sendEmailNotification = async (userId, message) => {
       text: message
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
+
+    const emailNotification = new EmailNotification({
+      userId: userId,
+      senderEmail: process.env.EMAIL_USER,
+      userMail: user.email,
+      message: message
+    });
+    await emailNotification.save();
 
     log.info('Email notification sent successfully');
   } catch (error) {
