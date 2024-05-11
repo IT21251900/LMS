@@ -9,12 +9,16 @@ import {
   getCourseById,
   updateCourse,
   deleteCourse,
-  getCoursesByInstructorId
+  getCoursesByInstructorId,
+  getPendingCourses,
+  getApprovedCourses
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
 import {
-addLessonForCourse,getLessonsForCourse,updateLesson
+  addLessonForCourse,
+  getLessonsForCourse,
+  updateLesson,
 } from "./controllers/lessonController.js";
 import { createNote, getAllNotes } from "./controllers/noteController.js";
 
@@ -33,6 +37,8 @@ courseService.use(express.json());
 
 courseService.post("/", upload.single("image"), createCourse);
 courseService.get("/", getAllCourses);
+courseService.get("/pending", getPendingCourses);
+courseService.get("/approved", getApprovedCourses);
 courseService.get("/:id", getCourseById);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
 courseService.put("/:id", updateCourse);
@@ -49,8 +55,11 @@ courseService.post(
 );
 courseService.get("/lessons/notes/:lessonId", getAllNotes);
 
-courseService.use('/uploads', express.static('src/uploads'));
-courseService.use('/lesson_note_files', express.static('src/lesson_note_files'));
+courseService.use("/uploads", express.static("src/uploads"));
+courseService.use(
+  "/lesson_note_files",
+  express.static("src/lesson_note_files")
+);
 const port = process.env.COURSE_PORT;
 
 // Start the server after connecting to the database

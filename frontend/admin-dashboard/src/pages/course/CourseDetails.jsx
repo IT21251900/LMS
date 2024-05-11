@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   Button,
+  Input,
   Typography
 } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
@@ -20,6 +21,8 @@ export const CourseDetails = () => {
   const { id } = useParams();
 
   const [openAccordion, setOpenAccordion] = useState({});
+  const [showAddLessonForm, setShowAddLessonForm] = useState(false);
+  const [lessonTitle, setLessonTitle] = useState("");
 
   const handleOpen = (index) => {
     setOpenAccordion((prevState) => ({
@@ -48,73 +51,39 @@ export const CourseDetails = () => {
     fetchHandler();
   }, [id, instructorId]);
 
-  console.log(courseDetails);
-
-  const course = {
-    instructor: "John Doe",
-    credits: 5,
-    courseName: "Introduction to React",
-    books: 10,
-    users: 150,
-    price: 49.99,
-    imageUrl:
-      "https://www.classcentral.com/report/wp-content/uploads/2020/06/top-100-course-pandemic.png",
-    description:
-      "This comprehensive course provides an in-depth introduction to React programming. It covers everything from the basics of setting up a React development environment to advanced topics such as state management with Redux and React Hooks. Throughout the course, you'll build several real-world projects to reinforce your learning and gain practical experience. Whether you're a complete beginner or an experienced developer looking to enhance your skills, this course has something for everyone.",
-    lessons: [
-      { title: "Lesson 1: Getting Started with React" },
-      { title: "Lesson 2: Understanding Components" },
-      { title: "Lesson 3: State and Props" },
-      // Add more lessons as needed
-    ],
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:4200/course/${id}`);
+      console.log("Course deleted successfully!");
+      // Optionally, you can redirect the user to another page after deletion
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
   };
 
+
+  const handleLessonSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`http://localhost:4200/course/lessons/${id}`, {
+        title: lessonTitle
+      });
+      // Update the course details with the new lesson
+      setCourseDetails((prevDetails) => ({
+        ...prevDetails,
+        lessons: [...prevDetails.lessons, response.data.data]
+      }));
+      // Hide the lesson form after successful addition
+      setShowAddLessonForm(false);
+      // Optionally, you can display a success message
+    } catch (error) {
+      console.error("Error adding lesson:", error);
+      // Optionally, you can display an error message to the user
+    }
+  };
+  console.log(courseDetails);
+
   return (
-    // <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
-    //   <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
-    //     <p>Name: {courseDetails.course?.name}</p>
-    //     <p>Description: {courseDetails.course?.description}</p>
-    //     <p>
-    //       <img
-    //         src={`/uploads/${courseDetails.course?.image}`}
-    //         alt="ss"
-    //         className="img"
-    //       />
-    //     </p>
-    //     {showUpdateButton && (
-    //       <a
-    //         href={`/edit-courses/${courseDetails.course._id}`}
-    //         className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-    //       >
-    //         <span>
-    //           <svg
-    //             xmlns="http://www.w3.org/2000/svg"
-    //             viewBox="0 0 20 20"
-    //             fill="currentColor"
-    //             className="w-5 h-5"
-    //           >
-    //             <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-    //           </svg>
-    //         </span>
-    //         <span>Update Course</span>
-    //       </a>
-    //     )}
-
-    //     <div>
-    //       <h3>Lessons:</h3>
-    //       <ul>
-    //         {courseDetails.lessons &&
-    //           courseDetails.lessons.map((lesson) => (
-    //             <div>
-    //               <li key={lesson._id} className="font-bold">{lesson.title}</li>
-    //               <LessonContent id={lesson._id}/>
-    //             </div>
-    //           ))}
-    //       </ul>
-    //     </div>
-    //   </CardBody>
-    // </Card>
-
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
       <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
       <div className="flex justify-between w-full  pb-8">
@@ -128,23 +97,44 @@ export const CourseDetails = () => {
           </Typography>
           </div>
           <div className="flex gap-3">  
-          <a href={`/add-new-course`}
-            className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+          {showUpdateButton && (
+           <button 
+           onClick={handleDelete}
+          className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
           >
             <span>
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="w-5 h-5"
-              >
-                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-              </svg>
+                 className="w-5 h-5"
+               >
+               <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+               </svg>
             </span>
-            <span>New Course</span>
+            <span>Delete Course</span>
+          </button>
+       )}
+
+          {showUpdateButton && (
+           <a
+           href={`/edit-courses/${courseDetails.course._id}`}
+          className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+          >
+            <span>
+              <svg
+                 xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 20 20"
+                fill="currentColor"
+                 className="w-5 h-5"
+               >
+               <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+               </svg>
+            </span>
+            <span>Update Course</span>
           </a>
+       )}
           </div>
-          
           <div className="flex md:hidden justify-center items-center">
             <Link
               className="md:w-fit rounded-[50%] w-[40px] md:mt-0 md:hidden flex p-2 gap-2 items-center font-inter font-medium bg-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] md:text-[16px] transition-colors duration-500"
@@ -168,11 +158,32 @@ export const CourseDetails = () => {
 <p className="text-accent text-[15px] font-[50]">{courseDetails.course?.description}</p>
 </div>
 <div className="w-[30%]">
-<img
-               src={`/uploads/${courseDetails.course?.image}`}
-              className="w-full h-auto object-cover rounded-3xl "
+            <div className="col-span-1 border border-gray-100 rounded-3xl p-4 h-fit">
+            <img
+              src={`/uploads/${courseDetails.course?.image}`}
+              className="w-full h-auto object-cover rounded-2xl "
               alt="Course"
             />
+            <div className="flex justify-between items-center w-full mt-4">
+              <p className="text-accent text-[.87rem]">Instructor</p>
+              <p className="text-accent text-[.87rem]">12</p>
+            </div>
+            <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+            <div className="flex justify-between items-center w-full">
+              <p className="text-accent text-[.87rem]">No. of Credits</p>
+              <p className="text-accent text-[.87rem]">{courseDetails.course?.credits}</p>
+            </div>
+            <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+            <div className="flex justify-between items-center w-full">
+              <p className="text-accent text-[.87rem]">No.of Enrolled Students </p>
+              <p className="text-accent text-[.87rem]">21212</p>
+            </div>
+            <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+            <div className="flex justify-between items-center w-full">
+              <p className="text-accent text-[.87rem]">No.of Lessons </p>
+              <p className="text-accent text-[.87rem]">{courseDetails.lessonCount}</p>
+            </div>
+          </div>
 </div>
         </div>
       <div className="container">
@@ -184,6 +195,35 @@ export const CourseDetails = () => {
             </div>
             <div className="my-8">
               <h3 className="text-[1.5rem] font-[500] mb-4">Course Lessons</h3>
+
+              <button onClick={() => setShowAddLessonForm(true)}
+              className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+              >Add Lessons</button>
+                  {showAddLessonForm && (
+                    <form onSubmit={handleLessonSubmit}>
+                     <div className="w-1/2">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-2 font-semibold"
+              >
+                Title
+              </Typography>
+              <Input
+                type="text"
+                name="title"
+                value={lessonTitle}
+                onChange={(e) => setLessonTitle(e.target.value)}
+              />
+            </div>
+            <Button type="submit" color="blue" className="mb-6 mt-3">
+            Add
+          </Button>
+          <Button onClick={() => setShowAddLessonForm(false)} color="red" className="mb-6 mt-3">
+            Cancel
+          </Button>
+                    </form>
+                  )}
               <ul>
               {courseDetails.lessons &&
               courseDetails.lessons.map((lesson, index) => (
