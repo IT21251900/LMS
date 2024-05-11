@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const noteSchema = new mongoose.Schema({
   lessonId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Lesson',
     required: true,
   },
   note_file: {

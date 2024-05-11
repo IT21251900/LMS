@@ -6,13 +6,16 @@ import {
   CardBody,
   Input,
   Button,
+  Textarea,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { course_category } from "../../utils/dataArrays";
+import Select from "react-select";
 
 export const UpdateCourse = () => {
 
-    const { id } = useParams();
+  const { id } = useParams();
   const [courseDetails, setCourseDetails] = useState({});
 
   useEffect(() => {
@@ -26,6 +29,37 @@ export const UpdateCourse = () => {
     };
     fetchHandler();
   }, [id]);
+
+  const handleCategoryChange = (selectedOption) => {
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      category: selectedOption.value,
+    }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCourseDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:4200/course/${id}`, courseDetails);
+      console.log("Course updated successfully!");
+    } catch (error) {
+      console.error("Error updating course:", error);
+    }
+  };
+
+  const options = course_category.map((category) => ({
+    value: category.key,
+    label: category.key,
+  }));
+
   return (
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
       <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
@@ -37,8 +71,8 @@ export const UpdateCourse = () => {
           Update New Course {courseDetails._id}
         </Typography>
 
-        <form>
-          <div className="flex justify-between gap-10">
+        <form onSubmit={handleSubmit}>
+        <div className="flex justify-between gap-10 mb-6">
             <div className="w-1/2">
               <Typography
                 variant="small"
@@ -47,9 +81,12 @@ export const UpdateCourse = () => {
               >
                 Select Category
               </Typography>
-              <Input
-                type="text"
-                name="category"
+              <Select
+                options={options}
+                value={options.find(
+                  (option) => option.value === courseDetails.category
+                )}
+                onChange={handleCategoryChange}
               />
             </div>
             <div className="w-1/2">
@@ -63,40 +100,28 @@ export const UpdateCourse = () => {
               <Input
                 type="text"
                 name="name"
+                value={courseDetails.name}
+                onChange={handleChange}
               />
             </div>
           </div>
 
-          <div className="flex justify-between gap-10">
+          <div className="flex justify-between gap-10 mb-6">
             <div className="w-1/2">
-              <Typography
+            <Typography
                 variant="small"
                 color="blue-gray"
                 className="mb-2 font-semibold"
               >
-                Description
-              </Typography>
-              <Input
-                type="text"
-                name="description"
-              />
-            </div>
-            <div className="w-1/2">
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-2 font-semibold"
-              >
-                Credits
+                Credit
               </Typography>
               <Input
                 type="text"
                 name="credits"
+                value={courseDetails.credits}
+                onChange={handleChange}
               />
             </div>
-          </div>
-
-          <div className="flex justify-between gap-10">
             <div className="w-1/2">
               <Typography
                 variant="small"
@@ -108,13 +133,34 @@ export const UpdateCourse = () => {
               <Input
                 type="text"
                 name="price"
+                value={courseDetails.price}
+                onChange={handleChange}
               />
             </div>
           </div>
 
-          <Button type="submit" color="blue">
-            Add Course
-          </Button>
+          <div className="flex justify-between gap-10 mb-6">
+            <div className="w-full">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-2 font-semibold"
+              >
+                Description
+              </Typography>
+              <Textarea
+                name="description"
+                value={courseDetails.description}
+                onChange={handleChange}
+              />
+            </div>
+            
+          </div>
+          <div>
+            <Button color="blue" type="submit">
+              Update Course
+            </Button>
+          </div>
         </form>
       </CardBody>
     </Card>
