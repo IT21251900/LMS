@@ -9,7 +9,7 @@ router.get("/client_token", PaymentController.generateClientToken);
 // Route to process a payment transaction
 router.post("/checkout", PaymentController.processPayment);
 
-router.get("", PaymentController.getAllPayments);
+router.get("/role/:role", PaymentController.getAllPayments);
 router.get("/:id", PaymentController.getPaymentById);
 
 export default router;

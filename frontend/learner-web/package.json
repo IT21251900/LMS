@@ -12,6 +12,8 @@
   "dependencies": {
     "antd": "^5.17.0",
     "axios": "^1.6.8",
+    "braintree-web": "^3.102.0",
+    "braintree-web-drop-in-react": "^1.2.1",
     "cloudinary": "^2.2.0",
     "cloudinary-react": "^1.8.1",
     "lucide-react": "^0.378.0",
