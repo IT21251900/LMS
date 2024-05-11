@@ -111,13 +111,13 @@ const Courses = () => {
           <div key={course.id} className="card-container">
           <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up" onClick={() => handleSingleCourse(course._id)}>
             <img
-              src={course.imageUrl}
+              src={course.image}
               className="h-[200px] w-full object-cover rounded-md"
               alt="Course Thumbnail"
             />
             <div className="flex flex-col mt-5">
               <div className="flex flex-row w-full justify-between">
-                <p className="text-[0.875rem] text-accent">{course.instructor}</p>
+                <p className="text-[0.875rem] text-accent">{course.instructorId}</p>
                 <div className="flex flex-row gap-2 items-center">
                   <Star size={16} color="#FFA621" />
                   <p className="text-[0.875rem] text-accent">{course.credits}</p>
@@ -132,7 +132,7 @@ const Courses = () => {
                   </div>
                   <div className="flex flex-row gap-2 items-center">
                     <CircleUser size={16} color="gray" />
-                    <p className="text-[0.875rem] text-accent">{course.users}</p>
+                    <p className="text-[0.875rem] text-accent">{course.enrollUserCount}</p>
                   </div>
                 </div>
                 <p className=" text-[1.5rem] text-primary">${course.price}</p>

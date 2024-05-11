@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Button, Collapse, Progress } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const ViewCourseSingle = () => {
   const { id } = useParams();
-
+  const [courseData, setCourseData] = useState(null);
   const course = {
     instructor: "John Doe",
     credits: 5,
@@ -38,6 +39,37 @@ const ViewCourseSingle = () => {
     ],
   };
 
+  if (!id) {
+    window.location.href = "/login";
+  } else {
+    useEffect(() => {
+      axios
+        .get(`http://localhost:4200/course/${id}`)
+        .then((response) => {
+          setCourseData(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, []);
+  }
+
+  console.log(courseData);
+  // console.log(courseData.data.name);
+  // console.log(courseData.data.image);
+  // console.log(courseData.data.image);
+
+  const name = courseData ? courseData.name : "";
+  const image = courseData ? courseData.image : "";
+  const description = courseData ? courseData.description : "";
+  const instructor = courseData ? courseData.instructorId  : "";
+  const credits = courseData ? courseData.credits : "";
+  const users = courseData ? courseData.enrollUserCount  : "";
+  const noOfLessons = courseData ? courseData.lessonCount  : "";
+  const lessons = courseData ? courseData.lessons  : [];
+
+  console.log(lessons);
+
   const markAsComplete = (lessonIndex) => {
     const updatedLessons = [...course.lessons];
     updatedLessons[lessonIndex].viewed = true;
@@ -53,10 +85,10 @@ const ViewCourseSingle = () => {
     <div>
       <div className="container py-16">
         <div className="flex flex-col md:flex-row justify-between my-4 md:items-center">
-          <h2 className="text-[3rem] font-[500]">{course.courseName}</h2>
+          <h2 className="text-[3rem] font-[500]">{name}</h2>
           <div className="flex flex-row justify-between my-4 items-center">
-          <p className="text-accent mr-5">{`Completed ${
-              course.lessons.filter((lesson) => lesson.viewed).length
+            <p className="text-accent mr-5">{`Completed ${
+              lessons.filter((lesson) => lesson.viewed).length
             } out of ${course.lessons.length}`}</p>
             <Progress
               type="circle"
@@ -69,13 +101,13 @@ const ViewCourseSingle = () => {
           <div className="md:col-span-3">
             <div className="my-8">
               <p className="text-accent text-[1.2rem] font-[100]">
-                {course.description}
+                {description}
               </p>
             </div>
             <div className="my-8">
               <h3 className="text-[1.5rem] font-[500] mb-4">Course Lessons</h3>
               <Collapse accordion>
-                {course.lessons.map((lesson, index) => (
+                {lessons.map((lesson, index) => (
                   <Collapse.Panel
                     header={lesson.title}
                     key={index}
@@ -90,7 +122,9 @@ const ViewCourseSingle = () => {
                     }
                   >
                     <div className="p-4 rounded-md">
-                      <p className="text-accent">{lesson.content}</p>
+                    {lesson.notes.map((note, noteindex) => (
+                      <p key={noteindex} className="text-accent">{note}</p>
+                    ))}
                     </div>
                   </Collapse.Panel>
                 ))}
@@ -99,28 +133,30 @@ const ViewCourseSingle = () => {
           </div>
           <div className="col-span-1 border border-gray-100 rounded-3xl p-4 h-fit">
             <img
-              src={course.imageUrl}
+              src={image}
               className="w-full h-auto object-cover rounded-2xl "
               alt="Course"
             />
             <div className="flex justify-between items-center w-full mt-4">
               <p className="text-accent text-[.87rem]">Instructor</p>
-              <p className="text-accent text-[.87rem]">{course.instructor}</p>
+              <p className="text-accent text-[.87rem]">{instructor}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">
               <p className="text-accent text-[.87rem]">No. of Credits</p>
-              <p className="text-accent text-[.87rem]">{course.credits}</p>
+              <p className="text-accent text-[.87rem]">{credits}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">
-              <p className="text-accent text-[.87rem]">No.of Enrolled Students </p>
-              <p className="text-accent text-[.87rem]">{course.users}</p>
+              <p className="text-accent text-[.87rem]">
+                No.of Enrolled Students{" "}
+              </p>
+              <p className="text-accent text-[.87rem]">{users}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">
               <p className="text-accent text-[.87rem]">No.of Lessons </p>
-              <p className="text-accent text-[.87rem]">{course.noOfLessons}</p>
+              <p className="text-accent text-[.87rem]">{noOfLessons}</p>
             </div>
             <div className="flex flex-row justify-end mt-5">
               <Button type="primary" color="red">
