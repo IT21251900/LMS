@@ -6,11 +6,12 @@ import {
   CardBody,
   Input,
   Button,
-  Option
+  Option,
+  Textarea,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { course_category } from "../../utils/dataArrays";
-import Select from "react-select"; // Import react-select
+import Select from "react-select";
 
 export const AddCourse = () => {
   const [courseDetails, setCourseDetails] = useState({
@@ -56,13 +57,16 @@ export const AddCourse = () => {
     formData.append("instructorId", "1"); // Set instructorId as 1
 
     try {
-      const response = await axios.post("http://localhost:4200/course/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:4200/course/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       console.log("Course added:", response.data);
-      // Optionally, redirect to another page after successful submission
     } catch (error) {
       console.error("Error adding course:", error.response.data.error);
     }
@@ -78,14 +82,14 @@ export const AddCourse = () => {
       <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
         <Typography
           variant="h4"
-          className="font-inter font-bold tracking-wide"
+          className="font-inter font-bold tracking-wide mb-6"
           color="blue-gray"
         >
           Add New Course
         </Typography>
 
         <form onSubmit={handleSubmit}>
-          <div className="flex justify-between gap-10">
+          <div className="flex justify-between gap-10 mb-6">
             <div className="w-1/2">
               <Typography
                 variant="small"
@@ -96,7 +100,9 @@ export const AddCourse = () => {
               </Typography>
               <Select
                 options={options}
-                value={options.find((option) => option.value === courseDetails.category)}
+                value={options.find(
+                  (option) => option.value === courseDetails.category
+                )}
                 onChange={handleCategoryChange}
               />
             </div>
@@ -117,29 +123,14 @@ export const AddCourse = () => {
             </div>
           </div>
 
-          <div className="flex justify-between gap-10">
+          <div className="flex justify-between gap-10 mb-6">
             <div className="w-1/2">
-              <Typography
+            <Typography
                 variant="small"
                 color="blue-gray"
                 className="mb-2 font-semibold"
               >
-                Description
-              </Typography>
-              <Input
-                type="text"
-                name="description"
-                value={courseDetails.description}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="w-1/2">
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-2 font-semibold"
-              >
-                Credits
+                Credit
               </Typography>
               <Input
                 type="text"
@@ -147,19 +138,6 @@ export const AddCourse = () => {
                 value={courseDetails.credits}
                 onChange={handleInputChange}
               />
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-10">
-            <div className="w-1/2">
-              <Typography
-                variant="small"
-                color="blue-gray"
-                className="mb-2 font-semibold"
-              >
-                Select Image
-              </Typography>
-              <input type="file" onChange={handleImageChange} />
             </div>
             <div className="w-1/2">
               <Typography
@@ -178,7 +156,34 @@ export const AddCourse = () => {
             </div>
           </div>
 
-          <Button type="submit" color="blue">
+          <div className="flex justify-between gap-10 mb-6">
+            <div className="w-1/2">
+              <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-2 font-semibold"
+              >
+                Description
+              </Typography>
+              <Textarea
+                name="description"
+                value={courseDetails.description}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="w-1/2">
+            <Typography
+                variant="small"
+                color="blue-gray"
+                className="mb-5 font-semibold"
+              >
+                Select Image
+              </Typography>
+              <input type="file" onChange={handleImageChange} />
+            </div>
+          </div>
+
+          <Button type="submit" color="blue" className="mb-6 mt-3">
             Add Course
           </Button>
         </form>
