@@ -43,7 +43,8 @@ export const CourseDetails = () => {
       try {
         const response = await axios.get(`http://localhost:4200/course/${id}`);
         setCourseDetails(response.data.data);
-        setShowUpdateButton(response.data.data.course.instructorId === instructorId);
+        setShowUpdateButton(response.data.data.instructorId === instructorId);
+        console.log("id",response.data.data)
       } catch (error) {
         console.error("Error fetching course details:", error);
       }
@@ -81,7 +82,7 @@ export const CourseDetails = () => {
       // Optionally, you can display an error message to the user
     }
   };
-  console.log(courseDetails);
+  // console.log(courseDetails.instructorId);
 
   return (
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
@@ -93,7 +94,7 @@ export const CourseDetails = () => {
             className="font-inter font-bold tracking-wide"
             color="blue-gray"
           >
-           {courseDetails.course?.name}
+           {courseDetails.name}
           </Typography>
           </div>
           <div className="flex gap-3">  
@@ -118,7 +119,7 @@ export const CourseDetails = () => {
 
           {showUpdateButton && (
            <a
-           href={`/edit-courses/${courseDetails.course._id}`}
+           href={`/edit-courses/${courseDetails._id}`}
           className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
           >
             <span>
@@ -155,28 +156,28 @@ export const CourseDetails = () => {
       <div>
         <div className="flex justify-between">
 <div className="w-[70%] pr-5">
-<p className="text-accent text-[15px] font-[50]">{courseDetails.course?.description}</p>
+<p className="text-accent text-[15px] font-[50]">{courseDetails?.description}</p>
 </div>
 <div className="w-[30%]">
             <div className="col-span-1 border border-gray-100 rounded-3xl p-4 h-fit">
             <img
-              src={`/uploads/${courseDetails.course?.image}`}
+              src={`${courseDetails?.image}`}
               className="w-full h-auto object-cover rounded-2xl "
               alt="Course"
             />
             <div className="flex justify-between items-center w-full mt-4">
               <p className="text-accent text-[.87rem]">Instructor</p>
-              <p className="text-accent text-[.87rem]">12</p>
+              <p className="text-accent text-[.87rem]">{courseDetails.instructorId}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">
               <p className="text-accent text-[.87rem]">No. of Credits</p>
-              <p className="text-accent text-[.87rem]">{courseDetails.course?.credits}</p>
+              <p className="text-accent text-[.87rem]">{courseDetails.credits}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">
               <p className="text-accent text-[.87rem]">No.of Enrolled Students </p>
-              <p className="text-accent text-[.87rem]">21212</p>
+              <p className="text-accent text-[.87rem]">{courseDetails.enrollUserCount}</p>
             </div>
             <div className="w-full h-[2px] bg-slate-100 my-4"></div>
             <div className="flex justify-between items-center w-full">

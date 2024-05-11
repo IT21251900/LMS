@@ -4,9 +4,8 @@ import Note from "../models/noteModel.js";
 
 export const createCourse = async (req, res) => {
   try {
-    const { category, name, instructorId, price, description, credits } =
+    const { category, name, instructorId, price, description, credits,image } =
       req.body;
-    const image = req.file.filename;
 
     const course = await Course.create({
       category,

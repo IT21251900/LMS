@@ -68,7 +68,7 @@ export const CourseCard = ({ data }) => {
         <div className="card-container">
           <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up ">
             <img
-              src={`uploads/${data?.image}`}
+              src={`${data?.image}`}
               className="h-[150px] w-full object-cover rounded-md"
               alt="Course Thumbnail"
             />
