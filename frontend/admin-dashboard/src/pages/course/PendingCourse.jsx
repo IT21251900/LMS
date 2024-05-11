@@ -11,7 +11,8 @@ import {
 } from "@material-tailwind/react";
 import { useNavigate, Link } from "react-router-dom";
 import { CourseCard } from "./CourseCard";
-import { GetApproveCourses } from "./service/CourseService";
+import { GetPendingCorses } from "./service/CourseService";
+import PendingCourseCard from "./componet/PendingCourseCard";
 
 const PendingCourse = () => {
   const [course, setCourse] = useState([]);
@@ -20,7 +21,7 @@ const PendingCourse = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await GetApproveCourses();
+      const res = await GetPendingCorses();
       setCourse(res.data);
     } catch (error) {}
   };
@@ -33,7 +34,7 @@ const PendingCourse = () => {
 
   return (
     <>
-      <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
+      <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3 relative">
         <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
           <div className="flex justify-between w-full pb-8">
             <div>
@@ -64,7 +65,7 @@ const PendingCourse = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {course.data?.map((courseItem) => (
-              <CourseCard key={courseItem.id} data={courseItem} />
+              <PendingCourseCard key={courseItem.id} data={courseItem} />
             ))}
           </div>
         </CardBody>

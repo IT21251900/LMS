@@ -17,7 +17,7 @@ const GetCourses = async () => {
   }
 };
 
-export const GetApproveCourses = async () => {
+export const GetPendingCorses = async () => {
   try {
     const role = localStorage.getItem("role");
 
@@ -25,7 +25,23 @@ export const GetApproveCourses = async () => {
       throw new Error("Role not found");
     }
 
-    return await axios.get(`${BE_URL}/course/`);
+    return await axios.get(`${BE_URL}/course/pending`);
+  } catch (error) {
+    // Handle error
+    console.error("Error fetching courses:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const GetApproveCorses = async () => {
+  try {
+    const role = localStorage.getItem("role");
+
+    if (!role) {
+      throw new Error("Role not found");
+    }
+
+    return await axios.get(`${BE_URL}/course/approved`);
   } catch (error) {
     // Handle error
     console.error("Error fetching courses:", error);
