@@ -1,6 +1,7 @@
 import User from "../schemas/user.schema.js";
 import axios from "axios";
 import CourseProgress from "../schemas/lessons.schema.js";
+import sendEmailNotification from '../services/notification.service.js';
 
 import { Vonage } from "@vonage/server-sdk";
 
@@ -200,6 +201,8 @@ async function enrollUserInCourses(req, res) {
     }
 
     await user.save();
+    // await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
+
     // sendSMS(user.phone);
 
     res.status(200).json({ message: "User enrolled in courses successfully" });
