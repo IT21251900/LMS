@@ -194,7 +194,6 @@ export const enrollUserToCourse = async (req, res) => {
   try {
     const { courseId, userId } = req.params;
 
-    // Check if the course exists
     const course = await Course.findById(courseId);
     if (!course) {
       return res
@@ -202,7 +201,6 @@ export const enrollUserToCourse = async (req, res) => {
         .json({ success: false, message: "Course not found" });
     }
 
-    // Check if the user already enrolled in the course
     if (course.enroll_users.includes(userId)) {
       return res
         .status(400)
@@ -212,7 +210,6 @@ export const enrollUserToCourse = async (req, res) => {
         });
     }
 
-    // Add userId to enroll_users array
     course.enroll_users.push(userId);
     await course.save();
 
@@ -226,3 +223,22 @@ export const enrollUserToCourse = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const approveCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const course = await Course.findById(id);
+    if (!course) {
+      return res.status(404).json({ success: false, message: "Course not found" });
+    }
+
+    course.isApproved = 1;
+    await course.save();
+
+    res.status(200).json({ success: true, message: "Course approved successfully", data: course });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+

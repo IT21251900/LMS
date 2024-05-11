@@ -12,7 +12,8 @@ import {
   getCoursesByInstructorId,
   getPendingCourses,
   getApprovedCourses,
-  enrollUserToCourse
+  enrollUserToCourse,
+  approveCourse
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -44,6 +45,7 @@ courseService.get("/:id", getCourseById);
 courseService.post("/:courseId/enroll/:userId",enrollUserToCourse);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
 courseService.put("/:id", updateCourse);
+courseService.put("/approve/:id", approveCourse);
 courseService.delete("/:id", deleteCourse);
 
 courseService.post("/lessons/:courseId", addLessonForCourse);
