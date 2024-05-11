@@ -11,7 +11,9 @@ import {
   deleteCourse,
   getCoursesByInstructorId,
   getPendingCourses,
-  getApprovedCourses
+  getApprovedCourses,
+  enrollUserToCourse,
+  approveCourse
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -35,13 +37,15 @@ courseService.use(cors({
 
 courseService.use(express.json());
 
-courseService.post("/", upload.single("image"), createCourse);
+courseService.post("/", createCourse);
 courseService.get("/", getAllCourses);
 courseService.get("/pending", getPendingCourses);
 courseService.get("/approved", getApprovedCourses);
 courseService.get("/:id", getCourseById);
+courseService.post("/:courseId/enroll/:userId",enrollUserToCourse);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
 courseService.put("/:id", updateCourse);
+courseService.put("/approve/:id", approveCourse);
 courseService.delete("/:id", deleteCourse);
 
 courseService.post("/lessons/:courseId", addLessonForCourse);

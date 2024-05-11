@@ -4,9 +4,8 @@ import Note from "../models/noteModel.js";
 
 export const createCourse = async (req, res) => {
   try {
-    const { category, name, instructorId, price, description, credits } =
+    const { category, name, instructorId, price, description, credits,image } =
       req.body;
-    const image = req.file.filename;
 
     const course = await Course.create({
       category,
@@ -33,9 +32,11 @@ export const getAllCourses = async (req, res) => {
         const lessonsCount = await Lesson.countDocuments({
           courseId: course._id,
         });
+        const enrollUserCount = course.enroll_users.length;
         return {
           ...course._doc,
           lessonCount: lessonsCount,
+          enrollUserCount
         };
       })
     );
@@ -85,7 +86,9 @@ export const getCourseById = async (req, res) => {
       credits: course.credits,
       status: course.status,
       lessonCount: lessonCount,
+      enrollUserCount: course.enroll_users.length,
       isApproved: course.isApproved,
+      enroll_users: course.enroll_users,
       lessons: lessons.map((lesson) => ({
         _id: lesson._id,
         title: lesson.title,
@@ -186,4 +189,55 @@ export const deleteCourse = async (req, res) => {
   }
 };
 
+export const enrollUserToCourse = async (req, res) => {
+  try {
+    const { courseId, userId } = req.params;
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Course not found" });
+    }
+
+    if (course.enroll_users.includes(userId)) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "User already enrolled in the course",
+        });
+    }
+
+    course.enroll_users.push(userId);
+    await course.save();
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "User enrolled in the course successfully",
+      });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const approveCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const course = await Course.findById(id);
+    if (!course) {
+      return res.status(404).json({ success: false, message: "Course not found" });
+    }
+
+    course.isApproved = 1;
+    await course.save();
+
+    res.status(200).json({ success: true, message: "Course approved successfully", data: course });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
 

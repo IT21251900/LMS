@@ -20,6 +20,7 @@ export const AddCourse = () => {
     description: "",
     price: "",
     credits: "",
+    instructorId:"1",
     image: null,
   });
 
@@ -47,26 +48,27 @@ export const AddCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("category", courseDetails.category);
-    formData.append("name", courseDetails.name);
-    formData.append("description", courseDetails.description);
-    formData.append("price", courseDetails.price);
-    formData.append("credits", courseDetails.credits);
-    formData.append("image", courseDetails.image);
-    formData.append("instructorId", "1"); // Set instructorId as 1
-
     try {
-      const response = await axios.post(
-        "http://localhost:4200/course/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("Course added:", response.data);
+      const formData = new FormData();
+      formData.append("file", courseDetails.image);
+      formData.append("upload_preset", "hqur7gkf"); // replace "your_upload_preset" with your actual Cloudinary upload preset
+      const response = await fetch("https://api.cloudinary.com/v1_1/dwdu9bel1/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      const imageUrl = data.secure_url;
+
+      // Add the imageUrl to courseDetails
+      const courseDataWithImage = {
+        ...courseDetails,
+        image: imageUrl,
+      };
+
+      // Send the course data to your backend
+      const courseResponse = await axios.post("http://localhost:4200/course/", courseDataWithImage);
+
+      console.log("Course added:", courseResponse.data);
     } catch (error) {
       console.error("Error adding course:", error.response.data.error);
     }
