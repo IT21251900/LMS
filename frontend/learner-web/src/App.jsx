@@ -9,6 +9,7 @@ import CourseSingle from "./pages/CourseSingle";
 import ViewCourseSingle from "./pages/ViewCourseSingle";
 import PaymentPage from "./pages/payment/PaymentPage";
 import UserProfile from "./pages/UserProfile";
+import EnrollPage from "./pages/EnrollPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:id" element={<CourseSingle />} />
           <Route path="/view-courses/:id" element={<ViewCourseSingle />} />
+          <Route path="/enroll/:id" element={<EnrollPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/profile" element={<UserProfile />} />
         </Route>
