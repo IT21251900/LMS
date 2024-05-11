@@ -1,7 +1,7 @@
 import User from "../schemas/user.schema.js";
 import axios from "axios";
 import CourseProgress from "../schemas/lessons.schema.js";
-import sendEmailNotification from '../services/notification.service.js';
+import sendEmailNotification from "../services/notification.service.js";
 
 import { Vonage } from "@vonage/server-sdk";
 
@@ -187,6 +187,16 @@ async function enrollUserInCourses(req, res) {
       const lessons = lessonsResponse.data;
       console.log("Lessons for course", courseId, ":", lessons);
 
+      //add user to course
+      // try {
+      //   const response = await axios.post(
+      //     `http://localhost:4200/course/${courseId}/enroll/${userId}`
+      //   );
+      //   console.log("Added user to course successfully!");
+      // } catch (error) {
+      //   console.error("Error adding user to course:", error);
+      // }
+
       const courseProgress = lessons.map((lesson) => ({
         lessonId: lesson._id,
         lessonName: lesson.title,
@@ -265,21 +275,21 @@ const getUserTimeSlots = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const { TimeTableSessions } = user;
 
-    const availableTimeSlots = TimeTableSessions.map(session => {
+    const availableTimeSlots = TimeTableSessions.map((session) => {
       const { day, timeSlots } = session;
-      const availableSlots = timeSlots.filter(slot => slot.isAvailable);
+      const availableSlots = timeSlots.filter((slot) => slot.isAvailable);
       return { day, availableSlots };
     });
 
     res.json(availableTimeSlots);
   } catch (error) {
-    console.error('Error fetching user time slots:', error.message);
-    next(error); 
+    console.error("Error fetching user time slots:", error.message);
+    next(error);
   }
 };
 
@@ -291,23 +301,27 @@ const getUserDayTimeSlots = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const { TimeTableSessions } = user;
 
-    const dayTimeSlots = TimeTableSessions.find(session => session.day === day);
+    const dayTimeSlots = TimeTableSessions.find(
+      (session) => session.day === day
+    );
 
     if (!dayTimeSlots) {
-      return res.status(404).json({ error: `No time slots available for ${day}` });
+      return res
+        .status(404)
+        .json({ error: `No time slots available for ${day}` });
     }
 
     const { timeSlots } = dayTimeSlots;
-    const availableTimeSlots = timeSlots.filter(slot => slot.isAvailable);
+    const availableTimeSlots = timeSlots.filter((slot) => slot.isAvailable);
 
     res.json({ day, availableTimeSlots });
   } catch (error) {
-    console.error('Error fetching user day time slots:', error.message);
+    console.error("Error fetching user day time slots:", error.message);
     next(error);
   }
 };
@@ -319,5 +333,5 @@ export {
   enrollUserInCourses,
   unenrollUserFromCourses,
   getUserTimeSlots,
-  getUserDayTimeSlots
+  getUserDayTimeSlots,
 };
