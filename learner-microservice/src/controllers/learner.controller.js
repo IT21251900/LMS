@@ -86,6 +86,19 @@ async function getLessonsById(courseId) {
   }
 }
 
+
+async function enrollUserInCourse(courseId,userId){
+   try {
+    const response = await axios.post(
+      `http://localhost:4200/course/${courseId}/enroll/${userId}`
+    );
+    console.log("Added user to course successfully!");
+  } catch (error) {
+    console.error("Error adding user to course:", error);
+  }
+
+}
+
 async function sendSMS(to) {
   await vonage.sms
     .send({ to, from, text })
@@ -187,16 +200,6 @@ async function enrollUserInCourses(req, res) {
       const lessons = lessonsResponse.data;
       console.log("Lessons for course", courseId, ":", lessons);
 
-      //add user to course
-      // try {
-      //   const response = await axios.post(
-      //     `http://localhost:4200/course/${courseId}/enroll/${userId}`
-      //   );
-      //   console.log("Added user to course successfully!");
-      // } catch (error) {
-      //   console.error("Error adding user to course:", error);
-      // }
-
       const courseProgress = lessons.map((lesson) => ({
         lessonId: lesson._id,
         lessonName: lesson.title,
@@ -208,6 +211,10 @@ async function enrollUserInCourses(req, res) {
         courseId,
         lessons: courseProgress,
       });
+    }
+
+    for(const courseId of courseIds){
+      await enrollUserInCourse(courseId,userId)
     }
 
     await user.save();
