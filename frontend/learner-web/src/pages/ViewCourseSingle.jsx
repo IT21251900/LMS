@@ -7,6 +7,7 @@ import axios from "axios";
 const ViewCourseSingle = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
+  const [progressData, setProgressData] = useState(null);
   const userId = localStorage.getItem("id");
 
   const course = {
@@ -94,6 +95,10 @@ const ViewCourseSingle = () => {
       .put(`http://localhost:4200/learner/auth`, payload)
       .then((response) => {
         setCourseData(response.data.data);
+        message.success("Lesson marked as complete");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -118,6 +123,28 @@ const ViewCourseSingle = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const getLessonStatus = async (lessonIndex) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4200/learner/auth/lesson/${userId}/${id}/${lessonIndex}`
+      );
+      setProgressData(response.data);
+      console.log(response.data);
+      const progress = response.data.lessonProgress.progress;
+
+      return progress === 0 ? (
+        <CheckCircleOutlined style={{ color: "#52c41a" }} />
+      ) : (
+        <Button onClick={() => handleProgressUpdate(lessonIndex)}>
+          Mark as Complete
+        </Button>
+      );
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   };
 
   return (
@@ -162,6 +189,11 @@ const ViewCourseSingle = () => {
                       )
                     }
                   >
+                    <div className="">
+                      <Button type="primary" color="red">
+                        view progress
+                      </Button>
+                    </div>
                     <div className="p-4 rounded-md">
                       {lesson.notes.map((note, noteindex) => (
                         <div className="">
