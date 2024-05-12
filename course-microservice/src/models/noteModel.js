@@ -6,9 +6,6 @@ const noteSchema = new mongoose.Schema({
     ref: 'Lesson',
     required: true,
   },
-  note_file: {
-    type: String,
-  },
   note_url: {
     type: String,
   },
@@ -18,11 +15,6 @@ const noteSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-  },
-  type: {
-    type: Number,
-    enum: [0, 1],
-    default: 0,
   },
 });
 
