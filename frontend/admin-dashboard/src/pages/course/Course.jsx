@@ -15,7 +15,11 @@ import { CourseCard } from "./CourseCard";
 export const Course = () => {
   const [course, setCourse] = useState([]);
 
-  const role = "admin";
+  // const role = "admin";
+
+  const role = localStorage.getItem("role");
+
+  console.log("role",role)
 
   useEffect(() => {
     const fetchCourses = () => {

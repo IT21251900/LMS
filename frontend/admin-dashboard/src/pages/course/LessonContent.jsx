@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-  Input,
-  Button,
-  Typography,
-  Textarea,
-} from "@material-tailwind/react";
-import rec from '../../assets/images/rec.png'
+import rec from "../../assets/images/rec.png";
+import { message } from "antd";
+import { AddNote } from "./AddNote";
 
 export const LessonContent = ({ id }) => {
+  const [newOpen, setNewOpen] = useState(false);
+  const newHandleOpen = () => setNewOpen((cur) => !cur);
 
   const [noteDetails, setNoteDetails] = useState([]);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    note_url: "",
-  });
-  const [error, setError] = useState("");
-  const [showForm, setShowForm] = useState(false); // State to manage form visibility
+
+  const [tableLoading, setTableLoading] = useState(false);
+  const handleLoading = () => setTableLoading((pre) => !pre);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -34,141 +25,75 @@ export const LessonContent = ({ id }) => {
       }
     };
     fetchNotes();
-  }, [id]);
-
-  console.log("noteDetails:", noteDetails);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        `http://localhost:4200/course/lessons/notes/${id}`,
-        formData
-      );
-      // Clear form fields and error message
-      setFormData({
-        title: "",
-        description: "",
-        noteUrl: "",
-      });
-      setError("");
-      // Refresh notes after adding
-    } catch (error) {
-      setError(error.response?.data.error);
-    }
-  };
+  }, [id, tableLoading]);
 
   const handleDelete = async (noteId) => {
     try {
       await axios.delete(
         `http://localhost:4200/course/lessons/notes/${noteId}`
       );
-      console.log("success")
-      // Refresh notes after deletion
+      console.log("success");
+      message.error("Note deleted successfully");
+      handleLoading();
     } catch (error) {
-      setError("Error deleting note.");
+      message.error("Error deleting note");
     }
   };
 
   return (
-    <div>
-      <button
-        type="button"
-        className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-3 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-        onClick={() => setShowForm(!showForm)}
-      >
-        {showForm ? "Close" : "+"}
-      </button>
-      {showForm && (
-        <div className="w-[25%]">
-          <form onSubmit={handleSubmit}>
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="mb-2 font-semibold"
-            >
-              Title
-            </Typography>
-            <Input
-              type="text"
-              placeholder="Title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="mb-3"
+    <>
+      <div>
+        <button
+          type="button"
+          className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-1 mb-6 font-inter font-medium bg-primary border-primary hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+          onClick={newHandleOpen}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
+          </svg>
+          Add Lesson Content
+        </button>
 
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="mb-2 mt-2 font-semibold"
-            >
-              Description
-            </Typography>
-
-            <Textarea
-              placeholder="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="mb-3 "
-            ></Textarea>
-
-            <Typography
-              variant="small"
-              color="blue-gray"
-              className="mb-2 font-semibold"
-            >
-              Video Link
-            </Typography>
-
-            <Input
-              type="text"
-              placeholder="Note URL"
-              name="note_url"
-              value={formData.note_url}
-              onChange={handleChange}
-            />
+        {noteDetails?.data?.map((note) => (
+          <div key={note._id} className="note mb-6">
+            <div className="flex justify-left">
+              <a href={note.note_url} target="_blank" rel="noopener noreferrer">
+                <img src={rec} alt="video" className="w-8" />
+              </a>
+              <a href={note.note_url} target="_blank" rel="noopener noreferrer">
+                <span className="flex items-center justify-center ml-5 text-blue-500 text-sm">
+                  {note.title}
+                </span>
+              </a>
+            </div>
+            <p className="text-sm mt-3">{note.description}</p>
             <button
-              type="submit"
-              className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-3 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+              onClick={() => handleDelete(note._id)}
+              className="text-red-400 text-[13px]"
             >
-              Add Note
+              Remove
             </button>
-          </form>
-        </div>
-      )}
-
-      {noteDetails?.data?.map((note) => (
-        <div key={note._id} className="note mb-6">
-          <div className="flex justify-left">
-            <a
-              href={note.note_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src={rec} alt="video" className="w-10"/>
-            </a>
-            <a
-              href={note.note_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="flex items-center justify-center ml-5 text-blue-500 text-sm">{note.title}</span>
-            </a>
           </div>
-          <p className="text-sm mt-3">{note.description}</p>
-          <button onClick={() => handleDelete(note._id)} className="text-red-400 text-[13px]">Remove</button>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+
+      <AddNote
+        handleOpen={newHandleOpen}
+        open={newOpen}
+        handleLoading={handleLoading}
+        lessonId={id}
+      />
+    </>
   );
 };

@@ -178,14 +178,14 @@ export const CourseDetails = () => {
                     {courseDetails.instructorId}
                   </p>
                 </div>
-                <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+                <div className="w-full h-[2px] bg-slate-100 my-2"></div>
                 <div className="flex justify-between items-center w-full">
                   <p className="text-accent text-[.87rem]">No. of Credits</p>
                   <p className="text-accent text-[.87rem]">
                     {courseDetails.credits}
                   </p>
                 </div>
-                <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+                <div className="w-full h-[2px] bg-slate-100 my-2"></div>
                 <div className="flex justify-between items-center w-full">
                   <p className="text-accent text-[.87rem]">
                     No.of Enrolled Students{" "}
@@ -194,7 +194,7 @@ export const CourseDetails = () => {
                     {courseDetails.enrollUserCount}
                   </p>
                 </div>
-                <div className="w-full h-[2px] bg-slate-100 my-4"></div>
+                <div className="w-full h-[2px] bg-slate-100 my-2"></div>
                 <div className="flex justify-between items-center w-full">
                   <p className="text-accent text-[.87rem]">No.of Lessons </p>
                   <p className="text-accent text-[.87rem]">
