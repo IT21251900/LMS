@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: LMS_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://localhost:4200
+    depends_on:
+      - apigateway
+    networks:
+      - bk
+
+  apigateway:
+    build: ./backend/api-gateway
+    container_name: LMS_APIGateway
+    ports:
+      - "4200:4200"
+    environment:
+      REACT_APP_GATEWAY_PORT: 4200
+      PAYMENT_API: http://localhost:4204
+      COURSE_API: http://localhost:4203
+      LEARNER_API: http://localhost:4202
+      AUTH_API: http://localhost:4201
+    networks:
+      - bk
+
+networks:
+  bk:
+    driver: bridge
+
+
+
+# run below command in terminal
+# docker compose up -d
+# docker build -t herbal-medicine-selling-platform-frontend .
