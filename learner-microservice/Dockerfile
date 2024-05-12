@@ -3,4 +3,4 @@ WORKDIR /src
 COPY package*.json ./
 RUN npm install
 CMD ["nodemon", "src/index.js"]
-EXPOSE 4002
+EXPOSE 4202
