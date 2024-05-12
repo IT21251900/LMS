@@ -13,7 +13,7 @@ import {
   getUserTimeSlots,
   getUserDayTimeSlots,
 } from "./controllers/learner.controller.js";
-import { updateLessonProgress } from "./controllers/progress.controller.js";
+import { updateLessonProgress, getLessonProgressByLessonId } from "./controllers/progress.controller.js";
 
 config();
 
@@ -52,3 +52,4 @@ learnerService.post("/:id/unenroll", unenrollUserFromCourses);
 learnerService.put("/", updateLessonProgress);
 learnerService.get("/:id/time-slots", getUserTimeSlots);
 learnerService.get('/:id/time-slots/:day', getUserDayTimeSlots);
+learnerService.get('/lesson/:userId/:courseId/:lessonId', getLessonProgressByLessonId);
