@@ -117,7 +117,7 @@ const UserProfile = () => {
                                       <div
                                         href={`/courses/${slot.courseId}`}
                                         className="text-accent cursor-pointer hover:text-white"
-                                        onClick={() => handleSingleCourse(course._id)}
+                                        onClick={() => handleSingleCourse(slot.courseId)}
                                       >
                                         View Course
                                       </div>

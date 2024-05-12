@@ -30,6 +30,7 @@ const Header = () => {
         </Link>
         {firstname ? (
           <div className="flex flex-row items-center gap-2">
+            <Link to="/profile">
             <div className="p-1 rounded-full border border-gray-200 ">
               <img
                 src={userImage}
@@ -37,6 +38,8 @@ const Header = () => {
                 className="w-8 h-8 rounded-full object-contain "
               />
             </div>
+            </Link>
+            
             <span className="hidden md:flex">
               {`${firstname.charAt(0).toUpperCase()}${firstname
                 .slice(1)
@@ -85,6 +88,16 @@ const Header = () => {
                 }`}
               >
                 Courses
+              </Link>
+            </li>
+            <li className="mr-4">
+              <Link
+                to="/my-courses"
+                className={`font-[100] hover:font-[400] ${
+                  location.pathname === "/my-courses" ? "active" : ""
+                }`}
+              >
+                My Courses
               </Link>
             </li>
           </ul>

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Button, Collapse, Progress } from "antd";
+import { Button, Collapse, Progress, message } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const ViewCourseSingle = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
+  const userId = localStorage.getItem("id");
+
   const course = {
     instructor: "John Doe",
     credits: 5,
@@ -55,9 +57,6 @@ const ViewCourseSingle = () => {
   }
 
   console.log(courseData);
-  // console.log(courseData.data.name);
-  // console.log(courseData.data.image);
-  // console.log(courseData.data.image);
 
   const name = courseData ? courseData.name : "";
   const image = courseData ? courseData.image : "";
@@ -80,6 +79,46 @@ const ViewCourseSingle = () => {
     (course.lessons.filter((lesson) => lesson.viewed).length /
       course.noOfLessons) *
     100;
+
+  const handleProgressUpdate = async (lessonIndex) => {
+    const payload = {
+      userId: userId,
+      courseId: id,
+      lessonId: lessonIndex,
+      progress: 1,
+    };
+
+    console.log(payload);
+
+    axios
+      .put(`http://localhost:4200/learner/auth`, payload)
+      .then((response) => {
+        setCourseData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleUnenroll = async () => {
+    const payload = {
+      userId: userId,
+      courseId: id,
+    };
+
+    axios
+      .post(`http://localhost:4200/learner/auth/${userId}/unenroll`, payload)
+      .then((response) => {
+        setCourseData(response.data.data);
+        message.success("Unenrolled successfully");
+        setTimeout(() => {
+          window.location.href = "/my-courses";
+        }, 3000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -115,7 +154,9 @@ const ViewCourseSingle = () => {
                       lesson.viewed ? (
                         <CheckCircleOutlined style={{ color: "#52c41a" }} />
                       ) : (
-                        <Button onClick={() => markAsComplete(index)}>
+                        <Button
+                          onClick={() => handleProgressUpdate(lesson._id)}
+                        >
                           Mark as Complete
                         </Button>
                       )
@@ -133,15 +174,13 @@ const ViewCourseSingle = () => {
                               {note.title}
                             </a>
                           )}
-                           {!note.note_url && (
+                          {!note.note_url && (
                             <h3 className=" text-[.87rem] font-[500]">
                               {note.title}
                             </h3>
                           )}
-                          <p className="text-accent">
-                                {note.description}
-                          </p>
-                         
+                          <p className="text-accent">{note.description}</p>
+
                           <div className="w-full h-[2px] bg-slate-200 my-2"></div>
                         </div>
                       ))}
@@ -179,7 +218,7 @@ const ViewCourseSingle = () => {
               <p className="text-accent text-[.87rem]">{noOfLessons}</p>
             </div>
             <div className="flex flex-row justify-end mt-5">
-              <Button type="primary" color="red">
+              <Button type="primary" color="red" onClick={handleUnenroll}>
                 Unenroll
               </Button>
             </div>
