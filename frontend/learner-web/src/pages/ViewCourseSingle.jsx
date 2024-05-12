@@ -133,6 +133,7 @@ const ViewCourseSingle = () => {
       setProgressData(response.data);
       console.log(response.data);
       const progress = response.data.lessonProgress.progress;
+      console.log(progress);
 
       return progress === 0 ? (
         <CheckCircleOutlined style={{ color: "#52c41a" }} />
@@ -178,6 +179,7 @@ const ViewCourseSingle = () => {
                     header={lesson.title}
                     key={index}
                     extra={
+                      // getLessonStatus(lesson._id)
                       lesson.viewed ? (
                         <CheckCircleOutlined style={{ color: "#52c41a" }} />
                       ) : (
@@ -188,12 +190,7 @@ const ViewCourseSingle = () => {
                         </Button>
                       )
                     }
-                  >
-                    <div className="">
-                      <Button type="primary" color="red">
-                        view progress
-                      </Button>
-                    </div>
+                  > 
                     <div className="p-4 rounded-md">
                       {lesson.notes.map((note, noteindex) => (
                         <div className="">
