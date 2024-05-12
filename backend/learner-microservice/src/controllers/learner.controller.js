@@ -59,7 +59,7 @@ async function updateUser(req, res) {
 async function getCourseById(courseId) {
   try {
     const response = await axios.get(
-      `http://localhost:4200/course/${courseId}`
+      `http://LMS_APIGateway:4200/course/${courseId}`
     );
     return response.data;
   } catch (error) {
@@ -74,7 +74,7 @@ async function getCourseById(courseId) {
 async function getLessonsById(courseId) {
   try {
     const response = await axios.get(
-      `http://localhost:4200/course/lessons/${courseId}`
+      `http://LMS_APIGateway:4200/course/lessons/${courseId}`
     );
     return response.data;
   } catch (error) {
@@ -90,7 +90,7 @@ async function getLessonsById(courseId) {
 async function enrollUserInCourse(courseId,userId){
    try {
     const response = await axios.post(
-      `http://localhost:4200/course/${courseId}/enroll/${userId}`
+      `http://LMS_APIGateway:4200/course/${courseId}/enroll/${userId}`
     );
     console.log("Added user to course successfully!");
   } catch (error) {
@@ -218,9 +218,8 @@ async function enrollUserInCourses(req, res) {
     }
 
     await user.save();
-    // await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
-
-    // sendSMS(user.phone);
+    await sendEmailNotification(userId, 'You have been enrolled in courses successfully');
+    //sendSMS(user.phone);
 
     res.status(200).json({ message: "User enrolled in courses successfully" });
   } catch (error) {
