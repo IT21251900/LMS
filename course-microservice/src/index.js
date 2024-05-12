@@ -23,7 +23,7 @@ import {
   getLessonsForCourse,
   updateLesson,
 } from "./controllers/lessonController.js";
-import { createNote, getAllNotes } from "./controllers/noteController.js";
+import { createNote, getAllNotes ,deleteNote } from "./controllers/noteController.js";
 
 config();
 
@@ -61,6 +61,7 @@ courseService.post(
   createNote
 );
 courseService.get("/lessons/notes/:lessonId", getAllNotes);
+courseService.delete("/lessons/notes/:noteId", deleteNote);
 
 courseService.use("/uploads", express.static("src/uploads"));
 courseService.use(
