@@ -14,6 +14,7 @@ import {
   getApprovedCourses,
   enrollUserToCourse,
   approveCourse,
+  unenrollUserFromCourse
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -31,7 +32,7 @@ export const courseService = express();
 courseService.use(cookieParser());
 courseService.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -44,6 +45,7 @@ courseService.get("/pending", getPendingCourses);
 courseService.get("/approved", getApprovedCourses);
 courseService.get("/:id", getCourseById);
 courseService.post("/:courseId/enroll/:userId", enrollUserToCourse);
+courseService.delete("/:courseId/unenroll/:userId", unenrollUserFromCourse);
 courseService.get("/instructor/:id", getCoursesByInstructorId);
 courseService.put("/:id", updateCourse);
 courseService.put("/approve/:id", approveCourse);

@@ -2,21 +2,14 @@ import Note from "../models/noteModel.js";
 
 export const createNote = async (req, res) => {
   try {
-    const { title, description, note_url, type } = req.body;
+    const { title, description, note_url } = req.body;
     const { lessonId } = req.params;
-
-    let note_file = "";
-    if (type == 0) {
-      note_file = req.file.filename;
-    }
 
     const note = await Note.create({
       lessonId,
       description,
       title,
-      note_file,
       note_url,
-      type,
     });
 
     res.status(201).json({ success: true, data: note });
