@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const emailNotificationSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref :"User",
     required: true
   },
   senderEmail: {
