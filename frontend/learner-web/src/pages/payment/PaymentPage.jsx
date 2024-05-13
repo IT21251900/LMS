@@ -1,22 +1,39 @@
 import { useState, useEffect } from "react";
 import DropIn from "braintree-web-drop-in-react";
-import GetClientToken, { ProcessPayment } from "./service/PaymentService";
+import GetClientToken, {
+  GetCStudentByID,
+  GetCourseByID,
+  ProcessPayment,
+} from "./service/PaymentService";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentPage = () => {
   const { id, price } = useParams();
-  console.log(id, price);
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [leanerData, setLeanerData] = useState(null);
+  const [courseData, setCourseData] = useState(null);
 
   const navigate = useNavigate();
   const StudentId = localStorage.getItem("id");
 
-  useEffect(() => {
-    // Fetch client token from your server
-    fetchClientToken();
-  }, []);
+  const fetchLearner = async () => {
+    const learner = await GetCStudentByID(StudentId);
+    console.log("learner", learner.data);
+    if (learner) {
+      setLeanerData(learner.data);
+    }
+  };
+
+  const fetchCourse = async () => {
+    const course = await GetCourseByID(id);
+    console.log("course", course.data.data);
+    console.log(course.data.data);
+    if (course) {
+      setCourseData(course.data.data);
+    }
+  };
 
   const fetchClientToken = async () => {
     try {
@@ -28,6 +45,17 @@ const PaymentPage = () => {
     }
   };
 
+  const fetchData = async () => {
+    await fetchClientToken();
+    await fetchLearner();
+    await fetchCourse();
+  };
+
+  useEffect(() => {
+    // Fetch client token from your server
+    fetchData();
+  }, []);
+
   const handlePayment = async () => {
     try {
       const { nonce } = await instance.requestPaymentMethod();
@@ -36,8 +64,10 @@ const PaymentPage = () => {
         nonce,
         amount: price,
         enrollment: {
-          learner_id: StudentId,
-          course_id: id,
+          learner: leanerData?.firstname + " " + leanerData?.lastname,
+          course: courseData.name,
+          courseId: id,
+          learnerId: StudentId,
         },
       };
 
@@ -47,7 +77,7 @@ const PaymentPage = () => {
         setIsSuccess(true);
         setTimeout(() => {
           navigate(`/enroll/${id}`);
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       console.error("Error processing payment:", error);
@@ -82,7 +112,7 @@ const PaymentPage = () => {
           </div>
         </div>
       ) : (
-        <div> Loading... . .</div>
+        <div className="flex justify-center h4 "> Loading... . .</div>
       )}
     </>
   );
