@@ -15,13 +15,22 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { AddLessons } from "./AddLessons";
+import { message } from "antd";
+import Swal from 'sweetalert2';
+
 
 export const CourseDetails = () => {
   const { id } = useParams();
 
   const [openAccordion, setOpenAccordion] = useState({});
-  const [showAddLessonForm, setShowAddLessonForm] = useState(false);
   const [lessonTitle, setLessonTitle] = useState("");
+
+  const [newOpen, setNewOpen] = useState(false);
+  const newHandleOpen = () => setNewOpen((cur) => !cur);
+
+  const [tableLoading, setTableLoading] = useState(false);
+  const handleLoading = () => setTableLoading((pre) => !pre);
 
   const handleOpen = (index) => {
     setOpenAccordion((prevState) => ({
@@ -48,17 +57,32 @@ export const CourseDetails = () => {
       }
     };
     fetchHandler();
-  }, [id, instructorId]);
+  }, [id, instructorId ,tableLoading]);
+
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:4200/course/${id}`);
-      console.log("Course deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting course:", error);
-    }
+    Swal.fire({
+      text: 'Do you want to delete course?',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:4200/course/${id}`);
+          console.log("Course deleted successfully!");
+          message.success("Course deleted successfully!");
+          navigate("/my-courses");
+        } catch (error) {
+          console.error("Error deleting course:", error);
+          message.error("Error deleting course");
+        }
+      }
+    });
   };
-
+  
   const handleLessonSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -72,13 +96,15 @@ export const CourseDetails = () => {
         ...prevDetails,
         lessons: [...prevDetails.lessons, response.data.data],
       }));
-      setShowAddLessonForm(false);
+      message.success("Lesson Added successfully!");
     } catch (error) {
       console.error("Error adding lesson:", error);
+      message.error("Error adding lesson");
     }
   };
 
   return (
+    <>
     <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
       <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
         <div className="flex justify-between w-full  pb-8">
@@ -200,45 +226,13 @@ export const CourseDetails = () => {
 
                   {showUpdateButton && (
               <Button
-              onClick={() => setShowAddLessonForm(true)}
+              onClick={newHandleOpen}
               color="blue"
               className="mb-5"
             >
               Add Lessons
             </Button>
             )}
-
-                  
-                  {showAddLessonForm && (
-                    <form onSubmit={handleLessonSubmit}>
-                      <div className="w-1/4">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="mb-2 font-semibold"
-                        >
-                          Title
-                        </Typography>
-                        <Input
-                          type="text"
-                          name="title"
-                          value={lessonTitle}
-                          onChange={(e) => setLessonTitle(e.target.value)}
-                        />
-                      </div>
-                     <div className="flex gap-5 w-1/4 justify-end">
-                     <button type="submit" className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-6 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500">
-                        Add
-                      </button>
-                      <button
-                        onClick={() => setShowAddLessonForm(false)}
-                        className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-3 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-                      >
-                        Cancel
-                      </button>
-                     </div>
-                    </form>
-                  )}
                   <ul>
                     {courseDetails.lessons &&
                       courseDetails.lessons.map((lesson, index) => (
@@ -258,7 +252,7 @@ export const CourseDetails = () => {
                               {lesson.title}
                             </AccordionHeader>
                             <AccordionBody className="pt-0 text-base font-normal">
-                              <LessonContent id={lesson._id} />
+                              <LessonContent id={lesson._id} showUpdateButton={showUpdateButton}/>
                             </AccordionBody>
                           </Accordion>
                         </div>
@@ -271,5 +265,15 @@ export const CourseDetails = () => {
         </div>
       </CardBody>
     </Card>
+    <AddLessons
+        handleOpen={newHandleOpen}
+        open={newOpen}
+        handleLoading={handleLoading}
+        handleLessonSubmit={handleLessonSubmit}
+        lessonTitle={lessonTitle}
+        setLessonTitle={setLessonTitle}
+        id={id}
+      />
+    </>
   );
 };

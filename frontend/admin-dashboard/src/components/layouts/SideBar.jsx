@@ -18,11 +18,11 @@ export const SideBar = ({ handleSidebar, sidebar }) => {
   }, [linkchange]);
   return (
     <Card
-      className={`h-full rounded-none bg-gray-800 w-[60%] md:w-[16%]  flex flex-col font-inter z-50 items-start fixed p-2  transition transform duration-500 ease-in-out fade-right-enter-active md:opacity-100 overflow-y-auto scrollbar-y-style ${
+      className={`h-full rounded-none bg-[#151a49] w-[60%] md:w-[16%]  flex flex-col font-inter z-50 items-start fixed p-2  transition transform duration-500 ease-in-out fade-right-enter-active md:opacity-100 overflow-y-auto scrollbar-y-style ${
         sidebar ? "fade-right-enter-to" : "fade-right-enter-from"
       } `}
     >
-      <div className="mb-2 flex items-center relative  gap-4 p-4">
+      <div className="mb-8 mt-5 flex items-center relative  gap-4 p-4">
         <img src={logo} alt="brand" className="w-[80%] md:w-[150px]" />
         <span
           onClick={handleSidebar}
@@ -90,8 +90,8 @@ const NavItem = ({
         <ListItem
           onClick={toggleChildren}
           className={`  ${
-            currentUrl === link ? "bg-[#461058] text-white" : "text-white"
-          } w-full  hover:bg-[#FF017C] font-bold hover:text-white active:bg-[#FF017C] focus:bg-[#8346FE] focus:text-white rounded-sm text-[14px]`}
+            currentUrl === link ? "bg-[#2538E1] text-white" : "text-white"
+          } w-full  hover:bg-[#4E57A8] font-bold hover:text-white active:bg-[#2538E1] focus:bg-[#8346FE] focus:text-white rounded-sm text-[14px]`}
         >
           <ListItemPrefix>
             <NavIcon className="h-5 w-5" />
@@ -122,9 +122,9 @@ const NavItem = ({
                       onClick={handleCLick}
                       className={`  ${
                         currentUrl === child.link
-                          ? "text-white bg-[#461058] "
+                          ? "text-white bg-[#4456F5] "
                           : "text-white"
-                      }   hover:bg-[#FF017C] hover:text-white rounded-sm font-bold focus:bg-[#8346FE] active:bg-[#8346FE] focus:text-white text-[15px]`}
+                      }   hover:bg-[#8346FE] hover:text-white rounded-sm font-bold focus:bg-[#8346FE] active:bg-[#8346FE] focus:text-white text-[15px]`}
                     >
                       <ListItemPrefix>
                         <ChildNavIcon className="h-[14px] w-[14px]" />

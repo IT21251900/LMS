@@ -10,7 +10,7 @@ import {
   ArrowLeftCircleIcon,
 } from "@heroicons/react/24/outline";
 import {
-  ExpensesIcon,
+  Course,
   InvoiceIcon,
   QuotationIcon,
   ReportIcon,
@@ -29,7 +29,7 @@ const CourseArray = [
   {
     title: "Course",
     link: "course",
-    icon: UserIcon,
+    icon: Course,
   },
 ];
 
