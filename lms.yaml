@@ -1,35 +1,39 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: behethkade
+  name: LMS
 spec:
   ports:
-  - name: behethkadefront
+  - name: frontend
+    port: 5100
+    protocol: TCP
+    targetPort: 5100
+  - name: admin-dashboard
     port: 3000
     protocol: TCP
     targetPort: 3000
   - name: apigateway
-    port: 8000
+    port: 4200
     protocol: TCP
-    targetPort: 8000
-  - name: userservice
-    port: 7000
+    targetPort: 4200
+  - name: auth
+    port: 4201
     protocol: TCP
-    targetPort: 7000
-  - name: paymentservice
-    port: 6000
+    targetPort: 4201
+  - name: learner
+    port: 4202
     protocol: TCP
-    targetPort: 6000 
-  - name: orderservice
-    port: 5000
+    targetPort: 4202
+  - name: course
+    port: 4203
     protocol: TCP
-    targetPort: 5000 
-  - name: itemservice
-    port: 4000
+    targetPort: 4203
+  - name: payment
+    port: 4204
     protocol: TCP
-    targetPort: 4000     
+    targetPort: 4204   
   selector:
-    app: behethkade
+    app: LMS
   type: LoadBalancer
 status:
   loadBalancer: {}
@@ -39,22 +43,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: behethkade
-  name: behethkade
+    app: LMS
+  name: LMS
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: behethkade
+      app: LMS
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: behethkade
+        app: LMS
     spec:
       containers:
-      - name: behethkadefront
+      - name: frontend
+        image: sudelk/herbal-medicine-selling-platform-frontend
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5100
+          protocol: TCP
+        resources: {}
+      - name: admin-dashboard
         image: sudelk/herbal-medicine-selling-platform-frontend
         imagePullPolicy: Always
         ports:
@@ -65,35 +76,35 @@ spec:
         image: sudelk/herbal-medicine-selling-platform-apigateway
         imagePullPolicy: Always
         ports:
-        - containerPort: 8000
+        - containerPort: 4200
           protocol: TCP
         resources: {}
-      - name: userservice
+      - name: auth
         image: sudelk/herbal-medicine-selling-platform-userservice
         imagePullPolicy: Always
         ports:
-        - containerPort: 7000
+        - containerPort: 4201
           protocol: TCP
         resources: {}
-      - name: paymentservice
+      - name: learner
         image: sudelk/herbal-medicine-selling-platform-paymentservice
         imagePullPolicy: Always
         ports:
-        - containerPort: 6000
+        - containerPort: 4202
           protocol: TCP
         resources: {}
-      - name: orderservice
+      - name: course
         image: sudelk/herbal-medicine-selling-platform-orderservice
         imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 4203
           protocol: TCP
         resources: {}
-      - name: itemservice
+      - name: payment
         image: sudelk/herbal-medicine-selling-platform-itemservice
         imagePullPolicy: Always
         ports:
-        - containerPort: 4000
+        - containerPort: 4204
           protocol: TCP
         resources: {}
       restartPolicy: Always
