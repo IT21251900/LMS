@@ -14,12 +14,12 @@ const proxy = httpProxy.createProxyServer();
 
 const colors = {
   reset: "\x1b[0m",
-  cyan: "\x1b[36m",
-  yellow: "\x1b[33m",
-  magenta: "\x1b[35m",
-  green: "\x1b[32m",
-  blue: "\x1b[34m",
-  red: "\x1b[31m",
+  cyan: "\x1b[96m",
+  yellow: "\x1b[93m",
+  magenta: "\x1b[95m",
+  green: "\x1b[92m",
+  blue: "\x1b[94m",
+  red: "\x1b[91m",
 };
 
 const consoleLog = (message, color) => {
