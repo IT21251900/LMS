@@ -123,10 +123,8 @@ const MyCourses = () => {
                 }`}
               >
                 <Button className="btn-primary" >Find Courses</Button>
-              </Link>
-                  
+              </Link> 
                   </div>
-                  
                 </div>
               ); 
             }

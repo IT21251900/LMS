@@ -12,7 +12,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchCourses = () => {
       axios
-        .get(`http://localhost:4200/course/`) 
+        .get(`http://localhost:4200/course/approved`) 
         .then((res) => {
           setCourse(res.data);
         })

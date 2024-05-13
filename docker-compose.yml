@@ -104,6 +104,9 @@ services:
       COURSE_API: http://LMS_Course:4203
       LEARNER_API: http://LMS_Learner:4202
       AUTH_API: http://LMS_Auth:4201
+      MERCHANT_ID: 77wb3vb2qk9tsqd5
+      PUBLIC_KEY: tgjnhxq4mjn9wz6c
+      PRIVATE_KEY: ebf744219a9166c14db77ade45bd46e6
     depends_on:
       - apigateway
     networks:
