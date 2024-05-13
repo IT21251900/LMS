@@ -15,7 +15,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { AddLessons } from "./AddLessons";
+// import { AddLessons } from "./AddLessons";
 import { message } from "antd";
 import Swal from 'sweetalert2';
 
@@ -247,7 +247,7 @@ export const CourseDetails = () => {
           </div>
         </div>
       </CardBody>
-      <AddLessons
+      {/* <AddLessons
         handleOpen={newHandleOpen}
         open={newOpen}
         handleLoading={handleLoading}
@@ -255,7 +255,7 @@ export const CourseDetails = () => {
         lessonTitle={lessonTitle}
         setLessonTitle={setLessonTitle}
         id={id}
-      />
+      /> */}
     </Card>
     
   );
