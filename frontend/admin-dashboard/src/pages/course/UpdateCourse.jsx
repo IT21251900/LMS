@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { course_category } from "../../utils/dataArrays";
 import Select from "react-select";
+import { message } from "antd";
 
 export const UpdateCourse = () => {
 
@@ -50,8 +51,10 @@ export const UpdateCourse = () => {
     try {
       await axios.put(`http://localhost:4200/course/${id}`, courseDetails);
       console.log("Course updated successfully!");
+      message.success("Course updated successfully");
     } catch (error) {
       console.error("Error updating course:", error);
+      message.error("Error updating course");
     }
   };
 
@@ -68,7 +71,7 @@ export const UpdateCourse = () => {
           className="font-inter font-bold tracking-wide"
           color="blue-gray"
         >
-          Update New Course {courseDetails._id}
+          Update Course - {courseDetails.name}
         </Typography>
 
         <form onSubmit={handleSubmit}>

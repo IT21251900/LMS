@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import rec from "../../assets/images/rec.png";
+import {
+  Button,
+} from "@material-tailwind/react";
 import { message } from "antd";
 import { AddNote } from "./AddNote";
 
-export const LessonContent = ({ id }) => {
+export const LessonContent = ({ id ,showUpdateButton}) => {
   const [newOpen, setNewOpen] = useState(false);
   const newHandleOpen = () => setNewOpen((cur) => !cur);
 
@@ -43,27 +46,17 @@ export const LessonContent = ({ id }) => {
   return (
     <>
       <div>
-        <button
-          type="button"
-          className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-1 mb-6 font-inter font-medium bg-primary border-primary hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-          onClick={newHandleOpen}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-            />
-          </svg>
-          Add Lesson Content
-        </button>
+      {showUpdateButton && (
+              <Button
+              type="button"
+              color="blue"
+              className="mb-8"
+              onClick={newHandleOpen}
+            >
+              Add Lesson Content
+            </Button>
+            )}
+        
 
         {noteDetails?.data?.map((note) => (
           <div key={note._id} className="note mb-6">
@@ -78,12 +71,15 @@ export const LessonContent = ({ id }) => {
               </a>
             </div>
             <p className="text-sm mt-3">{note.description}</p>
-            <button
-              onClick={() => handleDelete(note._id)}
-              className="text-red-400 text-[13px]"
-            >
-              Remove
-            </button>
+
+            {showUpdateButton && (
+                          <button
+                          onClick={() => handleDelete(note._id)}
+                          className="text-red-400 text-[13px]"
+                        >
+                          Remove
+                        </button>
+            )}
           </div>
         ))}
       </div>

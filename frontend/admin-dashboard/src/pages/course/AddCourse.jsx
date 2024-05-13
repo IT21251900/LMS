@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { course_category } from "../../utils/dataArrays";
 import Select from "react-select";
+import { message } from "antd";
 
 export const AddCourse = () => {
 
@@ -54,7 +55,7 @@ export const AddCourse = () => {
     try {
       const formData = new FormData();
       formData.append("file", courseDetails.image);
-      formData.append("upload_preset", "hqur7gkf"); // replace "your_upload_preset" with your actual Cloudinary upload preset
+      formData.append("upload_preset", "hqur7gkf"); 
       const response = await fetch("https://api.cloudinary.com/v1_1/dwdu9bel1/image/upload", {
         method: "POST",
         body: formData,
@@ -62,17 +63,27 @@ export const AddCourse = () => {
       const data = await response.json();
       const imageUrl = data.secure_url;
 
-      // Add the imageUrl to courseDetails
+
       const courseDataWithImage = {
         ...courseDetails,
         image: imageUrl,
       };
 
-      // Send the course data to your backend
       const courseResponse = await axios.post("http://localhost:4200/course/", courseDataWithImage);
 
       console.log("Course added:", courseResponse.data);
+      message.success("Course added successfully");
+      setCourseDetails({
+        category: "",
+        name: "",
+        description: "",
+        price: "",
+        credits: "",
+        instructorId: instructorId,
+        image: null,
+      });
     } catch (error) {
+      message.error("Error adding course");
       console.error("Error adding course:", error.response.data.error);
     }
   };

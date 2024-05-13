@@ -137,9 +137,11 @@ export const getPendingCourses = async (req, res) => {
         const lessonsCount = await Lesson.countDocuments({
           courseId: course._id,
         });
+        const enrollUserCount = course.enroll_users.length;
         return {
           ...course._doc,
           lessonCount: lessonsCount,
+          enrollUserCount
         };
       })
     );

@@ -18,7 +18,7 @@ export const CourseCard = ({ data }) => {
                 <p className="text-[0.875rem] text-accent">Instructor</p>
                 <div className="flex flex-row gap-2 items-center">
                   <Star size={16} color="#FFA621" />
-                  <p className="text-[0.875rem] text-accent">ss</p>
+                  <p className="text-[0.875rem] text-accent"></p>
                 </div>
               </div>
               <h2 className="font-[500] mt-2 text-[1.2rem] text-black">
