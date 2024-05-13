@@ -24,23 +24,6 @@ import {
   DuePaymentsIcon,
 } from "./icons";
 
-const CustomerArray = [
-  {
-    title: "Manage Customers",
-    link: "#",
-    icon: UserIcon,
-  },
-  {
-    title: "Customer Credit Logs",
-    link: "#",
-    icon: BookOpenIcon,
-  },
-  {
-    title: "Customer Returns",
-    link: "#",
-    icon: ArchiveBoxXMarkIcon,
-  },
-];
 
 const CourseArray = [
   {
@@ -72,12 +55,6 @@ export const newNavigationItems = [
     title: "Users",
     link: "user",
     icon: UserIcon,
-    children: 0,
-  },
-  {
-    title: "Quotation",
-    link: "#",
-    icon: QuotationIcon,
     children: 0,
   },
   {
