@@ -38,7 +38,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid Credentials" });
     }
     const token = generateToken(res, user._id, user.role);
-    res.send({ token, role: user.role });
+    res.send({ token, role: user.role, userId: user._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });

@@ -25,6 +25,7 @@ export const UserLogin = async (authData) => {
     );
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("role", res.data.role);
+    localStorage.setItem("userId", res.data.userId);
     return true;
   } catch (error) {}
 };
