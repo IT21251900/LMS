@@ -15,29 +15,29 @@ K.C.S Madhumalka
 IT19985428
 K.D.M.M RATHNASIRI
 
-## run below command in terminal to run the docker application
+### run below command in terminal to run the docker application
 
 ```docker compose up -d```
 
-## run below command in terminal to run the Kubernetes 
+### run below command in terminal to run the Kubernetes 
 
-```# kubectl delete -f lms.yaml```
+```kubectl delete -f lms.yaml```
 
-## If you want to run this locally switch to Main-localhost-v.1.1
+### If you want to run this locally switch to Main-localhost-v.1.1
 
-## To install node modules run the below command
+### To install node modules run the below command
 
 ``` npm i ```
 
-## To run the application run the below command
+### To run the application run the below command
 
 ``` npm run dev```
 
-## To run each microservices navigate to the directories using cd command 
+### To run each microservices navigate to the directories using cd command 
 
 Eg : 
 ``` cd backend ```
 ```cd course-microservice```
 
-## You need to run api-gateway first of all to start other microservices.
+### You need to run api-gateway first of all to start other microservices.
 
