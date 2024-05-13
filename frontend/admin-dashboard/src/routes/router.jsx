@@ -9,6 +9,7 @@ import { MyCourses } from "../pages/course/MyCourses";
 import { UpdateCourse } from "../pages/course/UpdateCourse";
 import Login from "../pages/user/Login";
 import User from "../pages/user/User";
+import Payment from "../pages/payment/Payment";
 import PendingCourse from "../pages/course/PendingCourse";
 
 const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/pending-course",
         element: <PendingCourse />,
+      },
+      {
+        path: "/payment",
+        element: <Payment />,
       },
     ],
   },

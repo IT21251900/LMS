@@ -55,7 +55,7 @@ const CourseSingle = () => {
   // };
 
   const handleEnroll = (courseId) => {
-    window.location.href = `/enroll/${courseId}`;
+    window.location.href = `/payment/${courseId}/${price}`;
   };
 
   return (
@@ -64,7 +64,11 @@ const CourseSingle = () => {
         <div className="flex flex-col md:flex-row justify-between my-4 md:items-center">
           <h2 className="text-[3rem] font-[500]">{name}</h2>
           <div className="flex flex-row justify-between my-4 items-center">
-            <Button type="primary" size="large" onClick={() => handleEnroll(courseId)}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => handleEnroll(courseId)}
+            >
               Enroll Now
             </Button>
           </div>

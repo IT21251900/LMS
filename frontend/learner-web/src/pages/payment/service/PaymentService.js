@@ -36,6 +36,25 @@ export const GetAllPayments = async () => {
     throw error; // Rethrow the error to handle it in the component
   }
 };
+export const GetCStudentByID = async (id) => {
+  try {
+    return await axios.get(`${BE_URL}/learner/auth/${id}`);
+  } catch (error) {
+    // Handle error
+    console.error("Error fetching courses:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
+export const GetCourseByID = async (id) => {
+  try {
+    return await axios.get(`${BE_URL}/course/${id}`);
+  } catch (error) {
+    // Handle error
+    console.error("Error fetching courses:", error);
+    throw error; // Rethrow the error to handle it in the component learner
+  }
+};
 
 export const GetPaymentById = async (id) => {
   try {
