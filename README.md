@@ -41,3 +41,4 @@ Eg :
 
 ### You need to run api-gateway first of all to start other microservices.
 
+![Screenshot 2024-05-14 at 12 17 58 AM](https://github.com/IT21251900/LMS/assets/100860580/bdbe6f1d-c7bb-4093-8b66-32b4e540cc62)
