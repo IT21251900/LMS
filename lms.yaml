@@ -59,49 +59,49 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: sudelk/herbal-medicine-selling-platform-frontend
+        image: sanjanadinith/lms-frontend
         imagePullPolicy: Always
         ports:
         - containerPort: 5100
           protocol: TCP
         resources: {}
       - name: admin-dashboard
-        image: sudelk/herbal-medicine-selling-platform-frontend
+        image: sanjanadinith/lms-admin-dashboard
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
           protocol: TCP
         resources: {}
       - name: apigateway
-        image: sudelk/herbal-medicine-selling-platform-apigateway
+        image: sanjanadinith/lms-apigateway
         imagePullPolicy: Always
         ports:
         - containerPort: 4200
           protocol: TCP
         resources: {}
       - name: auth
-        image: sudelk/herbal-medicine-selling-platform-userservice
+        image: sanjanadinith/lms-auth
         imagePullPolicy: Always
         ports:
         - containerPort: 4201
           protocol: TCP
         resources: {}
       - name: learner
-        image: sudelk/herbal-medicine-selling-platform-paymentservice
+        image: sanjanadinith/lms-learner
         imagePullPolicy: Always
         ports:
         - containerPort: 4202
           protocol: TCP
         resources: {}
       - name: course
-        image: sudelk/herbal-medicine-selling-platform-orderservice
+        image: sanjanadinith/lms-course
         imagePullPolicy: Always
         ports:
         - containerPort: 4203
           protocol: TCP
         resources: {}
       - name: payment
-        image: sudelk/herbal-medicine-selling-platform-itemservice
+        image: sanjanadinith/lms-payment
         imagePullPolicy: Always
         ports:
         - containerPort: 4204
