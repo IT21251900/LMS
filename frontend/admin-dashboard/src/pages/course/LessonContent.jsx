@@ -6,6 +6,7 @@ import {
 } from "@material-tailwind/react";
 import { message } from "antd";
 import { AddNote } from "./AddNote";
+import Swal from 'sweetalert2';
 
 export const LessonContent = ({ id ,showUpdateButton}) => {
   const [newOpen, setNewOpen] = useState(false);
@@ -32,16 +33,24 @@ export const LessonContent = ({ id ,showUpdateButton}) => {
 
   const handleDelete = async (noteId) => {
     try {
-      await axios.delete(
-        `http://localhost:4200/course/lessons/notes/${noteId}`
-      );
-      console.log("success");
-      message.error("Note deleted successfully");
-      handleLoading();
+      const result = await Swal.fire({
+        text: 'Do you want to delete course content? ',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      });
+  
+      if (result.isConfirmed) {
+        await axios.delete(`http://localhost:4200/course/lessons/notes/${noteId}`);
+        message.success('Note deleted successfully');
+        handleLoading();
+      }
     } catch (error) {
-      message.error("Error deleting note");
+      message.error('Error deleting note');
     }
   };
+  
 
   return (
     <>

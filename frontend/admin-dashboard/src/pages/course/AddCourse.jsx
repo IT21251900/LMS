@@ -9,7 +9,7 @@ import {
   Option,
   Textarea,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { course_category } from "../../utils/dataArrays";
 import Select from "react-select";
 import { message } from "antd";
@@ -24,8 +24,17 @@ export const AddCourse = () => {
     description: "",
     price: "",
     credits: "",
-    instructorId:instructorId,
+    instructorId: instructorId,
     image: null,
+  });
+
+  const [errors, setErrors] = useState({
+    category: "",
+    name: "",
+    description: "",
+    price: "",
+    credits: "",
+    image: "",
   });
 
   const handleCategoryChange = (selectedOption) => {
@@ -50,12 +59,31 @@ export const AddCourse = () => {
     }));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...errors };
+
+    Object.keys(courseDetails).forEach((key) => {
+      if (courseDetails[key] === "") {
+        newErrors[key] = `${key} is required`;
+        isValid = false;
+      } else {
+        newErrors[key] = "";
+      }
+    });
+
+    if (!isValid) {
+      setErrors(newErrors);
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("file", courseDetails.image);
-      formData.append("upload_preset", "hqur7gkf"); 
+      formData.append("upload_preset", "hqur7gkf");
       const response = await fetch("https://api.cloudinary.com/v1_1/dwdu9bel1/image/upload", {
         method: "POST",
         body: formData,
@@ -82,6 +110,7 @@ export const AddCourse = () => {
         instructorId: instructorId,
         image: null,
       });
+      navigate("/my-courses");
     } catch (error) {
       message.error("Error adding course");
       console.error("Error adding course:", error.response.data.error);
@@ -121,6 +150,11 @@ export const AddCourse = () => {
                 )}
                 onChange={handleCategoryChange}
               />
+              {errors.category && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.category}
+                </Typography>
+              )}
             </div>
             <div className="w-1/2">
               <Typography
@@ -136,6 +170,11 @@ export const AddCourse = () => {
                 value={courseDetails.name}
                 onChange={handleInputChange}
               />
+              {errors.name && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.name}
+                </Typography>
+              )}
             </div>
           </div>
 
@@ -154,6 +193,11 @@ export const AddCourse = () => {
                 value={courseDetails.credits}
                 onChange={handleInputChange}
               />
+              {errors.credits && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.credits}
+                </Typography>
+              )}
             </div>
             <div className="w-1/2">
               <Typography
@@ -169,6 +213,11 @@ export const AddCourse = () => {
                 value={courseDetails.price}
                 onChange={handleInputChange}
               />
+              {errors.price && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.price}
+                </Typography>
+              )}
             </div>
           </div>
 
@@ -186,6 +235,11 @@ export const AddCourse = () => {
                 value={courseDetails.description}
                 onChange={handleInputChange}
               />
+              {errors.description && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.description}
+                </Typography>
+              )}
             </div>
             <div className="w-1/2">
             <Typography
@@ -196,6 +250,11 @@ export const AddCourse = () => {
                 Select Image
               </Typography>
               <input type="file" onChange={handleImageChange} />
+              {errors.image && (
+                <Typography variant="p" color="red" className="text-xs">
+                  {errors.image}
+                </Typography>
+              )}
             </div>
           </div>
 

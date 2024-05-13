@@ -66,7 +66,9 @@ const PendingCourseCard = ({ data }) => {
             </div>
             <div className="flex flex-col mt-5">
               <div className="flex flex-row w-full justify-between">
-                <p className="text-[0.875rem] text-accent">instructor id</p>
+              <p className={`text-[0.875rem] ${data.isApproved === 1 ? 'text-green-500' : 'text-red-500'}`}>
+                  {data.isApproved === 1 ? 'Approved' : 'Pending'}
+                </p>
                 <div className="flex flex-row gap-2 items-center">
                   <Star size={16} color="#FFA621" />
                   <p className="text-[0.875rem] text-accent"></p>

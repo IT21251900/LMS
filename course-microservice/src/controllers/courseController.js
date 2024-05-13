@@ -25,7 +25,7 @@ export const createCourse = async (req, res) => {
 
 export const getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find({ isApproved: 1 });
 
     const coursesWithLessonCount = await Promise.all(
       courses.map(async (course) => {
