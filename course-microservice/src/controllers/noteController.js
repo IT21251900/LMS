@@ -2,21 +2,14 @@ import Note from "../models/noteModel.js";
 
 export const createNote = async (req, res) => {
   try {
-    const { title, description, note_url, type } = req.body;
+    const { title, description, note_url } = req.body;
     const { lessonId } = req.params;
-
-    let note_file = "";
-    if (type == 0) {
-      note_file = req.file.filename;
-    }
 
     const note = await Note.create({
       lessonId,
       description,
       title,
-      note_file,
       note_url,
-      type,
     });
 
     res.status(201).json({ success: true, data: note });
@@ -51,4 +44,22 @@ export const getAllNotes = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const deleteNote = async (req, res) => {
+  try {
+    const { noteId } = req.params;
+
+    const note = await Note.findById(noteId);
+    if (!note) {
+      return res.status(404).json({ success: false, error: "Note not found" });
+    }
+
+    await Note.deleteOne({ _id: noteId });
+
+    res.status(200).json({ success: true, data: {} });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 

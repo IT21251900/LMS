@@ -14,6 +14,7 @@ import {
   getUserDayTimeSlots,
 } from "./controllers/learner.controller.js";
 import { updateLessonProgress, getLessonProgressByLessonId } from "./controllers/progress.controller.js";
+import { getNotificationsByUserId } from "./controllers/notification.controller.js";
 
 config();
 
@@ -53,3 +54,5 @@ learnerService.put("/", updateLessonProgress);
 learnerService.get("/:id/time-slots", getUserTimeSlots);
 learnerService.get('/:id/time-slots/:day', getUserDayTimeSlots);
 learnerService.get('/lesson/:userId/:courseId/:lessonId', getLessonProgressByLessonId);
+learnerService.get('/notification/:id', getNotificationsByUserId);
+

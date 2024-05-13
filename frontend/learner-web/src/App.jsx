@@ -11,6 +11,7 @@ import PaymentPage from "./pages/payment/PaymentPage";
 import UserProfile from "./pages/UserProfile";
 import EnrollPage from "./pages/EnrollPage";
 import MyCourses from "./pages/MyCourses";
+import Notification from "./pages/Noification";
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
           <Route path="/enroll/:id" element={<EnrollPage />} />
           <Route path="/payment/:id/:price" element={<PaymentPage />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="*" element={<h1>Page Not Found</h1>} /> 
         </Route>
       </Routes>
     </Router>

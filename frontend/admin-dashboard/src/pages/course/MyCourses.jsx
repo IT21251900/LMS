@@ -8,6 +8,7 @@ import {
   IconButton,
   Tooltip,
   Input,
+  Button
 } from "@material-tailwind/react";
 import { useNavigate, Link } from "react-router-dom";
 import { CourseCard } from "./CourseCard";
@@ -15,13 +16,13 @@ import { CourseCard } from "./CourseCard";
 export const MyCourses =() =>{
     const [course, setCourse] = useState([]);
 
-
-  const role = "admin1";
+    const role = localStorage.getItem("role");
+    const instructorId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchCourses = () => {
       axios
-        .get(`http://localhost:4200/course/instructor/1`) 
+        .get(`http://localhost:4200/course/instructor/${instructorId}`) 
         .then((res) => {
           setCourse(res.data);
         })
@@ -50,38 +51,26 @@ export const MyCourses =() =>{
           <div className="flex gap-3">
          {role === "admin" && (
             <>
-              <a
-                className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-              >
-                <span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    className="w-5 h-5"
+               <a
+                    href={`/pending-course`}
+                   
                   >
-                    <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-                  </svg>
-                </span>
-                <span>Pending Courses</span>
-              </a>
+                  <Button color="blue">
+                
+                  <span>Pending Courses</span>
+                </Button>
+                    
+                  </a>
             </>
           )}
           
           <a href={`/add-new-course`}
-            className="hidden md:flex w-fit gap-1 items-center p-1 px-3 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+           
           >
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5"
-              >
-                <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
-              </svg>
-            </span>
-            <span>New Course</span>
+            <Button color="blue">
+                
+                <span>New Course</span>
+                </Button>
           </a>
           </div>
           

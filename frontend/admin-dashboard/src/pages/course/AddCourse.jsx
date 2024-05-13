@@ -14,13 +14,16 @@ import { course_category } from "../../utils/dataArrays";
 import Select from "react-select";
 
 export const AddCourse = () => {
+
+  const instructorId = localStorage.getItem("userId");
+
   const [courseDetails, setCourseDetails] = useState({
     category: "",
     name: "",
     description: "",
     price: "",
     credits: "",
-    instructorId:"1",
+    instructorId:instructorId,
     image: null,
   });
 

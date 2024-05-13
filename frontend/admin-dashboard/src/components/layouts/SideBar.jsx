@@ -18,7 +18,7 @@ export const SideBar = ({ handleSidebar, sidebar }) => {
   }, [linkchange]);
   return (
     <Card
-      className={`h-full rounded-none bg-[#9165A0] w-[60%] md:w-[16%]  flex flex-col font-inter z-50 items-start fixed p-2  transition transform duration-500 ease-in-out fade-right-enter-active md:opacity-100 overflow-y-auto scrollbar-y-style ${
+      className={`h-full rounded-none bg-gray-800 w-[60%] md:w-[16%]  flex flex-col font-inter z-50 items-start fixed p-2  transition transform duration-500 ease-in-out fade-right-enter-active md:opacity-100 overflow-y-auto scrollbar-y-style ${
         sidebar ? "fade-right-enter-to" : "fade-right-enter-from"
       } `}
     >

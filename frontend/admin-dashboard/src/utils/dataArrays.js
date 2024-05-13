@@ -24,24 +24,6 @@ import {
   DuePaymentsIcon,
 } from "./icons";
 
-const CustomerArray = [
-  {
-    title: "Manage Customers",
-    link: "#",
-    icon: UserIcon,
-  },
-  {
-    title: "Customer Credit Logs",
-    link: "#",
-    icon: BookOpenIcon,
-  },
-  {
-    title: "Customer Returns",
-    link: "#",
-    icon: ArchiveBoxXMarkIcon,
-  },
-];
-
 const CourseArray = [
   {
     title: "Course",
