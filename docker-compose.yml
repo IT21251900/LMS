@@ -5,7 +5,7 @@ services:
     build: ./frontend/learner-web
     container_name: LMS_frontend
     ports:
-      - "5173:5173"
+      - "5100:5100"
     environment:
       REACT_APP_BACKEND_URL: http://LMS_APIGateway:4200
     depends_on:
@@ -13,17 +13,17 @@ services:
     networks:
       - bk
 
-  # admin-dashboard:
-  #   build: ./frontend/admin-dashboard
-  #   container_name: LMS_admin
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     REACT_APP_BACKEND_URL: http://LMS_APIGateway:4200
-  #   depends_on:
-  #     - apigateway
-  #   networks:
-  #     - bk
+  admin-dashboard:
+    build: ./frontend/admin-dashboard
+    container_name: LMS_admin
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_BACKEND_URL: http://LMS_APIGateway:4200
+    depends_on:
+      - apigateway
+    networks:
+      - bk
 
   apigateway:
     build: ./backend/api-gateway
