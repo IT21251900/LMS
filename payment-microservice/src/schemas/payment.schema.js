@@ -3,10 +3,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const enrollmentSchema = new Schema({
-  enrollment_id: String,
   learner_id: String,
   course_id: String,
-  progress_data: String,
 });
 
 const paymentSchema = new Schema({

@@ -56,8 +56,7 @@ export const ApproveCourse = async (id, course) => {
     if (!role) {
       throw new Error("Role not found");
     }
-
-    return await axios.put(`${BE_URL}/course/${id}/${role}`, course);
+    return await axios.put(`${BE_URL}/course/${id}`, course);
   } catch (error) {
     // Handle error
     console.error("Error update courses:", error);

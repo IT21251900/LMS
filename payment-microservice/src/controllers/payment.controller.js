@@ -52,7 +52,6 @@ export async function processPayment(req, res) {
   }
 }
 
-// Get All
 export async function getAllPayments(req, res, next) {
   console.log(`<=== Get All Payments ====>`);
 
@@ -62,20 +61,21 @@ export async function getAllPayments(req, res, next) {
     const payments = await Payment.find().exec();
 
     if (payments && payments.length > 0) {
-      res.status(200).json({
+      return res.status(200).send({
         success: true,
         message: "Found Payments",
         result: payments,
       });
     } else {
-      res.status(401).json({
+      return res.status(401).send({
         success: false,
         message: "Payments are not available",
-        result: payments,
       });
     }
   }
-  res.status(404).json({
+
+  // If the role is not "admin", return an unauthorized response
+  return res.status(404).send({
     success: false,
     message: "Unauthorized User",
   });
@@ -90,9 +90,9 @@ export async function getPaymentById(req, res, next) {
   if (!payment) {
     res
       .status(404)
-      .json({ success: false, message: "Payment not found", result: payment });
+      .send({ success: false, message: "Payment not found", result: payment });
   }
   res
     .status(200)
-    .json({ success: true, message: "Found Payment", result: payment });
+    .send({ success: true, message: "Found Payment", result: payment });
 }

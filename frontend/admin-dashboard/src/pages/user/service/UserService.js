@@ -71,4 +71,16 @@ export const DeleteUser = async (id) => {
   }
 };
 
+export const LogOutUser = async () => {
+  try {
+    localStorage.clear();
+    return true;
+    // return await axios.delete(`${BE_URL_WITH_API}/auth/user/${id}/${role}`);
+  } catch (error) {
+    // Handle error
+    console.error("Error delete users:", error);
+    throw error; // Rethrow the error to handle it in the component
+  }
+};
+
 export default GetUsers;

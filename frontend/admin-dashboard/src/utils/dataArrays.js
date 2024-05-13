@@ -75,8 +75,8 @@ export const newNavigationItems = [
     children: 0,
   },
   {
-    title: "Quotation",
-    link: "#",
+    title: "Payment",
+    link: "payment",
     icon: QuotationIcon,
     children: 0,
   },

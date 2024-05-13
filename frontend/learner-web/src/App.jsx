@@ -25,7 +25,7 @@ function App() {
           <Route path="/courses/:id" element={<CourseSingle />} />
           <Route path="/view-courses/:id" element={<ViewCourseSingle />} />
           <Route path="/enroll/:id" element={<EnrollPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/payment/:id/:price" element={<PaymentPage />} />
           <Route path="/profile" element={<UserProfile />} />
         </Route>
       </Routes>

@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import DropIn from "braintree-web-drop-in-react";
 import GetClientToken, { ProcessPayment } from "./service/PaymentService";
-
-const amount = 200;
+import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentPage = () => {
+  const { id, price } = useParams();
+  console.log(id, price);
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const navigate = useNavigate();
+  const StudentId = localStorage.getItem("id");
 
   useEffect(() => {
     // Fetch client token from your server
@@ -30,12 +34,10 @@ const PaymentPage = () => {
 
       const paymentObj = {
         nonce,
-        amount,
+        amount: price,
         enrollment: {
-          enrollment_id: "String",
-          learner_id: "String",
-          course_id: "String",
-          prograss_data: "String",
+          learner_id: StudentId,
+          course_id: id,
         },
       };
 
@@ -43,6 +45,9 @@ const PaymentPage = () => {
       const data = res.data;
       if (data.success) {
         setIsSuccess(true);
+        setTimeout(() => {
+          navigate(`/enroll/${id}`);
+        }, 2000);
       }
     } catch (error) {
       console.error("Error processing payment:", error);
@@ -53,11 +58,11 @@ const PaymentPage = () => {
     <>
       {clientToken ? (
         <div>
-          <h1>Payment Page</h1>
           {/* Payment form */}
-          <div className="flex flex-col w-1/2 mx-auto">
+          <div className="flex flex-col w-1/2 mx-auto mt-5">
             <div>
-              <h3> Course Free : {amount}</h3>
+              <h2> Pay Your Course Free Before Enroll To Course </h2>
+              <h3> Course Free : ${price}</h3>
             </div>
             <DropIn
               options={{ authorization: clientToken }}

@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, Outlet, Navigate, useLocation } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Burger } from "../../utils/icons";
 import { SideBar } from "./SideBar";
 import { Card, Tooltip, IconButton } from "@material-tailwind/react";
 import { BellIcon, UserIcon } from "@heroicons/react/24/solid";
 import { useStateContext } from "../../contexts/NavigationContext";
+import { LogOutUser } from "../../pages/user/service/UserService";
 
 export const MainLayout = () => {
   const [signOutVisible, setSignOutVisible] = useState(false);
@@ -12,10 +19,16 @@ export const MainLayout = () => {
   const dropdownRef = useRef(null);
   const sideBardownRef = useRef(null);
   const sideBarButtondownRef = useRef(null);
+
+  const navigate = useNavigate();
   const { token, setUser, setToken } = useStateContext();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setUser(null);
     setToken(null);
+    const res = await LogOutUser();
+    if (res) {
+      navigate("/login");
+    }
   };
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -51,8 +64,8 @@ export const MainLayout = () => {
     const token = queryParams.get("token");
     if (userString) {
       const user = JSON.parse(userString);
-      setUser(user)
-      setToken(token)
+      setUser(user);
+      setToken(token);
     }
   }, [location.search]);
 
@@ -67,6 +80,13 @@ export const MainLayout = () => {
   const handleSidebar = () => {
     setSidebar((pre) => !pre);
   };
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (!role) {
+      handleLogout();
+    }
+  }, []);
 
   return (
     <section className="bg-blue-gray-50 w-full min-h-screen flex">
