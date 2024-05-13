@@ -44,7 +44,7 @@ const PendingCourseCard = ({ data }) => {
           <div className="card rounded-2xl p-3 border border-slate-100 cursor-pointer hover:scale-up ">
             <div className="relative">
               <img
-                src={`${data?.image}`}
+                src={`uploads/${data?.image}`}
                 className="h-[150px] w-full object-cover rounded-md"
                 alt="Course Thumbnail"
               />
@@ -66,12 +66,10 @@ const PendingCourseCard = ({ data }) => {
             </div>
             <div className="flex flex-col mt-5">
               <div className="flex flex-row w-full justify-between">
-              <p className={`text-[0.875rem] ${data.isApproved === 1 ? 'text-green-500' : 'text-red-500'}`}>
-                  {data.isApproved === 1 ? 'Approved' : 'Pending'}
-                </p>
+                <p className="text-[0.875rem] text-accent">instructor id</p>
                 <div className="flex flex-row gap-2 items-center">
                   <Star size={16} color="#FFA621" />
-                  <p className="text-[0.875rem] text-accent"></p>
+                  <p className="text-[0.875rem] text-accent">ss</p>
                 </div>
               </div>
               <h2 className="font-[500] mt-2 text-[1.2rem] text-black">
@@ -87,7 +85,7 @@ const PendingCourseCard = ({ data }) => {
                   </div>
                   <div className="flex flex-row gap-2 items-center">
                     <CircleUser size={16} color="gray" />
-                    <p className="text-[0.875rem] text-accent">{data?.enrollUserCount}</p>
+                    <p className="text-[0.875rem] text-accent">ss</p>
                   </div>
                 </div>
                 <p className=" text-[1.5rem] text-primary">${data.price}</p>

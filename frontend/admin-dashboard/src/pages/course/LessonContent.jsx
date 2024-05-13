@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import rec from "../../assets/images/rec.png";
-import {
-  Button,
-} from "@material-tailwind/react";
 import { message } from "antd";
 import { AddNote } from "./AddNote";
-import Swal from 'sweetalert2';
 
-export const LessonContent = ({ id ,showUpdateButton}) => {
+export const LessonContent = ({ id }) => {
   const [newOpen, setNewOpen] = useState(false);
   const newHandleOpen = () => setNewOpen((cur) => !cur);
 
@@ -33,39 +29,41 @@ export const LessonContent = ({ id ,showUpdateButton}) => {
 
   const handleDelete = async (noteId) => {
     try {
-      const result = await Swal.fire({
-        text: 'Do you want to delete course content? ',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      });
-  
-      if (result.isConfirmed) {
-        await axios.delete(`http://localhost:4200/course/lessons/notes/${noteId}`);
-        message.success('Note deleted successfully');
-        handleLoading();
-      }
+      await axios.delete(
+        `http://localhost:4200/course/lessons/notes/${noteId}`
+      );
+      console.log("success");
+      message.error("Note deleted successfully");
+      handleLoading();
     } catch (error) {
-      message.error('Error deleting note');
+      message.error("Error deleting note");
     }
   };
-  
 
   return (
     <>
       <div>
-      {showUpdateButton && (
-              <Button
-              type="button"
-              color="blue"
-              className="mb-8"
-              onClick={newHandleOpen}
-            >
-              Add Lesson Content
-            </Button>
-            )}
-        
+        <button
+          type="button"
+          className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-1 mb-6 font-inter font-medium bg-primary border-primary hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
+          onClick={newHandleOpen}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          Add Lesson Content
+        </button>
 
         {noteDetails?.data?.map((note) => (
           <div key={note._id} className="note mb-6">
@@ -80,15 +78,12 @@ export const LessonContent = ({ id ,showUpdateButton}) => {
               </a>
             </div>
             <p className="text-sm mt-3">{note.description}</p>
-
-            {showUpdateButton && (
-                          <button
-                          onClick={() => handleDelete(note._id)}
-                          className="text-red-400 text-[13px]"
-                        >
-                          Remove
-                        </button>
-            )}
+            <button
+              onClick={() => handleDelete(note._id)}
+              className="text-red-400 text-[13px]"
+            >
+              Remove
+            </button>
           </div>
         ))}
       </div>
