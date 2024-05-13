@@ -30,7 +30,7 @@ const PendingCourseCard = ({ data }) => {
         createdDate,
         credits,
         status,
-        isApproved: 1,
+        isApproved: true,
       };
 
       const res = await ApproveCourse(data._id, aproveObj);

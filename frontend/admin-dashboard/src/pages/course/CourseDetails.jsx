@@ -18,7 +18,7 @@ import {
 import { AddLessons } from "./AddLessons";
 import { message } from "antd";
 import Swal from 'sweetalert2';
-import { ViewCoursePaymnets } from "../payment/componet/ViewCoursePaymnets";
+
 
 export const CourseDetails = () => {
   const { id } = useParams();
@@ -118,20 +118,39 @@ export const CourseDetails = () => {
             </Typography>
           </div>
           <div className="flex gap-3">
-            {role === "admin" && (
-              <>
-                <ViewCoursePaymnets courseId={id} />
-              </>
-            )}
+          {role === "admin" && (
+                <>
+                  <a
+                    href={`/`}
+                   
+                  >
+                  <Button color="blue">
+                
+                  <span>Payment Details</span>
+                </Button>
+                    
+                  </a>
+                </>
+              )}
             {showUpdateButton && (
-              <a onClick={handleDelete}>
-                <Button color="red">Delete Course</Button>
+              <a
+                onClick={handleDelete}
+            
+              >
+                <Button color="red">
+               Delete Course
+               </Button>
               </a>
             )}
 
             {showUpdateButton && (
-              <a href={`/edit-courses/${courseDetails._id}`}>
-                <Button color="blue">Update Course</Button>
+              <a
+                href={`/edit-courses/${courseDetails._id}`}
+                
+              >
+               <Button color="blue">
+               Update Course
+               </Button>
               </a>
             )}
           </div>
@@ -206,48 +225,14 @@ export const CourseDetails = () => {
                   </h3>
 
                   {showUpdateButton && (
-                    <Button
-                      onClick={() => setShowAddLessonForm(true)}
-                      color="blue"
-                      className="mb-5"
-                    >
-                      Add Lessons
-                    </Button>
-                  )}
-
-                  {showAddLessonForm && (
-                    <form onSubmit={handleLessonSubmit}>
-                      <div className="w-1/4">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="mb-2 font-semibold"
-                        >
-                          Title
-                        </Typography>
-                        <Input
-                          type="text"
-                          name="title"
-                          value={lessonTitle}
-                          onChange={(e) => setLessonTitle(e.target.value)}
-                        />
-                      </div>
-                      <div className="flex gap-5 w-1/4 justify-end">
-                        <button
-                          type="submit"
-                          className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-6 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-                        >
-                          Add
-                        </button>
-                        <button
-                          onClick={() => setShowAddLessonForm(false)}
-                          className="hidden md:flex w-fit gap-1 rounded-md items-center p-1 px-3 my-10 font-inter font-medium bg-[#9165A0] border-[#9165A0] hover:bg-white text-white hover:text-black border-[1px] hover:border-black text-[14px] transition-colors duration-500"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  )}
+              <Button
+              onClick={newHandleOpen}
+              color="blue"
+              className="mb-5"
+            >
+              Add Lessons
+            </Button>
+            )}
                   <ul>
                     {courseDetails.lessons &&
                       courseDetails.lessons.map((lesson, index) => (

@@ -52,58 +52,30 @@ export async function processPayment(req, res) {
   }
 }
 
+// Get All
 export async function getAllPayments(req, res, next) {
   console.log(`<=== Get All Payments ====>`);
 
   const role = req.params.role;
 
   if (role === "admin") {
-    const payments = await Payment.find().select("+createdAt"); // Select createdAt explicitly
+    const payments = await Payment.find().exec();
+
     if (payments && payments.length > 0) {
-      return res.status(200).send({
+      res.status(200).json({
         success: true,
         message: "Found Payments",
-        data: payments,
+        result: payments,
       });
     } else {
-      return res.status(401).send({
+      res.status(401).json({
         success: false,
         message: "Payments are not available",
+        result: payments,
       });
     }
   }
-
-  // If the role is not "admin", return an unauthorized response
-  return res.status(404).send({
-    success: false,
-    message: "Unauthorized User",
-  });
-}
-
-export async function getPaymentsByCourse(req, res, next) {
-  console.log(`<=== Get Payments By Course ====>`);
-
-  const { id, role } = req.params;
-  if (role === "admin") {
-    const payments = await Payment.find({ "enrollment.courseId": id }).select(
-      "+createdAt"
-    ); // Select createdAt explicitly
-    if (payments && payments.length > 0) {
-      return res.status(200).send({
-        success: true,
-        message: "Found Payments",
-        data: payments,
-      });
-    } else {
-      return res.status(401).send({
-        success: false,
-        message: "Payments are not available",
-      });
-    }
-  }
-
-  // If the role is not "admin", return an unauthorized response
-  return res.status(404).send({
+  res.status(404).json({
     success: false,
     message: "Unauthorized User",
   });
@@ -118,9 +90,9 @@ export async function getPaymentById(req, res, next) {
   if (!payment) {
     res
       .status(404)
-      .send({ success: false, message: "Payment not found", data: payment });
+      .json({ success: false, message: "Payment not found", result: payment });
   }
   res
     .status(200)
-    .send({ success: true, message: "Found Payment", data: payment });
+    .json({ success: true, message: "Found Payment", result: payment });
 }

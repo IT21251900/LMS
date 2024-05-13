@@ -1,50 +1,73 @@
 import React, { useState } from "react";
-import { Dialog, Card, Button } from "@material-tailwind/react";
-import Select from "react-select";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { CloseIcon } from "../../../utils/icons";
-import axios from "axios";
-import NewUserForm from "./NewUserForm";
 import UpdateUserForm from "./UpdateUserForm";
 
-export const UpdateUserModal = ({ user }) => {
-  const [open, setOpen] = useState(false);
-  const handleButton = () => {
-    setOpen(!open);
+function UpdateUserModal({ user }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
-    <>
-      <div className="me-3">
-        <Button size="sm" onClick={handleButton} color="blue">
-          Update
-        </Button>
-      </div>
-      <Dialog
-        size="md"
-        open={open}
-        handler={handleButton}
-        className="bg-transparent shadow-none rounded-sm font-inter h-[80%]"
+    <div>
+      {/* <!-- Modal toggle --> */}
+      <button
+        onClick={toggleModal}
+        class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-3 py-1.5 text-center me-2 mb-2"
+        type="button"
       >
-        <Card className="mx-auto w-full p-5 rounded-sm">
-          <div className="flex justify-between align-center border-b-2">
-            <div className="font-inter text-lg font-bold border-grey pb-5">
-              Update User
-            </div>
-            <div
-              className="font-bold text-[20px] cursor-pointer"
-              onClick={handleButton}
-            >
-              <CloseIcon />
+        Update
+      </button>
+
+      {/* <!-- Main modal --> */}
+      <div
+        id="default-modal"
+        style={{ display: isOpen ? "block" : "none" }}
+        tabIndex="-1"
+        aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden absolute top-0 left-0 inset-0 z-50 overflow-auto bg-black bg-opacity-50"
+      >
+        <div className="absolute top-10 left-1/4" style={{ width: "50%" }}>
+          <div className="relative bg-white rounded-lg shadow-md ">
+            {/* <!-- Modal content --> */}
+            <div className="relative">
+              {/* <!-- Modal header --> */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Update User
+                </h3>
+                <button
+                  onClick={toggleModal}
+                  type="button"
+                  className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 flex items-center justify-center"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              {/* <!-- Modal body --> */}
+              <div className="p-4 md:p-5 space-y-4">
+                <UpdateUserForm user={user} />
+              </div>
             </div>
           </div>
-          <div className="p-4 md:p-5 space-y-4">
-            <UpdateUserForm user={user} />
-          </div>
-        </Card>
-      </Dialog>
-      <ToastContainer />
-    </>
+        </div>
+      </div>
+    </div>
   );
-};
+}
+
+export default UpdateUserModal;

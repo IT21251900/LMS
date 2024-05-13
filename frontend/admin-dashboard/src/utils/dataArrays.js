@@ -24,6 +24,7 @@ import {
   DuePaymentsIcon,
 } from "./icons";
 
+
 const CourseArray = [
   {
     title: "Course",
@@ -54,12 +55,6 @@ export const newNavigationItems = [
     title: "Users",
     link: "user",
     icon: UserIcon,
-    children: 0,
-  },
-  {
-    title: "Payment",
-    link: "payment",
-    icon: QuotationIcon,
     children: 0,
   },
   {

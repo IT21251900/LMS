@@ -14,7 +14,7 @@ import {
   getApprovedCourses,
   enrollUserToCourse,
   approveCourse,
-  unenrollUserFromCourse,
+  unenrollUserFromCourse
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -23,11 +23,7 @@ import {
   getLessonsForCourse,
   updateLesson,
 } from "./controllers/lessonController.js";
-import {
-  createNote,
-  getAllNotes,
-  deleteNote,
-} from "./controllers/noteController.js";
+import { createNote, getAllNotes ,deleteNote } from "./controllers/noteController.js";
 
 config();
 
@@ -36,11 +32,7 @@ export const courseService = express();
 courseService.use(cookieParser());
 courseService.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:3000",
-      "http://127.0.0.1:5173",
-    ],
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
