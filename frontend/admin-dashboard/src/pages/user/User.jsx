@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import GetUsers from "./service/UserService";
-import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-import { NewUserModal } from "./componet/NewUserModal";
-import { UpdateUserModal } from "./componet/UpdateUserModal";
-import { DeleteUserModal } from "./componet/DeleteUserModal";
+import NewUserModal from "./componet/NewUserModal";
+import UserDeleteModal from "./componet/UserDeleteModal";
+import UpdateUserModal from "./componet/UpdateUserModal";
 
 function User() {
   const [usersData, setUsersData] = useState([]);
-  const [newOpen, setNewOpen] = useState(false);
-  const handleOpen = () => setNewOpen((cur) => !cur);
-  const handleLoading = () => setTableLoading((pre) => !pre);
+
   const fetchData = async () => {
     try {
       const res = await GetUsers();
@@ -26,24 +23,17 @@ function User() {
 
   return (
     <div className="ps-10 pe-5 pb-5">
-      <Card className="h-fit font-inter rounded-none mx-3 md:ml-6 mr-3">
-        <CardBody className="flex flex-col gap-5 p-3 pl-6 ">
-          <div className="font-bold flex flex-row justify-between mb-2">
-            <Typography
-              variant="h4"
-              className="font-inter font-bold tracking-wide"
-              color="blue-gray"
-            >
-              Users
-            </Typography>
-            <div>
-              <Button onClick={handleOpen} color="blue">
-                New
-              </Button>
-            </div>
-          </div>
+      <div className="font-bold flex flex-row justify-between mb-2">
+        <h2>Users</h2>
+        <div>
+          <NewUserModal />
+        </div>
+      </div>
+
+      <div>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" class="px-6 py-3">
                   Name
@@ -119,16 +109,15 @@ function User() {
                       <td class="px-6 py-4">{user.role}</td>
                       <td class="py-4 text-right flex flex-row">
                         <UpdateUserModal user={user} />
-                        <DeleteUserModal user={user} />
+                        <UserDeleteModal user={user} />
                       </td>
                     </tr>
                   ))
                 : null}
             </tbody>
           </table>
-        </CardBody>
-      </Card>
-      <NewUserModal handleOpen={handleOpen} open={newOpen} />
+        </div>
+      </div>
     </div>
   );
 }

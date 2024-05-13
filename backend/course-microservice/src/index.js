@@ -14,7 +14,7 @@ import {
   getApprovedCourses,
   enrollUserToCourse,
   approveCourse,
-  unenrollUserFromCourse,
+  unenrollUserFromCourse
 } from "./controllers/courseController.js";
 import upload from "./middlewares/uploadMiddleware.js";
 import lesson_notes from "./middlewares/uploadLessonNoteMiddleware.js";
@@ -23,11 +23,7 @@ import {
   getLessonsForCourse,
   updateLesson,
 } from "./controllers/lessonController.js";
-import {
-  createNote,
-  getAllNotes,
-  deleteNote,
-} from "./controllers/noteController.js";
+import { createNote, getAllNotes ,deleteNote } from "./controllers/noteController.js";
 
 config();
 

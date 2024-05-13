@@ -50,7 +50,7 @@ export const Course = () => {
                 className="font-inter font-bold tracking-wide"
                 color="blue-gray"
               >
-                All Courses
+                Courses
               </Typography>
             </div>
             <div className="flex gap-3">
