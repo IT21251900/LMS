@@ -20,6 +20,7 @@ export const AddLessons = ({
   lessonTitle,
   setLessonTitle,
   handleLessonSubmit,
+  titleError
 }) => {
   const handleClose = () => {
     handleOpen();
@@ -60,6 +61,15 @@ export const AddLessons = ({
                 value={lessonTitle}
                 onChange={(e) => setLessonTitle(e.target.value)}
               />
+              {titleError && (
+                <Typography
+                  variant="small"
+                  color="red"
+                  className="mt-1"
+                >
+                  {titleError}
+                </Typography>
+              )}
             </div>
             <div className="flex gap-5 w-auto justify-end mt-5">
               <Button type="submit" color="blue">
