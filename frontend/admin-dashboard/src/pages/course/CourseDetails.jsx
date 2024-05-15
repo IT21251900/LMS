@@ -15,7 +15,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-// import { AddLessons } from "./AddLessons";
+import { AddLessons } from "./AddLessons";
 import { message } from "antd";
 import Swal from 'sweetalert2';
 
@@ -25,6 +25,7 @@ export const CourseDetails = () => {
   const [openAccordion, setOpenAccordion] = useState({});
   const [showAddLessonForm, setShowAddLessonForm] = useState(false);
   const [lessonTitle, setLessonTitle] = useState("");
+  const [titleError, setTitleError] = useState("");
 
   const handleOpen = (index) => {
     setOpenAccordion((prevState) => ({
@@ -39,12 +40,12 @@ export const CourseDetails = () => {
   const role = localStorage.getItem("role");
   const instructorId = localStorage.getItem("userId");
 
+  console.log("role", role)
   const [newOpen, setNewOpen] = useState(false);
   const newHandleOpen = () => setNewOpen((cur) => !cur);
 
   const [tableLoading, setTableLoading] = useState(false);
   const handleLoading = () => setTableLoading((pre) => !pre);
-
 
   useEffect(() => {
     const fetchHandler = async () => {
@@ -58,7 +59,7 @@ export const CourseDetails = () => {
       }
     };
     fetchHandler();
-  }, [id, instructorId ,tableLoading]);
+  }, [id, instructorId, tableLoading]);
 
   const navigate = useNavigate();
 
@@ -84,8 +85,36 @@ export const CourseDetails = () => {
     });
   };
 
+  const handleLessonDelete = async (lessonId) => {
+    Swal.fire({
+      text: 'Do you want to delete this lesson?',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:4200/course/lessons/${lessonId}`);
+          setCourseDetails((prevDetails) => ({
+            ...prevDetails,
+            lessons: prevDetails.lessons.filter(lesson => lesson._id !== lessonId),
+          }));
+          message.success("Lesson deleted successfully!");
+        } catch (error) {
+          console.error("Error deleting lesson:", error);
+          message.error("Error deleting lesson");
+        }
+      }
+    });
+  };
+
   const handleLessonSubmit = async (e) => {
     e.preventDefault();
+    if (!lessonTitle.trim()) {
+      setTitleError("Title is required.");
+      return;
+    }
     try {
       const response = await axios.post(
         `http://localhost:4200/course/lessons/${id}`,
@@ -209,13 +238,13 @@ export const CourseDetails = () => {
                   </h3>
 
                   <Button
-              onClick={newHandleOpen}
-              color="blue"
-              className="mb-5"
-            >
-              Add Lessons
-            </Button>
-              
+                    onClick={newHandleOpen}
+                    color="blue"
+                    className="mb-5"
+                  >
+                    Add Lessons
+                  </Button>
+
                   <ul>
                     {courseDetails.lessons &&
                       courseDetails.lessons.map((lesson, index) => (
@@ -232,10 +261,15 @@ export const CourseDetails = () => {
                                   : "text-[#6F6F6F] text-[17px]"
                               }`}
                             >
-                              {lesson.title}
+                              <div className="flex justify-between w-full">
+                                <div className="w-[70%]">{lesson.title}</div>
+                              </div>
                             </AccordionHeader>
                             <AccordionBody className="pt-0 text-base font-normal">
-                            <LessonContent id={lesson._id} showUpdateButton={showUpdateButton}/>
+                              <LessonContent
+                                id={lesson._id}
+                                showUpdateButton={showUpdateButton}
+                              />
                             </AccordionBody>
                           </Accordion>
                         </div>
@@ -247,7 +281,7 @@ export const CourseDetails = () => {
           </div>
         </div>
       </CardBody>
-      {/* <AddLessons
+      <AddLessons
         handleOpen={newHandleOpen}
         open={newOpen}
         handleLoading={handleLoading}
@@ -255,8 +289,8 @@ export const CourseDetails = () => {
         lessonTitle={lessonTitle}
         setLessonTitle={setLessonTitle}
         id={id}
-      /> */}
+        titleError={titleError}
+      />
     </Card>
-    
   );
 };
