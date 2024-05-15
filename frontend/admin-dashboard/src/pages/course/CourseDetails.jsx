@@ -263,16 +263,6 @@ export const CourseDetails = () => {
                             >
                               <div className="flex justify-between w-full">
                                 <div className="w-[70%]">{lesson.title}</div>
-                                <div className="w-[30%] text-right">
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleLessonDelete(lesson._id);
-                                    }}
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
                               </div>
                             </AccordionHeader>
                             <AccordionBody className="pt-0 text-base font-normal">
