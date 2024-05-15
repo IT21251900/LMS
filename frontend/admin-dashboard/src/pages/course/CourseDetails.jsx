@@ -39,6 +39,7 @@ export const CourseDetails = () => {
   const role = localStorage.getItem("role");
   const instructorId = localStorage.getItem("userId");
 
+  console.log("role",role)
   const [newOpen, setNewOpen] = useState(false);
   const newHandleOpen = () => setNewOpen((cur) => !cur);
 
