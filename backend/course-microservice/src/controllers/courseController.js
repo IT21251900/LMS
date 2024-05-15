@@ -4,8 +4,14 @@ import Note from "../models/noteModel.js";
 
 export const createCourse = async (req, res) => {
   try {
-    const { category, name, instructorId, price, description, credits,image } =
-      req.body;
+    const { category, name, instructorId, price, description, credits, image } = req.body;
+
+    const requiredFields = ['category', 'name', 'instructorId', 'price', 'description', 'credits', 'image'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({ success: false, error: `${field} is required` });
+      }
+    }
 
     const course = await Course.create({
       category,
